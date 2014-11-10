@@ -26,7 +26,7 @@
 #ifndef COCOS2DX_PLATFORM_THIRDPARTY_ATITC_
 #define COCOS2DX_PLATFORM_THIRDPARTY_ATITC_
 
-#include "platform/CCStdC.h"
+#include "CCStdC.h"
 
 enum class ATITCDecodeFlag
 {

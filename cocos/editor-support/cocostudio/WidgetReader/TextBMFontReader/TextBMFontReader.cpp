@@ -12,7 +12,7 @@ namespace cocostudio
     static const char* P_FileNameData = "fileNameData";
     static const char* P_Text = "text";
     
-    static TextBMFontReader* instanceTextBMFontReader = nullptr;
+    static TextBMFontReader* instanceTextBMFontReader = NULL;
     
     IMPLEMENT_CLASS_WIDGET_READER_INFO(TextBMFontReader)
     
@@ -30,7 +30,7 @@ namespace cocostudio
     {
         if (!instanceTextBMFontReader)
         {
-            instanceTextBMFontReader = new (std::nothrow) TextBMFontReader();
+            instanceTextBMFontReader = new TextBMFontReader();
         }
         return instanceTextBMFontReader;
     }

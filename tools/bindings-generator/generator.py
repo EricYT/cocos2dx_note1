@@ -123,29 +123,6 @@ def get_namespaced_name(declaration_cursor):
         return ns + "::" + declaration_cursor.displayname
     return declaration_cursor.displayname
 
-def generate_namespace_list(cursor, namespaces=[]):
-    '''
-    build the full namespace for a specific cursor
-    '''
-    if cursor:
-        parent = cursor.semantic_parent
-        if parent:
-            if parent.kind == cindex.CursorKind.NAMESPACE or parent.kind == cindex.CursorKind.CLASS_DECL:
-                if parent.kind == cindex.CursorKind.NAMESPACE:
-                    namespaces.append(parent.displayname)
-                generate_namespace_list(parent, namespaces)
-    return namespaces
-
-def get_namespace_name(declaration_cursor):
-    ns_list = generate_namespace_list(declaration_cursor, [])
-    ns_list.reverse()
-    ns = "::".join(ns_list)
-
-    if len(ns) > 0:
-        return ns + "::"
-
-    return declaration_cursor.displayname
-
 
 class NativeType(object):
     def __init__(self):
@@ -156,7 +133,6 @@ class NativeType(object):
         self.param_types = []
         self.ret_type = None
         self.namespaced_name = ""
-        self.namespace_name  = ""
         self.name = ""
         self.whole_name = None
         self.is_const = False
@@ -200,7 +176,6 @@ class NativeType(object):
                     nt.is_object = True
                 nt.name = decl.displayname
                 nt.namespaced_name = get_namespaced_name(decl)
-                nt.namespace_name  = get_namespace_name(decl)
                 nt.whole_name = nt.namespaced_name
             else:
                 if decl.kind == cindex.CursorKind.NO_DECL_FOUND:
@@ -208,7 +183,6 @@ class NativeType(object):
                 else:
                     nt.name = decl.spelling
                 nt.namespaced_name = get_namespaced_name(decl)
-                nt.namespace_name  = get_namespace_name(decl)
 
                 if nt.namespaced_name == "std::string":
                     nt.name = nt.namespaced_name
@@ -240,8 +214,9 @@ class NativeType(object):
                 nt.is_enum = ntype.get_canonical().kind == cindex.TypeKind.ENUM
 
                 if nt.name == "std::function":
-                    nt.namespaced_name = get_namespaced_name(cdecl)                    
-                    r = re.compile('function<(.+) .*\((.*)\)>').search(cdecl.displayname)
+                    nt.namespaced_name = get_namespaced_name(cdecl)
+
+                    r = re.compile('function<(.+) \((.*)\)>').search(cdecl.displayname)
                     (ret_type, params) = r.groups()
                     params = filter(None, params.split(", "))
 
@@ -364,7 +339,7 @@ class NativeType(object):
             tpl = NativeType.dict_get_value_re(to_native_dict, keys)
             tpl = Template(tpl, searchList=[convert_opts])
             return str(tpl).rstrip()
-        return "#pragma warning NO CONVERSION TO NATIVE FOR " + self.name + "\n" + convert_opts['level'] * "\t" +  "ok = false"
+        return "#pragma warning NO CONVERSION TO NATIVE FOR " + self.name
 
     def to_string(self, generator):
         conversions = generator.config['conversions']
@@ -449,21 +424,17 @@ class NativeFunction(object):
         self.func_name = cursor.spelling
         self.signature_name = self.func_name
         self.arguments = []
-        self.argumtntTips = []
         self.static = cursor.kind == cindex.CursorKind.CXX_METHOD and cursor.is_static_method()
         self.implementations = []
         self.is_constructor = False
         self.not_supported = False
         self.is_override = False
+
         self.ret_type = NativeType.from_type(cursor.result_type)
-        self.comment = self.get_comment(cursor.getRawComment())
 
         # parse the arguments
         # if self.func_name == "spriteWithFile":
         #   pdb.set_trace()
-        for arg in cursor.get_arguments():
-            self.argumtntTips.append(arg.spelling)
-
         for arg in cursor.type.argument_types():
             nt = NativeType.from_type(arg)
             self.arguments.append(nt)
@@ -484,34 +455,6 @@ class NativeFunction(object):
                     break
 
         self.min_args = index if found_default_arg else len(self.arguments)
-
-    def get_comment(self, comment):
-        replaceStr = comment
-
-        if comment is None:
-            return ""
-
-        regular_replace_list = [
-            ("(\s)*//!",""),
-            ("(\s)*//",""),
-            ("(\s)*/\*\*",""),
-            ("(\s)*/\*",""),
-            ("\*/",""),
-            ("\n(\s)*\*", "\n"),
-            ("\n(\s)*@","\n"),
-            ("\n(\s)*","\n"), 
-            ("\n(\s)*\n", "\n"),
-            ("^(\s)*\n",""), 
-            ("\n(\s)*$", ""),
-            ("\n","<br>\n"),
-            ("\n", "\n-- ")
-        ]
-
-        for item in regular_replace_list:
-            replaceStr = re.sub(item[0], item[1], replaceStr)
-
-
-        return replaceStr
 
     def generate_code(self, current_class=None, generator=None, is_override=False):
         gen = current_class.generator if current_class else generator
@@ -566,35 +509,6 @@ class NativeOverloadedFunction(object):
         self.is_constructor = False
         for m in func_array:
             self.min_args = min(self.min_args, m.min_args)
-
-        self.comment = self.get_comment(func_array[0].cursor.getRawComment())
-
-    def get_comment(self, comment):
-        replaceStr = comment
-
-        if comment is None:
-            return ""
-
-        regular_replace_list = [
-            ("(\s)*//!",""),
-            ("(\s)*//",""),
-            ("(\s)*/\*\*",""),
-            ("(\s)*/\*",""),
-            ("\*/",""),
-            ("\n(\s)*\*", "\n"),
-            ("\n(\s)*@","\n"),
-            ("\n(\s)*","\n"), 
-            ("\n(\s)*\n", "\n"),
-            ("^(\s)*\n",""), 
-            ("\n(\s)*$", ""),
-            ("\n","<br>\n"),
-            ("\n", "\n-- ")
-        ]
-
-        for item in regular_replace_list:
-            replaceStr = re.sub(item[0], item[1], replaceStr)
-
-        return replaceStr
 
     def append(self, func):
         self.min_args = min(self.min_args, func.min_args)
@@ -664,7 +578,6 @@ class NativeClass(object):
         #for generate lua api doc
         self.override_methods = {}
         self.has_constructor  = False
-        self.namespace_name   = ""
 
         registration_name = generator.get_class_or_rename_class(self.class_name)
         if generator.remove_prefix:
@@ -672,7 +585,6 @@ class NativeClass(object):
         else:
             self.target_class_name = registration_name
         self.namespaced_class_name = get_namespaced_name(cursor)
-        self.namespace_name        = get_namespace_name(cursor)
         self.parse()
 
     @property
@@ -923,7 +835,6 @@ class Generator(object):
         self.out_file = opts['out_file']
         self.script_control_cpp = opts['script_control_cpp'] == "yes"
         self.script_type = opts['script_type']
-        self.macro_judgement = opts['macro_judgement']
 
         if opts['skip']:
             list_of_skips = re.split(",\n?", opts['skip'])
@@ -963,7 +874,6 @@ class Generator(object):
         return None
 
     def get_class_or_rename_class(self, class_name):
-
         if self.rename_classes.has_key(class_name):
             # print >> sys.stderr, "will rename %s to %s" % (method_name, self.rename_functions[class_name][method_name])
             return self.rename_classes[class_name]
@@ -1131,11 +1041,11 @@ class Generator(object):
         for node in cursor.get_children():
             # print("%s %s - %s" % (">" * depth, node.displayname, node.kind))
             self._deep_iterate(node, depth + 1)
-    def scriptname_from_native(self, namespace_class_name, namespace_name):
+    def scriptname_from_native(self, namespace_class_name):
         script_ns_dict = self.config['conversions']['ns_map']
         for (k, v) in script_ns_dict.items():
-            if k == namespace_name:
-                return namespace_class_name.replace("*","").replace("const ", "").replace(k, v)
+            if namespace_class_name.find(k) >= 0:
+                return namespace_class_name.replace("*","").replace("const ", "").replace(k,v)
         if namespace_class_name.find("::") >= 0:
             if namespace_class_name.find("std::") == 0:
                 return namespace_class_name
@@ -1392,8 +1302,7 @@ def main():
                 'rename_classes': config.get(s, 'rename_classes'),
                 'out_file': opts.out_file or config.get(s, 'prefix'),
                 'script_control_cpp': config.get(s, 'script_control_cpp') if config.has_option(s, 'script_control_cpp') else 'no',
-                'script_type': t,
-                'macro_judgement': config.get(s, 'macro_judgement') if config.has_option(s, 'macro_judgement') else None
+                'script_type': t
                 }
             generator = Generator(gen_opts)
             generator.generate_code()

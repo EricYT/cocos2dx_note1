@@ -26,7 +26,7 @@
 #ifndef __cocos2d_libs__CCEventFocus__
 #define __cocos2d_libs__CCEventFocus__
 
-#include "base/CCEvent.h"
+#include "CCEvent.h"
 
 
 NS_CC_BEGIN
@@ -35,7 +35,7 @@ namespace ui {
     class Widget;
 }
 
-class CC_DLL EventFocus : public Event
+class EventFocus : public Event
 {
 public:
     EventFocus(ui::Widget* widgetLoseFocus, ui::Widget* widgetGetFocus);

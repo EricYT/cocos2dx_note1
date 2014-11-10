@@ -26,13 +26,12 @@
 #define __UIRelativeBox_H__
 
 #include "ui/UILayout.h"
-#include "ui/GUIExport.h"
 
 NS_CC_BEGIN
 
 namespace ui {
     
-class CC_GUI_DLL RelativeBox : public Layout{
+class RelativeBox : public Layout{
     
     
 public:

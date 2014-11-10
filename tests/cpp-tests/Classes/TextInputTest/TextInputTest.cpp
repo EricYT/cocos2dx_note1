@@ -30,7 +30,7 @@ KeyboardNotificationLayer* createTextInputTest(int nIndex)
 
 Layer* restartTextInputTest()
 {
-    TextInputTest* pContainerLayer = new (std::nothrow) TextInputTest;
+    TextInputTest* pContainerLayer = new TextInputTest;
     pContainerLayer->autorelease();
 
     auto pTestLayer = createTextInputTest(testIdx);
@@ -80,7 +80,7 @@ TextInputTest::TextInputTest()
 
 void TextInputTest::restartCallback(Ref* sender)
 {
-    auto s = new (std::nothrow) TextInputTestScene();
+    auto s = new TextInputTestScene();
     s->addChild(restartTextInputTest()); 
 
     Director::getInstance()->replaceScene(s);
@@ -89,7 +89,7 @@ void TextInputTest::restartCallback(Ref* sender)
 
 void TextInputTest::nextCallback(Ref* sender)
 {
-    auto s = new (std::nothrow) TextInputTestScene();
+    auto s = new TextInputTestScene();
     s->addChild( nextTextInputTest() );
     Director::getInstance()->replaceScene(s);
     s->release();
@@ -97,7 +97,7 @@ void TextInputTest::nextCallback(Ref* sender)
 
 void TextInputTest::backCallback(Ref* sender)
 {
-    auto s = new (std::nothrow) TextInputTestScene();
+    auto s = new TextInputTestScene();
     s->addChild( backTextInputTest() );
     Director::getInstance()->replaceScene(s);
     s->release();
@@ -302,7 +302,7 @@ void TextFieldTTFActionTest::onEnter()
         Sequence::create(
             FadeOut::create(0.25),
             FadeIn::create(0.25),
-            nullptr
+            NULL
         ));
     _textFieldAction->retain();
     _action = false;
@@ -394,9 +394,9 @@ bool TextFieldTTFActionTest::onTextFieldInsertText(TextFieldTTF * sender, const 
             MoveTo::create(duration, endPos),
             ScaleTo::create(duration, 1),
             FadeOut::create(duration),
-            nullptr),
+            NULL),
         CallFuncN::create(CC_CALLBACK_1(TextFieldTTFActionTest::callbackRemoveNodeWhenDidAction, this)),
-        nullptr);
+        NULL);
     label->runAction(seq);
     return false;
 }
@@ -428,9 +428,9 @@ bool TextFieldTTFActionTest::onTextFieldDeleteBackward(TextFieldTTF * sender, co
                 RotateBy::create(rotateDuration, (rand()%2) ? 360 : -360),
                 repeatTime),
             FadeOut::create(duration),
-        nullptr),
+        NULL),
         CallFuncN::create(CC_CALLBACK_1(TextFieldTTFActionTest::callbackRemoveNodeWhenDidAction, this)),
-        nullptr);
+        NULL);
     label->runAction(seq);
     return false;
 }

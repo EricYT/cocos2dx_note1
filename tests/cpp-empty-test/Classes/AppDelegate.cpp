@@ -17,19 +17,12 @@ AppDelegate::~AppDelegate()
 {
 }
 
-void AppDelegate::initGLContextAttrs()
-{
-    GLContextAttrs glContextAttrs = {8, 8, 8, 8, 24, 8};
-
-    GLView::setGLContextAttrs(glContextAttrs);
-}
-
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
-        glview = GLViewImpl::create("Cpp Empty Test");
+        glview = GLView::create("Cpp Empty Test");
         director->setOpenGLView(glview);
     }
 

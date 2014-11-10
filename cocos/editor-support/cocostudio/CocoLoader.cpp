@@ -92,7 +92,7 @@ Type stExpCocoNode::GetType(CocoLoader*	pCoco)
 
 char*	stExpCocoNode::GetName(CocoLoader*		pCoco)
 {
-    char*   szName  = nullptr ;
+    char*   szName  = NULL ;
     if(m_ObjIndex >= 0)
     {
         stExpCocoObjectDesc*	tpCocoObjectDesc = pCoco->GetCocoObjectDescArray();
@@ -132,14 +132,8 @@ char*	stExpCocoNode::GetName(CocoLoader*		pCoco)
 
 char* stExpCocoNode::GetValue(CocoLoader* pCoco)
 {
-	char* szValue = ( pCoco->GetMemoryAddr_String() + m_szValue );
-	if( 0==strcmp(szValue,"null") && GetType(pCoco) == kStringType ) 
-	{
-		strcpy(szValue,"");
-	}
-	return szValue;
+    return ( pCoco->GetMemoryAddr_String() + m_szValue );
 }
-
 
 int	stExpCocoNode::GetChildNum()
 {
@@ -153,9 +147,9 @@ stExpCocoNode*	stExpCocoNode::GetChildArray(CocoLoader* pCoco)
 
 CocoLoader::CocoLoader()
 {
-    m_pRootNode = nullptr;
-    m_pObjectDescArray = nullptr;
-    m_pMemoryBuff = nullptr;
+    m_pRootNode = NULL;
+    m_pObjectDescArray = NULL;
+    m_pMemoryBuff = NULL;
 }
 
 CocoLoader::~CocoLoader()
@@ -163,7 +157,7 @@ CocoLoader::~CocoLoader()
     if(m_pMemoryBuff)
     {
         delete[] m_pMemoryBuff;
-        m_pMemoryBuff = nullptr;
+        m_pMemoryBuff = NULL;
     }
     
 }
@@ -182,7 +176,7 @@ bool	CocoLoader::ReadCocoBinBuff(char* pBinBuff)
 		char*	pDestBuff  = new char[m_pFileHeader->m_nDataSize];
 		uLongf		dwSrcSize  = m_pFileHeader->m_nCompressSize;
 		uLongf		dwDestSize  = m_pFileHeader->m_nDataSize;
-		uncompress((Bytef*)pDestBuff,&dwDestSize,(Bytef*)m_pMemoryBuff,dwSrcSize);
+		int			nRes = uncompress((Bytef*)pDestBuff,&dwDestSize,(Bytef*)m_pMemoryBuff,dwSrcSize);
 		pStartAddr = m_pMemoryBuff = pDestBuff;
 	}
     
@@ -193,6 +187,27 @@ bool	CocoLoader::ReadCocoBinBuff(char* pBinBuff)
 	m_pRootNode = (stExpCocoNode*)pCocoMemAddr;
     
 	return true;
+}
+
+stExpCocoObjectDesc*	CocoLoader::GetCocoObjectDesc(const char* szObjDesc)
+{
+    for(int i = 0 ; i < m_pFileHeader->m_ObjectCount ; i++)
+    {
+        if(0 == strcmp((char*)m_pObjectDescArray[i].m_szName,szObjDesc))
+        {
+            return	&m_pObjectDescArray[i];
+        }
+    }
+    return NULL;
+}
+
+stExpCocoObjectDesc*	CocoLoader::GetCocoObjectDesc(int vIndex)
+{
+    if(vIndex >= 0 && vIndex <  m_pFileHeader->m_ObjectCount)
+    {
+        return	&m_pObjectDescArray[vIndex];
+    }
+    return NULL;
 }
 
 char*	CocoLoader::GetMemoryAddr_AttribDesc()

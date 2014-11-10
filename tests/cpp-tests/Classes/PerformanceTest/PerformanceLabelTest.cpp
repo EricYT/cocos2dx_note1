@@ -97,7 +97,7 @@ void LabelMainScene::initWithSubTest(int nodes)
     auto increase = MenuItemFont::create(" + ", CC_CALLBACK_1(LabelMainScene::onIncrease, this));
     increase->setColor(Color3B(0,200,20));
 
-    auto menu = Menu::create(decrease, increase, nullptr);
+    auto menu = Menu::create(decrease, increase, NULL);
     menu->alignItemsHorizontally();
     menu->setPosition(Vec2(s.width/2, s.height-65));
     addChild(menu, 1);
@@ -108,7 +108,7 @@ void LabelMainScene::initWithSubTest(int nodes)
     addChild(infoLabel, 1, kTagInfoLayer);
 
     // add menu
-    auto menuLayer = new (std::nothrow) LabelMenuLayer(true, TEST_COUNT, LabelMainScene::_s_labelCurCase);
+    auto menuLayer = new LabelMenuLayer(true, TEST_COUNT, LabelMainScene::_s_labelCurCase);
     addChild(menuLayer, 1, kTagMenuLayer);
     menuLayer->release();
     
@@ -121,7 +121,7 @@ void LabelMainScene::initWithSubTest(int nodes)
     MenuItemFont::setFontName("fonts/arial.ttf");
     MenuItemFont::setFontSize(24);
     
-    MenuItemFont* autoTestItem = nullptr;
+    MenuItemFont* autoTestItem = NULL;
     if (LabelMainScene::_s_autoTest)
     {
         autoTestItem = MenuItemFont::create("Auto Test On",CC_CALLBACK_1(LabelMainScene::onAutoTest, this));
@@ -441,7 +441,7 @@ void  LabelMainScene::onAutoTest(Ref* sender)
 void runLabelTest()
 {
     LabelMainScene::_s_autoTest = false;
-    auto scene = new (std::nothrow) LabelMainScene;
+    auto scene = new LabelMainScene;
     scene->initWithSubTest(LabelMainScene::AUTO_TEST_NODE_NUM);
     Director::getInstance()->replaceScene(scene);
     scene->release();

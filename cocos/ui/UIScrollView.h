@@ -26,7 +26,6 @@ THE SOFTWARE.
 #define __UISCROLLVIEW_H__
 
 #include "ui/UILayout.h"
-#include "ui/GUIExport.h"
 
 NS_CC_BEGIN
 
@@ -34,7 +33,7 @@ class EventFocusListener;
 
 namespace ui {
 
-typedef enum
+CC_DEPRECATED_ATTRIBUTE typedef enum
 {
     SCROLLVIEW_EVENT_SCROLL_TO_TOP,
     SCROLLVIEW_EVENT_SCROLL_TO_BOTTOM,
@@ -47,11 +46,11 @@ typedef enum
     SCROLLVIEW_EVENT_BOUNCE_RIGHT
 }ScrollviewEventType;
 
-typedef void (Ref::*SEL_ScrollViewEvent)(Ref*, ScrollviewEventType);
+CC_DEPRECATED_ATTRIBUTE typedef void (Ref::*SEL_ScrollViewEvent)(Ref*, ScrollviewEventType);
 #define scrollvieweventselector(_SELECTOR) (SEL_ScrollViewEvent)(&_SELECTOR)
 
 
-class CC_GUI_DLL ScrollView : public Layout
+class ScrollView : public Layout
 {
     
     DECLARE_CLASS_GUI_INFO
@@ -96,18 +95,18 @@ public:
     /**
      * Changes scroll direction of scrollview.
      *
-     * @see Direction      Direction::VERTICAL means vertical scroll, Direction::HORIZONTAL means horizontal scroll
+     * @see SCROLLVIEW_DIR      SCROLLVIEW_DIR_VERTICAL means vertical scroll, SCROLLVIEW_DIR_HORIZONTAL means horizontal scroll
      *
-     * @param dir
+     * @param SCROLLVIEW_DIR
      */
     virtual void setDirection(Direction dir);
     
     /**
      * Gets scroll direction of scrollview.
      *
-     * @see Direction      Direction::VERTICAL means vertical scroll, Direction::HORIZONTAL means horizontal scroll
+     * @see SCROLLVIEW_DIR      SCROLLVIEW_DIR_VERTICAL means vertical scroll, SCROLLVIEW_DIR_HORIZONTAL means horizontal scroll
      *
-     * @return Direction
+     * @return SCROLLVIEW_DIR
      */
     Direction getDirection()const;
     

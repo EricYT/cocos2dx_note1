@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 #include "ui/UIListView.h"
 #include "ui/UIHelper.h"
+#include "extensions/GUI/CCControlExtension/CCScale9Sprite.h"
 
 NS_CC_BEGIN
 
@@ -54,7 +55,7 @@ ListView::~ListView()
 
 ListView* ListView::create()
 {
-    ListView* widget = new (std::nothrow) ListView();
+    ListView* widget = new ListView();
     if (widget && widget->init())
     {
         widget->autorelease();
@@ -472,7 +473,6 @@ void ListView::addEventListener(const ccListViewCallback& callback)
     
 void ListView::selectedItemEvent(TouchEventType event)
 {
-    this->retain();
     switch (event)
     {
         case TouchEventType::BEGAN:
@@ -498,7 +498,7 @@ void ListView::selectedItemEvent(TouchEventType event)
         }
         break;
     }
-    this->release();
+
 }
     
 void ListView::interceptTouchEvent(TouchEventType event, Widget *sender, Touch* touch)

@@ -26,11 +26,10 @@
 #define __TestCpp__ListViewReader__
 
 #include "../ScrollViewReader/ScrollViewReader.h"
-#include "cocostudio/CocosStudioExport.h"
 
 namespace cocostudio
 {
-    class CC_STUDIO_DLL ListViewReader : public ScrollViewReader
+    class ListViewReader : public ScrollViewReader
     {
     public:
         DECLARE_CLASS_WIDGET_READER_INFO

@@ -33,6 +33,7 @@ THE SOFTWARE.
 
 #include "2d/CCNode.h"
 #include "base/CCProtocols.h"
+#include "base/ccMacros.h"
 #include "renderer/CCTextureAtlas.h"
 #include "renderer/CCBatchCommand.h"
 

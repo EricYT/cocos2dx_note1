@@ -25,6 +25,8 @@ THE SOFTWARE.
 
 #include "2d/CCFontFreeType.h"
 
+#include <stdio.h>
+#include <algorithm>
 #include "base/CCDirector.h"
 #include "base/ccUTF8.h"
 #include "platform/CCFileUtils.h"
@@ -172,7 +174,7 @@ FontFreeType::~FontFreeType()
 
 FontAtlas * FontFreeType::createFontAtlas()
 {
-    FontAtlas *atlas = new (std::nothrow) FontAtlas(*this);
+    FontAtlas *atlas = new FontAtlas(*this);
     if (_usedGlyphs != GlyphCollection::DYNAMIC)
     {
         std::u16string utf16;
@@ -265,7 +267,7 @@ unsigned char* FontFreeType::getGlyphBitmap(unsigned short theChar, long &outWid
         }
         else
         {
-            if (FT_Load_Glyph(_fontRef,glyphIndex,FT_LOAD_RENDER | FT_LOAD_NO_AUTOHINT))
+            if (FT_Load_Glyph(_fontRef,glyphIndex,FT_LOAD_RENDER))
                 break;
         }
 

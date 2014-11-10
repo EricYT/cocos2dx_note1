@@ -28,9 +28,14 @@
 #include <string>
 #include <unordered_map>
 #include "base/ccTypes.h"
+#include "base/CCMap.h"
 
 NS_CC_BEGIN
 
+class Sprite3D;
+class Mesh;
+class EventListenerCustom;
+class EventCustom;
 class Texture2D;
 
 /**

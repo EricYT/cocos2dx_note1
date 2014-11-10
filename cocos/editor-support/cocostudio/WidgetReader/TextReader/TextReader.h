@@ -26,11 +26,10 @@
 #define __TestCpp__TextReader__
 
 #include "../WidgetReader.h"
-#include "cocostudio/CocosStudioExport.h"
 
 namespace cocostudio
 {
-    class CC_STUDIO_DLL TextReader : public WidgetReader
+    class TextReader : public WidgetReader
     {
     public:
         DECLARE_CLASS_WIDGET_READER_INFO

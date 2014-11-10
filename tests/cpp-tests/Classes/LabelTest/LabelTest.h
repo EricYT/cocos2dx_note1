@@ -108,9 +108,14 @@ public:
 
     Atlas4();
     virtual void step(float dt);
+    virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
 
     virtual std::string title() const override;
     virtual std::string subtitle() const override;
+protected:
+    void onDraw(const Mat4 &transform, uint32_t flags);
+protected:
+    CustomCommand _customCommand;
 };
 
 class Atlas5 : public AtlasDemo
@@ -378,8 +383,14 @@ public:
 
     LabelBMFontBounds();
     
+    virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
     virtual std::string title() const override;
     virtual std::string subtitle() const override;
+protected:
+    void onDraw(const Mat4 &transform, uint32_t flags);
+private:
+    LabelBMFont *label1;
+    CustomCommand _customCommand;
 };
 
 class NewLabelTTFUnicode : public AtlasDemo

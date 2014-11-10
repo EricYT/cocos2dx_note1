@@ -58,7 +58,7 @@ static const char* s_testArray[] = {
     "CCControlStepperTest"
 };
 
-static ControlSceneManager *sharedInstance = nullptr;
+static ControlSceneManager *sharedInstance = NULL;
 
 
 ControlSceneManager::ControlSceneManager()
@@ -73,9 +73,9 @@ ControlSceneManager::~ControlSceneManager()
 
 ControlSceneManager * ControlSceneManager::sharedControlSceneManager()
 {
-    if (sharedInstance == nullptr)
+    if (sharedInstance == NULL)
     {
-        sharedInstance = new (std::nothrow) ControlSceneManager();
+        sharedInstance = new ControlSceneManager();
     }
     return sharedInstance;
 }
@@ -111,5 +111,5 @@ Scene *ControlSceneManager::currentControlScene()
     case kControlPotentiometerTest:return ControlPotentiometerTest::sceneWithTitle(s_testArray[_currentControlSceneId]);
     case kControlStepperTest:return ControlStepperTest::sceneWithTitle(s_testArray[_currentControlSceneId]);
     }
-    return nullptr;
+    return NULL;
 }

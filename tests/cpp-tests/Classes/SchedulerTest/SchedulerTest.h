@@ -47,7 +47,6 @@ public:
 
     void tick1(float dt);
     void tick2(float dt);
-    using SchedulerTestLayer::pause;
     void pause(float dt);
 };
 
@@ -66,9 +65,7 @@ public:
 
     void tick1(float dt);
     void tick2(float dt);
-    using SchedulerTestLayer::pause;
     void pause(float dt);
-    using SchedulerTestLayer::resume;
     void resume(float dt);
 private:
     std::set<void*> _pausedTargets;
@@ -88,9 +85,7 @@ public:
 
     void tick1(float dt);
     void tick2(float dt);
-    using SchedulerTestLayer::pause;
     void pause(float dt);
-    using SchedulerTestLayer::resume;
     void resume(float dt);
 private:
     std::set<void*> _pausedTargets;

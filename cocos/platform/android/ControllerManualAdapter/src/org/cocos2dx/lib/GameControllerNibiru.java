@@ -73,7 +73,7 @@ OnSimpleStickListener, OnAccListener, OnGyroListener, OnStateListener, GameContr
 			mControllerService.setEnableLR2(true);
 			mControllerService.setAutoKeyUpMode(false);
 			
-			mControllerService.checkNibiruInstall(mContext, false);
+			mControllerService.checkNibiruInstall(mContext, true);
 		}
 	}
 	
@@ -113,7 +113,7 @@ OnSimpleStickListener, OnAccListener, OnGyroListener, OnStateListener, GameContr
 		{
 			if( !mControllerService.hasDeviceConnected() ){
 				Bundle bun = new Bundle();
-				bun.putBoolean(ControllerService.FLAG_IS_SHOW_GAMEPAD_TIP, false);
+				bun.putBoolean(ControllerService.FLAG_IS_SHOW_GAMEPAD_TIP, true);
 				try {
 					mControllerService.showDeviceManagerUI(mContext, bun); 
 				} catch (ControllerServiceException e) {

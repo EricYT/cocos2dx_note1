@@ -32,7 +32,6 @@
 
 #include "CCControl.h"
 #include "CCInvocation.h"
-#include "extensions/ExtensionExport.h"
 
 NS_CC_EXT_BEGIN
 
@@ -43,7 +42,7 @@ NS_CC_EXT_BEGIN
  * @{
  */
 
-class CC_EX_DLL ControlSlider: public Control
+class ControlSlider: public Control
 {
 public:
     /**

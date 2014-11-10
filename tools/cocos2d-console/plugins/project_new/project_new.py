@@ -35,6 +35,12 @@ class CCPluginNew(cocos.CCPlugin):
         cocos_project.Project.JS : 'MyJSGame'
     }
 
+    DEFAULT_PKG_NAME = {
+        cocos_project.Project.CPP : 'org.cocos2dx.hellocpp',
+        cocos_project.Project.LUA : 'org.cocos2dx.hellolua',
+        cocos_project.Project.JS : 'org.cocos2dx.hellojavascript'
+    }
+
     @staticmethod
     def plugin_name():
       return "new"
@@ -45,23 +51,12 @@ class CCPluginNew(cocos.CCPlugin):
 
     def init(self, args):
         self._projname = args.name
-        self._projdir = unicode(os.path.abspath(os.path.join(args.directory, self._projname)), "utf-8")
+        self._projdir = os.path.abspath(os.path.join(args.directory, self._projname))
         self._lang = args.language
         self._package = args.package
         self._tpname = args.template
-
-        if args.engine_path is not None:
-            if os.path.isabs(args.engine_path):
-                self._cocosroot = args.engine_path
-            else:
-                self._cocosroot = os.path.abspath(args.engine_path)
-            self._cocosroot = unicode(self._cocosroot, "utf-8")
-            self._templates_root = os.path.join(self._cocosroot, "templates")
-        else:
-            self._cocosroot, self._templates_root = self._parse_cfg(self._lang)
+        self._cocosroot, self._templates_root = self._parse_cfg(self._lang)
         self._other_opts = args
-        self._mac_bundleid = args.mac_bundleid
-        self._ios_bundleid = args.ios_bundleid
 
         self._templates = Templates(args.language, self._templates_root, args.template)
         if self._templates.none_active():
@@ -86,10 +81,7 @@ class CCPluginNew(cocos.CCPlugin):
                             help="Major programming language you want to use, should be [cpp | lua | js]")
         parser.add_argument("-d", "--directory", metavar="DIRECTORY",help="Set generate project directory for project")
         parser.add_argument("-t", "--template", metavar="TEMPLATE_NAME",help="Set the template name you want create from")
-        parser.add_argument("--ios-bundleid", dest="ios_bundleid", help="Set a bundle id for ios project")
-        parser.add_argument("--mac-bundleid", dest="mac_bundleid", help="Set a bundle id for mac project")
-        parser.add_argument("-e", "--engine-path", dest="engine_path", help="Set the path of cocos2d-x/cocos2d-js engine")
-
+        
         group = parser.add_argument_group("lua/js project arguments")
         group.add_argument("--no-native", action="store_true", dest="no_native", help="No native support.")
 
@@ -100,13 +92,7 @@ class CCPluginNew(cocos.CCPlugin):
             args.name = CCPluginNew.DEFAULT_PROJ_NAME[args.language]
         
         if not args.package:
-            args.package = "org.cocos2dx.%s" % args.name
-
-        if not args.ios_bundleid:
-            args.ios_bundleid = args.package
-
-        if not args.mac_bundleid:
-            args.mac_bundleid = args.package
+            args.package = CCPluginNew.DEFAULT_PKG_NAME[args.language]
 
         if not args.directory:
             args.directory = os.getcwd();
@@ -126,7 +112,7 @@ class CCPluginNew(cocos.CCPlugin):
 
         tp_dir = self._templates.template_path()
 
-        creator = TPCreator(self._lang, self._cocosroot, self._projname, self._projdir, self._tpname, tp_dir, self._package, self._mac_bundleid, self._ios_bundleid)
+        creator = TPCreator(self._lang, self._cocosroot, self._projname, self._projdir, self._tpname, tp_dir, self._package)
         # do the default creating step
         creator.do_default_step()
 
@@ -157,14 +143,14 @@ class CCPluginNew(cocos.CCPlugin):
 
 
     def _parse_cfg(self, language):
-        script_dir= unicode(os.path.abspath(os.path.dirname(__file__)), "utf-8")
-        create_cfg_file = os.path.join(script_dir, "env.json")
+        self.script_dir= os.path.abspath(os.path.dirname(__file__))
+        self.create_cfg_file = os.path.join(self.script_dir, "env.json")
         
-        f = open(create_cfg_file)
+        f = open(self.create_cfg_file)
         create_cfg = json.load(f)
         f.close()
         langcfg = create_cfg[language]
-        langcfg['COCOS_ROOT'] = os.path.abspath(os.path.join(script_dir,langcfg["COCOS_ROOT"]))
+        langcfg['COCOS_ROOT'] = os.path.abspath(os.path.join(self.script_dir,langcfg["COCOS_ROOT"]))
         cocos_root = langcfg['COCOS_ROOT']
         
         # replace SDK_ROOT to real path
@@ -182,6 +168,41 @@ class CCPluginNew(cocos.CCPlugin):
     def run(self, argv, dependencies):
         self.parse_args(argv);
         self._create_from_cmd()
+
+
+# ignore files function generator
+def _ignorePath(root, ignore_files):
+    def __ignoref(p, files):
+        ignore_list = []
+        for f in files:
+            for igf in ignore_files:
+                f1 = os.path.abspath(os.path.join(p, f))
+                f2 = os.path.abspath(os.path.join(root, igf))
+                if f1 == f2:
+                    ignore_list.append(f)
+        return ignore_list
+    return __ignoref
+
+
+# copy the whole things from one dir into a dir
+# the dst dir will be created, if the dst dir is not exists
+def copytree(src, dst, symlinks=False, ignore=None):
+    # make sure dst is exists
+    if not os.path.exists(dst):
+         os.makedirs(dst)
+
+    root_ignorefiles = []
+    if ignore is not None:
+        root_ignorefiles = ignore(src, os.listdir(src))
+    for item in os.listdir(src):
+        if item in root_ignorefiles:
+            continue
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            shutil.copytree(s, d, symlinks, ignore)
+        else:
+            shutil.copy2(s, d)
 
 def replace_string(filepath, src_string, dst_string):
     """ From file's content replace specified string
@@ -238,7 +259,7 @@ class Templates(object):
         if len(folders) == 0:
             cur_engine = "cocos2d-x" if self._lang == "js" else "cocos2d-js"
             need_engine = "cocos2d-js" if self._lang == "js" else "cocos2d-x"
-            engine_tip = "You can specify the path of %s by argument '-e'." % need_engine
+            engine_tip = "You can't create a %s game in %s. Please use %s instead." % (self._lang, cur_engine, need_engine)
             message = "Fatal: can't find any template for <%s> language in %s\n%s" % (self._lang, templates_dir, engine_tip)
             raise cocos.CCPluginError(message)
 
@@ -271,14 +292,12 @@ class Templates(object):
 
 
 class TPCreator(object):
-    def __init__(self, lang, cocos_root, project_name, project_dir, tp_name, tp_dir, project_package, mac_id, ios_id):
+    def __init__(self, lang, cocos_root, project_name, project_dir, tp_name, tp_dir, project_package):
         self.lang = lang
         self.cocos_root = cocos_root
         self.project_dir = project_dir
         self.project_name = project_name
         self.package_name = project_package
-        self.mac_bundleid = mac_id
-        self.ios_bundleid = ios_id
 
         self.tp_name = tp_name
         self.tp_dir = tp_dir
@@ -305,16 +324,8 @@ class TPCreator(object):
 
     def cp_self(self, project_dir, exclude_files):
         cocos.Logging.info('> Copy template into %s' % project_dir)
-
-        if not os.path.exists(self.project_dir):
-            os.makedirs(self.project_dir)
-
-        copy_cfg = {
-            "from" : self.tp_dir,
-            "to" : self.project_dir,
-            "exclude" : exclude_files
-        }
-        cocos.copy_files_with_config(copy_cfg, self.tp_dir, self.project_dir)
+        shutil.copytree(self.tp_dir, self.project_dir, True,
+                ignore = _ignorePath(self.tp_dir, exclude_files) )
 
 
     def do_default_step(self):
@@ -381,12 +392,8 @@ class TPCreator(object):
         for index in range(len(file_list)):
             srcfile = os.path.join(src,file_list[index])
             dstfile = os.path.join(dst,file_list[index])
-
-            srcfile = cocos.add_path_prefix(srcfile)
-            dstfile = cocos.add_path_prefix(dstfile)
-
             if not os.path.exists(os.path.dirname(dstfile)):
-                os.makedirs(cocos.add_path_prefix(os.path.dirname(dstfile)))
+                os.makedirs(os.path.dirname(dstfile))
 
             #copy file or folder
             if os.path.exists(srcfile):
@@ -424,12 +431,8 @@ class TPCreator(object):
         for index in range(len(fileList)):
             srcfile = os.path.join(src,fileList[index])
             dstfile = os.path.join(dst,fileList[index])
-
-            srcfile = cocos.add_path_prefix(srcfile)
-            dstfile = cocos.add_path_prefix(dstfile)
-
             if not os.path.exists(os.path.dirname(dstfile)):
-                os.makedirs(cocos.add_path_prefix(os.path.dirname(dstfile)))
+                os.makedirs(os.path.dirname(dstfile))
 
             #copy file or folder
             if os.path.exists(srcfile):
@@ -458,10 +461,6 @@ class TPCreator(object):
         for item in v:
             src = os.path.join(self.cocos_root, item['from'])
             dst = os.path.join(self.project_dir, item['to'])
-
-            src = cocos.add_path_prefix(src)
-            dst = cocos.add_path_prefix(dst)
-
             shutil.copy2(src, dst)
 
 ## project cmd
@@ -514,40 +513,4 @@ class TPCreator(object):
             else:
                 cocos.Logging.warning("%s not found" % os.path.join(dst_project_dir, dst))
 
-    def project_replace_mac_bundleid(self, v):
-        """ will modify the content of the file
-        """
-        if self.mac_bundleid is None:
-            return
 
-        dst_project_dir = self.project_dir
-        dst_project_name = self.project_name
-        src_bundleid = v['src_bundle_id']
-        dst_bundleid = self.mac_bundleid
-        cocos.Logging.info("> Replace the mac bundle id from '%s' to '%s'" % (src_bundleid, dst_bundleid))
-        files = v['files']
-        for f in files:
-            dst = f.replace("PROJECT_NAME", dst_project_name)
-            if os.path.exists(os.path.join(dst_project_dir, dst)):
-                replace_string(os.path.join(dst_project_dir, dst), src_bundleid, dst_bundleid)
-            else:
-                cocos.Logging.warning("%s not found" % os.path.join(dst_project_dir, dst))
-
-    def project_replace_ios_bundleid(self, v):
-        """ will modify the content of the file
-        """
-        if self.ios_bundleid is None:
-            return
-
-        dst_project_dir = self.project_dir
-        dst_project_name = self.project_name
-        src_bundleid = v['src_bundle_id']
-        dst_bundleid = self.ios_bundleid
-        cocos.Logging.info("> Replace the ios bundle id from '%s' to '%s'" % (src_bundleid, dst_bundleid))
-        files = v['files']
-        for f in files:
-            dst = f.replace("PROJECT_NAME", dst_project_name)
-            if os.path.exists(os.path.join(dst_project_dir, dst)):
-                replace_string(os.path.join(dst_project_dir, dst), src_bundleid, dst_bundleid)
-            else:
-                cocos.Logging.warning("%s not found" % os.path.join(dst_project_dir, dst))

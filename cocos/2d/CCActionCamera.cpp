@@ -27,7 +27,7 @@ THE SOFTWARE.
 
 #include "2d/CCActionCamera.h"
 #include "2d/CCNode.h"
-#include "platform/CCStdC.h"
+#include "CCStdC.h"
 
 NS_CC_BEGIN
 //
@@ -47,7 +47,7 @@ void ActionCamera::startWithTarget(Node *target)
 ActionCamera* ActionCamera::clone() const
 {
 	// no copy constructor
-	auto a = new (std::nothrow) ActionCamera();
+	auto a = new ActionCamera();
 	a->autorelease();
 	return a;
 }
@@ -115,7 +115,8 @@ void ActionCamera::updateTransform()
         mv = mv * t;
     }
 
-    // FIXME: Using the AdditionalTransform is a complete hack.
+    // XXX FIXME TODO
+    // Using the AdditionalTransform is a complete hack.
     // This should be done by multipliying the lookup-Matrix with the Node's MV matrix
     // And then setting the result as the new MV matrix
     // But that operation needs to be done after all the 'updates'.
@@ -147,7 +148,7 @@ OrbitCamera::~OrbitCamera()
 
 OrbitCamera * OrbitCamera::create(float t, float radius, float deltaRadius, float angleZ, float deltaAngleZ, float angleX, float deltaAngleX)
 {
-    OrbitCamera * obitCamera = new (std::nothrow) OrbitCamera();
+    OrbitCamera * obitCamera = new OrbitCamera();
     if(obitCamera->initWithDuration(t, radius, deltaRadius, angleZ, deltaAngleZ, angleX, deltaAngleX))
     {
         obitCamera->autorelease();
@@ -160,7 +161,7 @@ OrbitCamera * OrbitCamera::create(float t, float radius, float deltaRadius, floa
 OrbitCamera* OrbitCamera::clone() const
 {
 	// no copy constructor	
-	auto a = new (std::nothrow) OrbitCamera();
+	auto a = new OrbitCamera();
 	a->initWithDuration(_duration, _radius, _deltaRadius, _angleZ, _deltaAngleZ, _angleX, _deltaAngleX);
 	a->autorelease();
 	return a;

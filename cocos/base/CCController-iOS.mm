@@ -24,7 +24,7 @@
  ****************************************************************************/
 
 #include "CCController.h"
-#include "platform/CCPlatformConfig.h"
+#include "base/CCPlatformConfig.h"
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
 #include "ccMacros.h"
@@ -114,13 +114,15 @@ public:
     GCController* _gcController;
 };
 
+std::vector<Controller*> Controller::s_allController;
+
 void Controller::startDiscoveryController()
 {
     [GCController startWirelessControllerDiscoveryWithCompletionHandler: nil];
     
     [[GCControllerConnectionEventHandler getInstance] observerConnection: ^(GCController* gcController) {
         
-        auto controller = new (std::nothrow) Controller();
+        auto controller = new Controller();
         controller->_impl->_gcController = gcController;
         controller->_deviceName = [gcController.vendorName UTF8String];
         
@@ -196,7 +198,7 @@ void Controller::registerListeners()
         };
         
         _impl->_gcController.extendedGamepad.leftThumbstick.yAxis.valueChangedHandler = ^(GCControllerAxisInput *axis, float value){
-            onAxisEvent(Key::JOYSTICK_LEFT_Y, -value, axis.isAnalog);
+            onAxisEvent(Key::JOYSTICK_LEFT_Y, value, axis.isAnalog);
         };
         
         _impl->_gcController.extendedGamepad.rightThumbstick.xAxis.valueChangedHandler = ^(GCControllerAxisInput *axis, float value){
@@ -204,7 +206,7 @@ void Controller::registerListeners()
         };
         
         _impl->_gcController.extendedGamepad.rightThumbstick.yAxis.valueChangedHandler = ^(GCControllerAxisInput *axis, float value){
-            onAxisEvent(Key::JOYSTICK_RIGHT_Y, -value, axis.isAnalog);
+            onAxisEvent(Key::JOYSTICK_RIGHT_Y, value, axis.isAnalog);
         };
         
         _impl->_gcController.extendedGamepad.valueChangedHandler = ^(GCExtendedGamepad *gamepad, GCControllerElement *element){

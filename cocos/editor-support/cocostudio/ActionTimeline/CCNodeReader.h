@@ -25,17 +25,15 @@ THE SOFTWARE.
 #ifndef __CC_NODE_CACHE_H__
 #define __CC_NODE_CACHE_H__
 
-#include <unordered_map>
 #include "cocostudio/DictionaryHelper.h"
-#include "cocostudio/CocosStudioExport.h"
-#include "2d/CCNode.h"
+#include "cocos2d.h"
 
 namespace cocostudio {
 
 
 namespace timeline{
 
-class CC_STUDIO_DLL NodeReader
+class NodeReader
 {
 public:
     static NodeReader* getInstance();

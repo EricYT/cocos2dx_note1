@@ -27,14 +27,13 @@
 #define __cocos2d_libs__CCTouchEventListener__
 
 #include "base/CCEventListener.h"
+#include "base/CCTouch.h"
 
 #include <vector>
 
 NS_CC_BEGIN
 
-class Touch;
-
-class CC_DLL EventListenerTouchOneByOne : public EventListener
+class EventListenerTouchOneByOne : public EventListener
 {
 public:
     static const std::string LISTENER_ID;
@@ -57,11 +56,10 @@ public:
     std::function<void(Touch*, Event*)> onTouchEnded;
     std::function<void(Touch*, Event*)> onTouchCancelled;
     
-CC_CONSTRUCTOR_ACCESS:
+private:
     EventListenerTouchOneByOne();
     bool init();
     
-private:
     std::vector<Touch*> _claimedTouches;
     bool _needSwallow;
     
@@ -69,7 +67,7 @@ private:
 };
 
 
-class CC_DLL EventListenerTouchAllAtOnce : public EventListener
+class EventListenerTouchAllAtOnce : public EventListener
 {
 public:
     static const std::string LISTENER_ID;
@@ -87,7 +85,7 @@ public:
     std::function<void(const std::vector<Touch*>&, Event*)> onTouchesEnded;
     std::function<void(const std::vector<Touch*>&, Event*)> onTouchesCancelled;
     
-CC_CONSTRUCTOR_ACCESS:
+private:
     EventListenerTouchAllAtOnce();
     bool init();
 private:

@@ -25,13 +25,13 @@ CustomParticleWidgetReader::~CustomParticleWidgetReader()
     
 }
 
-static CustomParticleWidgetReader* _instanceCustomParticleWidgetReader = nullptr;
+static CustomParticleWidgetReader* _instanceCustomParticleWidgetReader = NULL;
 
 CustomParticleWidgetReader* CustomParticleWidgetReader::getInstance()
 {
     if (!_instanceCustomParticleWidgetReader)
     {
-        _instanceCustomParticleWidgetReader = new (std::nothrow) CustomParticleWidgetReader();
+        _instanceCustomParticleWidgetReader = new CustomParticleWidgetReader();
     }
     return _instanceCustomParticleWidgetReader;
 }
@@ -51,6 +51,5 @@ void CustomParticleWidgetReader::setProperties(const std::string& classType,
         std::string PlistFilePath = guiReader->getFilePath();
         PlistFilePath.append(PlistFile);
         custom->setParticlePlist(PlistFilePath.c_str());
-        
     }
 }

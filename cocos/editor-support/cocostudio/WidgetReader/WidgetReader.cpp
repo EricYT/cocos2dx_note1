@@ -59,7 +59,7 @@ namespace cocostudio
     const char* P_Path = "path";
 
     
-    static WidgetReader* instanceWidgetReader = nullptr;
+    static WidgetReader* instanceWidgetReader = NULL;
     
     IMPLEMENT_CLASS_WIDGET_READER_INFO(WidgetReader)
     
@@ -87,7 +87,7 @@ namespace cocostudio
         };
         
         valueToFloat = [=](const std::string& str) -> float{
-            return utils::atof(str.c_str());
+            return atof(str.c_str());
         };
     }
     
@@ -101,7 +101,7 @@ namespace cocostudio
     {
         if (!instanceWidgetReader)
         {
-            instanceWidgetReader = new (std::nothrow) WidgetReader();
+            instanceWidgetReader = new WidgetReader();
         }
         return instanceWidgetReader;
     }
@@ -139,7 +139,7 @@ namespace cocostudio
             w = DICTOOL->getFloatValue_json(options, P_Width);
             h = DICTOOL->getFloatValue_json(options, P_Height);
         }
-        widget->setContentSize(Size(w, h));
+        widget->setSize(Size(w, h));
         
         widget->setTag(DICTOOL->getIntValue_json(options, P_Tag));
         widget->setActionTag(DICTOOL->getIntValue_json(options, P_ActionTag));
@@ -259,7 +259,7 @@ namespace cocostudio
         widget->setOpacity(_opacity);
         //the setSize method will be conflict with scale9Width & scale9Height
         if (!widget->isIgnoreContentAdaptWithSize()) {
-            widget->setContentSize(Size(_width, _height));
+            widget->setSize(Size(_width, _height));
         }
         widget->setPosition(_position);
         widget->setAnchorPoint(_originalAnchorPoint);

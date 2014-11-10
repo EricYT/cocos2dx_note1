@@ -27,10 +27,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     int ret = Application::getInstance()->run();
 
 #ifdef USE_WIN32_CONSOLE
-    if (!ret)
-    {
-        system("pause");
-    }
     FreeConsole();
 #endif
 

@@ -19,8 +19,7 @@ namespace cocosbuilder {;
 #define PROPERTY_TITLETTFSIZE_HIGHLIGHTED "titleTTFSize|2"
 #define PROPERTY_TITLETTFSIZE_DISABLED "titleTTFSize|3"
 #define PROPERTY_LABELANCHORPOINT "labelAnchorPoint"
-// TODO: Should be "preferredSize". This is a typo in cocos2d-iphone, cocos2d-x and CocosBuilder!    
-#define PROPERTY_PREFEREDSIZE "preferedSize"
+#define PROPERTY_PREFEREDSIZE "preferedSize" // TODO Should be "preferredSize". This is a typo in cocos2d-iphone, cocos2d-x and CocosBuilder!
 #define PROPERTY_BACKGROUNDSPRITEFRAME_NORMAL "backgroundSpriteFrame|1"
 #define PROPERTY_BACKGROUNDSPRITEFRAME_HIGHLIGHTED "backgroundSpriteFrame|2"
 #define PROPERTY_BACKGROUNDSPRITEFRAME_DISABLED "backgroundSpriteFrame|3"
@@ -87,15 +86,15 @@ void ControlButtonLoader::onHandlePropTypeSize(Node * pNode, Node * pParent, con
 
 void ControlButtonLoader::onHandlePropTypeSpriteFrame(Node * pNode, Node * pParent, const char * pPropertyName, SpriteFrame * pSpriteFrame, CCBReader * ccbReader) {
     if(strcmp(pPropertyName, PROPERTY_BACKGROUNDSPRITEFRAME_NORMAL) == 0) {
-        if(pSpriteFrame != nullptr) {
+        if(pSpriteFrame != NULL) {
             ((ControlButton *)pNode)->setBackgroundSpriteFrameForState(pSpriteFrame, Control::State::NORMAL);
         }
     } else if(strcmp(pPropertyName, PROPERTY_BACKGROUNDSPRITEFRAME_HIGHLIGHTED) == 0) {
-        if(pSpriteFrame != nullptr) {
+        if(pSpriteFrame != NULL) {
             ((ControlButton *)pNode)->setBackgroundSpriteFrameForState(pSpriteFrame, Control::State::HIGH_LIGHTED);
         }
     } else if(strcmp(pPropertyName, PROPERTY_BACKGROUNDSPRITEFRAME_DISABLED) == 0) {
-        if(pSpriteFrame != nullptr) {
+        if(pSpriteFrame != NULL) {
             ((ControlButton *)pNode)->setBackgroundSpriteFrameForState(pSpriteFrame, Control::State::DISABLED);
         }
     } else {

@@ -12,18 +12,23 @@
 
 
 --------------------------------------------------------
--- the cc Texture2D
--- @field [parent=#cc] Texture2D#Texture2D Texture2D preloaded module
-
-
---------------------------------------------------------
--- the cc Touch
--- @field [parent=#cc] Touch#Touch Touch preloaded module
+-- the cc EventListener
+-- @field [parent=#cc] EventListener#EventListener EventListener preloaded module
 
 
 --------------------------------------------------------
 -- the cc Event
 -- @field [parent=#cc] Event#Event Event preloaded module
+
+
+--------------------------------------------------------
+-- the cc EventDispatcher
+-- @field [parent=#cc] EventDispatcher#EventDispatcher EventDispatcher preloaded module
+
+
+--------------------------------------------------------
+-- the cc Touch
+-- @field [parent=#cc] Touch#Touch Touch preloaded module
 
 
 --------------------------------------------------------
@@ -37,18 +42,28 @@
 
 
 --------------------------------------------------------
+-- the cc Texture2D
+-- @field [parent=#cc] Texture2D#Texture2D Texture2D preloaded module
+
+
+--------------------------------------------------------
 -- the cc Node
 -- @field [parent=#cc] Node#Node Node preloaded module
 
 
 --------------------------------------------------------
--- the cc Scene
--- @field [parent=#cc] Scene#Scene Scene preloaded module
+-- the cc GLProgramState
+-- @field [parent=#cc] GLProgramState#GLProgramState GLProgramState preloaded module
 
 
 --------------------------------------------------------
--- the cc GLView
--- @field [parent=#cc] GLView#GLView GLView preloaded module
+-- the cc AtlasNode
+-- @field [parent=#cc] AtlasNode#AtlasNode AtlasNode preloaded module
+
+
+--------------------------------------------------------
+-- the cc LabelAtlas
+-- @field [parent=#cc] LabelAtlas#LabelAtlas LabelAtlas preloaded module
 
 
 --------------------------------------------------------
@@ -74,21 +89,6 @@
 --------------------------------------------------------
 -- the cc UserDefault
 -- @field [parent=#cc] UserDefault#UserDefault UserDefault preloaded module
-
-
---------------------------------------------------------
--- the cc Camera
--- @field [parent=#cc] Camera#Camera Camera preloaded module
-
-
---------------------------------------------------------
--- the cc EventListener
--- @field [parent=#cc] EventListener#EventListener EventListener preloaded module
-
-
---------------------------------------------------------
--- the cc EventDispatcher
--- @field [parent=#cc] EventDispatcher#EventDispatcher EventDispatcher preloaded module
 
 
 --------------------------------------------------------
@@ -732,28 +732,13 @@
 
 
 --------------------------------------------------------
--- the cc ProtectedNode
--- @field [parent=#cc] ProtectedNode#ProtectedNode ProtectedNode preloaded module
-
-
---------------------------------------------------------
--- the cc GLProgramState
--- @field [parent=#cc] GLProgramState#GLProgramState GLProgramState preloaded module
-
-
---------------------------------------------------------
--- the cc AtlasNode
--- @field [parent=#cc] AtlasNode#AtlasNode AtlasNode preloaded module
-
-
---------------------------------------------------------
 -- the cc DrawNode
 -- @field [parent=#cc] DrawNode#DrawNode DrawNode preloaded module
 
 
 --------------------------------------------------------
--- the cc LabelAtlas
--- @field [parent=#cc] LabelAtlas#LabelAtlas LabelAtlas preloaded module
+-- the cc GLProgram
+-- @field [parent=#cc] GLProgram#GLProgram GLProgram preloaded module
 
 
 --------------------------------------------------------
@@ -784,6 +769,11 @@
 --------------------------------------------------------
 -- the cc LayerMultiplex
 -- @field [parent=#cc] LayerMultiplex#LayerMultiplex LayerMultiplex preloaded module
+
+
+--------------------------------------------------------
+-- the cc Scene
+-- @field [parent=#cc] Scene#Scene Scene preloaded module
 
 
 --------------------------------------------------------
@@ -1022,13 +1012,13 @@
 
 
 --------------------------------------------------------
--- the cc ProgressTimer
--- @field [parent=#cc] ProgressTimer#ProgressTimer ProgressTimer preloaded module
+-- the cc Sprite
+-- @field [parent=#cc] Sprite#Sprite Sprite preloaded module
 
 
 --------------------------------------------------------
--- the cc Sprite
--- @field [parent=#cc] Sprite#Sprite Sprite preloaded module
+-- the cc ProgressTimer
+-- @field [parent=#cc] ProgressTimer#ProgressTimer ProgressTimer preloaded module
 
 
 --------------------------------------------------------
@@ -1132,11 +1122,6 @@
 
 
 --------------------------------------------------------
--- the cc GLProgram
--- @field [parent=#cc] GLProgram#GLProgram GLProgram preloaded module
-
-
---------------------------------------------------------
 -- the cc GLProgramCache
 -- @field [parent=#cc] GLProgramCache#GLProgramCache GLProgramCache preloaded module
 
@@ -1152,8 +1137,13 @@
 
 
 --------------------------------------------------------
--- the cc GLViewImpl
--- @field [parent=#cc] GLViewImpl#GLViewImpl GLViewImpl preloaded module
+-- the cc GLViewProtocol
+-- @field [parent=#cc] GLViewProtocol#GLViewProtocol GLViewProtocol preloaded module
+
+
+--------------------------------------------------------
+-- the cc GLView
+-- @field [parent=#cc] GLView#GLView GLView preloaded module
 
 
 --------------------------------------------------------
@@ -1209,6 +1199,36 @@
 --------------------------------------------------------
 -- the cc Component
 -- @field [parent=#cc] Component#Component Component preloaded module
+
+
+--------------------------------------------------------
+-- the cc Sprite3D
+-- @field [parent=#cc] Sprite3D#Sprite3D Sprite3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc Mesh
+-- @field [parent=#cc] Mesh#Mesh Mesh preloaded module
+
+
+--------------------------------------------------------
+-- the cc SimpleAudioEngine
+-- @field [parent=#cc] SimpleAudioEngine#SimpleAudioEngine SimpleAudioEngine preloaded module
+
+
+--------------------------------------------------------
+-- the cc ProtectedNode
+-- @field [parent=#cc] ProtectedNode#ProtectedNode ProtectedNode preloaded module
+
+
+--------------------------------------------------------
+-- the cc Animation3D
+-- @field [parent=#cc] Animation3D#Animation3D Animation3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc Animate3D
+-- @field [parent=#cc] Animate3D#Animate3D Animate3D preloaded module
 
 
 return nil

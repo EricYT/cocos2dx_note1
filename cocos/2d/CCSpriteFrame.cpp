@@ -35,7 +35,7 @@ NS_CC_BEGIN
 
 SpriteFrame* SpriteFrame::create(const std::string& filename, const Rect& rect)
 {
-    SpriteFrame *spriteFrame = new (std::nothrow) SpriteFrame();
+    SpriteFrame *spriteFrame = new SpriteFrame();
     spriteFrame->initWithTextureFilename(filename, rect);
     spriteFrame->autorelease();
 
@@ -44,7 +44,7 @@ SpriteFrame* SpriteFrame::create(const std::string& filename, const Rect& rect)
 
 SpriteFrame* SpriteFrame::createWithTexture(Texture2D *texture, const Rect& rect)
 {
-    SpriteFrame *spriteFrame = new (std::nothrow) SpriteFrame();
+    SpriteFrame *spriteFrame = new SpriteFrame();
     spriteFrame->initWithTexture(texture, rect);
     spriteFrame->autorelease();
     
@@ -53,7 +53,7 @@ SpriteFrame* SpriteFrame::createWithTexture(Texture2D *texture, const Rect& rect
 
 SpriteFrame* SpriteFrame::createWithTexture(Texture2D* texture, const Rect& rect, bool rotated, const Vec2& offset, const Size& originalSize)
 {
-    SpriteFrame *spriteFrame = new (std::nothrow) SpriteFrame();
+    SpriteFrame *spriteFrame = new SpriteFrame();
     spriteFrame->initWithTexture(texture, rect, rotated, offset, originalSize);
     spriteFrame->autorelease();
 
@@ -62,7 +62,7 @@ SpriteFrame* SpriteFrame::createWithTexture(Texture2D* texture, const Rect& rect
 
 SpriteFrame* SpriteFrame::create(const std::string& filename, const Rect& rect, bool rotated, const Vec2& offset, const Size& originalSize)
 {
-    SpriteFrame *spriteFrame = new (std::nothrow) SpriteFrame();
+    SpriteFrame *spriteFrame = new SpriteFrame();
     spriteFrame->initWithTextureFilename(filename, rect, rotated, offset, originalSize);
     spriteFrame->autorelease();
 
@@ -132,7 +132,7 @@ SpriteFrame::~SpriteFrame(void)
 SpriteFrame* SpriteFrame::clone() const
 {
 	// no copy constructor	
-    SpriteFrame *copy = new (std::nothrow) SpriteFrame();
+    SpriteFrame *copy = new SpriteFrame();
     copy->initWithTextureFilename(_textureFilename.c_str(), _rectInPixels, _rotated, _offsetInPixels, _originalSizeInPixels);
     copy->setTexture(_texture);
     copy->autorelease();

@@ -295,21 +295,6 @@ protected:
     float _accum;
 };
 
-class NodeNormalizedPositionBugTest : public TestCocosNodeDemo
-{
-public:
-    CREATE_FUNC(NodeNormalizedPositionBugTest);
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-    
-protected:
-    NodeNormalizedPositionBugTest();
-    
-    void update(float dt);
-    float _accum;
-    Sprite *sprite;
-};
-
 class NodeNameTest : public TestCocosNodeDemo
 {
 public:

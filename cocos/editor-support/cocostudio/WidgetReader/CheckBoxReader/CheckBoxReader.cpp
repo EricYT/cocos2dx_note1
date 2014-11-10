@@ -15,7 +15,7 @@ namespace cocostudio
     static const char* P_BackGroundBoxDisabledData = "backGroundBoxDisabledData";
     static const char* P_FrontCrossDisabledData = "frontCrossDisabledData";
     
-    static CheckBoxReader* instanceCheckBoxReader = nullptr;
+    static CheckBoxReader* instanceCheckBoxReader = NULL;
     
     IMPLEMENT_CLASS_WIDGET_READER_INFO(CheckBoxReader)
     
@@ -33,7 +33,7 @@ namespace cocostudio
     {
         if (!instanceCheckBoxReader)
         {
-            instanceCheckBoxReader = new (std::nothrow) CheckBoxReader();
+            instanceCheckBoxReader = new CheckBoxReader();
         }
         return instanceCheckBoxReader;
     }

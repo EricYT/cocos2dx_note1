@@ -31,9 +31,7 @@ class UIImageViewTest_Editor : public UIScene_Editor
 {
 public:
     bool init();
-    virtual void switchLoadMethod(Ref* pSender);
-    void configureGUIScene();
-
+    
 protected:
     UI_SCENE_EDITOR_CREATE_FUNC(UIImageViewTest_Editor)
 };

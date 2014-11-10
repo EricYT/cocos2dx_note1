@@ -34,7 +34,7 @@ namespace cocostudio
     static const char* P_BackGroundImageData = "backGroundImageData";
     static const char* P_LayoutType = "layoutType";
     
-    static LayoutReader* instanceLayoutReader = nullptr;
+    static LayoutReader* instanceLayoutReader = NULL;
     
     IMPLEMENT_CLASS_WIDGET_READER_INFO(LayoutReader)
     
@@ -52,7 +52,7 @@ namespace cocostudio
     {
         if (!instanceLayoutReader)
         {
-            instanceLayoutReader = new (std::nothrow) LayoutReader();
+            instanceLayoutReader = new LayoutReader();
         }
         return instanceLayoutReader;
     }

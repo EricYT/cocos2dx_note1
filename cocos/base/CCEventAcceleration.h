@@ -30,7 +30,7 @@
 
 NS_CC_BEGIN
 
-class CC_DLL EventAcceleration : public Event
+class EventAcceleration : public Event
 {
 public:
     EventAcceleration(const Acceleration& acc);

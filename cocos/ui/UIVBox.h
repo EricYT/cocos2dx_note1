@@ -26,13 +26,12 @@
 #define __UIVBox_H__
 
 #include "ui/UILayout.h"
-#include "ui/GUIExport.h"
 
 NS_CC_BEGIN
 
 namespace ui {
     
-class CC_GUI_DLL VBox : public Layout{
+class VBox : public Layout{
     
     
 public:

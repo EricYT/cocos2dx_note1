@@ -25,12 +25,11 @@
 #ifndef _CCFontAtlas_h_
 #define _CCFontAtlas_h_
 
+#include "base/CCPlatformMacros.h"
+#include "base/CCRef.h"
+#include "CCStdC.h"
 #include <string>
 #include <unordered_map>
-
-#include "platform/CCPlatformMacros.h"
-#include "base/CCRef.h"
-#include "platform/CCStdC.h" // ssize_t on windows
 
 NS_CC_BEGIN
 
@@ -85,10 +84,15 @@ public:
     Texture2D* getTexture(int slot);
     const Font* getFont() const;
 
-    /** listen the event that renderer was recreated on Android/WP8
-     It only has effect on Android and WP8.
+    /** Listen "come to background" message, and clear the texture atlas.
+     It only has effect on Android.
      */
-    void listenRendererRecreated(EventCustom *event);
+    void listenToBackground(EventCustom *event);
+
+    /** Listen "come to foreground" message and restore the texture atlas.
+     It only has effect on Android.
+     */
+    void listenToForeground(EventCustom *event);
     
     /** Removes textures atlas.
      It will purge the textures atlas and if multiple texture exist in the FontAtlas.
@@ -125,9 +129,9 @@ private:
     bool  _makeDistanceMap;
 
     int _fontAscender;
-    EventListenerCustom* _rendererRecreatedListener;
+    EventListenerCustom* _toBackgroundListener;
+    EventListenerCustom* _toForegroundListener;
     bool _antialiasEnabled;
-    bool _rendererRecreate;
 };
 
 

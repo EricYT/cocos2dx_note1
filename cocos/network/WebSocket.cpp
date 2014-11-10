@@ -34,7 +34,6 @@
 #include <thread>
 #include <mutex>
 #include <queue>
-#include <list>
 #include <signal.h>
 #include <errno.h>
 
@@ -323,7 +322,7 @@ bool WebSocket::init(const Delegate& delegate,
     }
     
     // WebSocket thread needs to be invoked at the end of this method.
-    _wsHelper = new (std::nothrow) WsThreadHelper();
+    _wsHelper = new WsThreadHelper();
     ret = _wsHelper->createThread(*this);
     
     return ret;
@@ -334,9 +333,9 @@ void WebSocket::send(const std::string& message)
     if (_readyState == State::OPEN)
     {
         // In main thread
-        WsMessage* msg = new (std::nothrow) WsMessage();
+        WsMessage* msg = new WsMessage();
         msg->what = WS_MSG_TO_SUBTRHEAD_SENDING_STRING;
-        Data* data = new (std::nothrow) Data();
+        Data* data = new Data();
         data->bytes = new char[message.length()+1];
         strcpy(data->bytes, message.c_str());
         data->len = static_cast<ssize_t>(message.length());
@@ -352,9 +351,9 @@ void WebSocket::send(const unsigned char* binaryMsg, unsigned int len)
     if (_readyState == State::OPEN)
     {
         // In main thread
-        WsMessage* msg = new (std::nothrow) WsMessage();
+        WsMessage* msg = new WsMessage();
         msg->what = WS_MSG_TO_SUBTRHEAD_SENDING_BINARY;
-        Data* data = new (std::nothrow) Data();
+        Data* data = new Data();
         data->bytes = new char[len];
         memcpy((void*)data->bytes, (void*)binaryMsg, len);
         data->len = len;
@@ -446,8 +445,8 @@ void WebSocket::onSubThreadStarted()
                                              _path.c_str(), _host.c_str(), _host.c_str(),
                                              name.c_str(), -1);
                                              
-        if(nullptr == _wsInstance) {
-            WsMessage* msg = new (std::nothrow) WsMessage();
+        if(NULL == _wsInstance) {
+            WsMessage* msg = new WsMessage();
             msg->what = WS_MSG_TO_UITHREAD_ERROR;
             _readyState = State::CLOSING;
             _wsHelper->sendMessageToUIThread(msg);
@@ -482,13 +481,13 @@ int WebSocket::onSocketCallback(struct libwebsocket_context *ctx,
                     || (reason == LWS_CALLBACK_DEL_POLL_FD && _readyState == State::CONNECTING)
                     )
                 {
-                    msg = new (std::nothrow) WsMessage();
+                    msg = new WsMessage();
                     msg->what = WS_MSG_TO_UITHREAD_ERROR;
                     _readyState = State::CLOSING;
                 }
                 else if (reason == LWS_CALLBACK_PROTOCOL_DESTROY && _readyState == State::CLOSING)
                 {
-                    msg = new (std::nothrow) WsMessage();
+                    msg = new WsMessage();
                     msg->what = WS_MSG_TO_UITHREAD_CLOSE;
                 }
 
@@ -500,7 +499,7 @@ int WebSocket::onSocketCallback(struct libwebsocket_context *ctx,
             break;
         case LWS_CALLBACK_CLIENT_ESTABLISHED:
             {
-                WsMessage* msg = new (std::nothrow) WsMessage();
+                WsMessage* msg = new WsMessage();
                 msg->what = WS_MSG_TO_UITHREAD_OPEN;
                 _readyState = State::OPEN;
                 
@@ -604,7 +603,7 @@ int WebSocket::onSocketCallback(struct libwebsocket_context *ctx,
                 
                 if (_readyState != State::CLOSED)
                 {
-                    WsMessage* msg = new (std::nothrow) WsMessage();
+                    WsMessage* msg = new WsMessage();
                     _readyState = State::CLOSED;
                     msg->what = WS_MSG_TO_UITHREAD_CLOSE;
                     _wsHelper->sendMessageToUIThread(msg);
@@ -643,11 +642,11 @@ int WebSocket::onSocketCallback(struct libwebsocket_context *ctx,
                     // If no more data pending, send it to the client thread
                     if (_pendingFrameDataLen == 0)
                     {
-						WsMessage* msg = new (std::nothrow) WsMessage();
+						WsMessage* msg = new WsMessage();
 						msg->what = WS_MSG_TO_UITHREAD_MESSAGE;
 
 						char* bytes = nullptr;
-						Data* data = new (std::nothrow) Data();
+						Data* data = new Data();
 
 						if (lws_frame_is_binary(wsi))
 						{

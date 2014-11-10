@@ -25,10 +25,10 @@ THE SOFTWARE.
 #ifndef __CC_APPLICATION_WINRT_H__
 #define __CC_APPLICATION_WINRT_H__
 
-#include "platform/CCPlatformConfig.h"
+#include "base/CCPlatformConfig.h"
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
 
-#include "platform/CCStdC.h"
+#include "CCStdC.h"
 #include "platform/CCCommon.h"
 #include "platform/CCApplicationProtocol.h"
 #include <string>

@@ -45,13 +45,4 @@ protected:
     UI_SCENE_CREATE_FUNC(UIImageViewTest_Scale9)
 };
 
-class UIImageViewTest_ContentSize : public UIScene
-{
-public:
-    bool init();
-    
-protected:
-    UI_SCENE_CREATE_FUNC(UIImageViewTest_ContentSize)
-};
-
 #endif /* defined(__TestCpp__UIImageViewTest__) */

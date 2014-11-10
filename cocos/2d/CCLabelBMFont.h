@@ -129,7 +129,8 @@ public:
 
 private:
 #if CC_LABELBMFONT_DEBUG_DRAW
-    DrawNode *_debugDrawNode;
+    CustomCommand   _customDebugDrawCommand;
+    void drawDebugData(const Mat4& transform, bool transformUpdated);
 #endif
     
     // name of fntFile

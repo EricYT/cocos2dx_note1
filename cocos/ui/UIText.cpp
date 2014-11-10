@@ -54,7 +54,7 @@ Text::~Text()
 
 Text* Text::create()
 {
-    Text* widget = new (std::nothrow) Text();
+    Text* widget = new Text();
     if (widget && widget->init())
     {
         widget->autorelease();
@@ -75,7 +75,7 @@ bool Text::init()
     
 Text* Text::create(const std::string &textContent, const std::string &fontName, int fontSize)
 {
-    Text *text = new (std::nothrow) Text;
+    Text *text = new Text;
     if (text && text->init(textContent, fontName, fontSize)) {
         text->autorelease();
         return text;
@@ -207,16 +207,6 @@ TextVAlignment Text::getTextVerticalAlignment()const
 {
     return _labelRenderer->getVerticalAlignment();
 }
-    
-void Text::setTextColor(const Color4B color)
-{
-    _labelRenderer->setTextColor(color);
-}
-    
-const Color4B& Text::getTextColor() const
-{
-    return _labelRenderer->getTextColor();
-}
 
 void Text::setTouchScaleChangeEnabled(bool enable)
 {
@@ -292,7 +282,7 @@ void Text::adaptRenderers()
     }
 }
 
-Size Text::getVirtualRendererSize() const
+const Size& Text::getVirtualRendererSize() const
 {
     return _labelRenderer->getContentSize();
 }
@@ -306,6 +296,7 @@ void Text::labelScaleChangedWithSize()
 {
     if (_ignoreSize)
     {
+        _labelRenderer->setDimensions(0,0);
         _labelRenderer->setScale(1.0f);
         _normalScaleValueX = _normalScaleValueY = 1.0f;
     }

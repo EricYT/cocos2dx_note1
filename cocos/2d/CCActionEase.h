@@ -49,18 +49,8 @@ public:
     //
     // Overrides
     //
-    virtual ActionEase* clone() const override
-    {
-        CC_ASSERT(0);
-        return nullptr;
-    }
-    
-    virtual ActionEase* reverse() const override
-    {
-        CC_ASSERT(0);
-        return nullptr;
-    }
-
+	virtual ActionEase* clone() const override = 0;
+    virtual ActionEase* reverse() const override = 0;
     virtual void startWithTarget(Node *target) override;
     virtual void stop() override;
     virtual void update(float time) override;
@@ -93,16 +83,8 @@ public:
     //
     // Overrides
     //
-    virtual EaseRateAction* clone() const override
-    {
-        CC_ASSERT(0);
-        return nullptr;
-    }
-    virtual EaseRateAction* reverse() const override
-    {
-        CC_ASSERT(0);
-        return nullptr;
-    }
+	virtual EaseRateAction* clone() const override = 0;
+    virtual EaseRateAction* reverse() const override = 0;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseRateAction() {}
@@ -129,8 +111,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseIn* clone() const override;
-    virtual EaseIn* reverse() const override;
+	virtual EaseIn* clone() const override;
+	virtual EaseIn* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseIn() {}
@@ -152,8 +134,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseOut* clone() const  override;
-    virtual EaseOut* reverse() const  override;
+	virtual EaseOut* clone() const  override;
+	virtual EaseOut* reverse() const  override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseOut() {}
@@ -175,8 +157,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseInOut* clone() const  override;
-    virtual EaseInOut* reverse() const  override;
+	virtual EaseInOut* clone() const  override;
+	virtual EaseInOut* reverse() const  override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseInOut() {}
@@ -198,8 +180,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseExponentialIn* clone() const override;
-    virtual ActionEase* reverse() const override;
+	virtual EaseExponentialIn* clone() const override;
+	virtual ActionEase* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseExponentialIn() {}
@@ -221,8 +203,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseExponentialOut* clone() const override;
-    virtual ActionEase* reverse() const override;
+	virtual EaseExponentialOut* clone() const override;
+	virtual ActionEase* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseExponentialOut() {}
@@ -244,8 +226,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseExponentialInOut* clone() const override;
-    virtual EaseExponentialInOut* reverse() const override;
+	virtual EaseExponentialInOut* clone() const override;
+	virtual EaseExponentialInOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseExponentialInOut() {}
@@ -267,8 +249,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseSineIn* clone() const override;
-    virtual ActionEase* reverse() const override;
+	virtual EaseSineIn* clone() const override;
+	virtual ActionEase* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseSineIn() {}
@@ -290,8 +272,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseSineOut* clone() const override;
-    virtual ActionEase* reverse() const override;
+	virtual EaseSineOut* clone() const override;
+	virtual ActionEase* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseSineOut() {}
@@ -313,8 +295,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseSineInOut* clone() const override;
-    virtual EaseSineInOut* reverse() const override;
+	virtual EaseSineInOut* clone() const override;
+	virtual EaseSineInOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseSineInOut() {}
@@ -341,17 +323,8 @@ public:
     //
     // Overrides
     //
-    virtual EaseElastic* clone() const override
-    {
-        CC_ASSERT(0);
-        return nullptr;
-    }
-    
-    virtual EaseElastic* reverse() const override
-    {
-        CC_ASSERT(0);
-        return nullptr;
-    }
+	virtual EaseElastic* clone() const override = 0;
+	virtual EaseElastic* reverse() const override = 0;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseElastic() {}
@@ -382,8 +355,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseElasticIn* clone() const override;
-    virtual EaseElastic* reverse() const override;
+	virtual EaseElasticIn* clone() const override;
+	virtual EaseElastic* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseElasticIn() {}
@@ -408,8 +381,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseElasticOut* clone() const override;
-    virtual EaseElastic* reverse() const override;
+	virtual EaseElasticOut* clone() const override;
+	virtual EaseElastic* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseElasticOut() {}
@@ -434,8 +407,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseElasticInOut* clone() const override;
-    virtual EaseElasticInOut* reverse() const override;
+	virtual EaseElasticInOut* clone() const override;
+	virtual EaseElasticInOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseElasticInOut() {}
@@ -455,17 +428,8 @@ class CC_DLL EaseBounce : public ActionEase
 public:
 
     // Overrides
-    virtual EaseBounce* clone() const override
-    {
-        CC_ASSERT(0);
-        return nullptr;
-    }
-
-    virtual EaseBounce* reverse() const override
-    {
-        CC_ASSERT(0);
-        return nullptr;
-    }
+	virtual EaseBounce* clone() const override = 0;
+	virtual EaseBounce* reverse() const override = 0;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseBounce() {}
@@ -489,8 +453,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseBounceIn* clone() const override;
-    virtual EaseBounce* reverse() const override;
+	virtual EaseBounceIn* clone() const override;
+	virtual EaseBounce* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseBounceIn() {}
@@ -514,8 +478,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseBounceOut* clone() const override;
-    virtual EaseBounce* reverse() const override;
+	virtual EaseBounceOut* clone() const override;
+	virtual EaseBounce* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseBounceOut() {}
@@ -539,8 +503,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseBounceInOut* clone() const override;
-    virtual EaseBounceInOut* reverse() const override;
+	virtual EaseBounceInOut* clone() const override;
+	virtual EaseBounceInOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseBounceInOut() {}
@@ -564,8 +528,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseBackIn* clone() const override;
-    virtual ActionEase* reverse() const override;
+	virtual EaseBackIn* clone() const override;
+	virtual ActionEase* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseBackIn() {}
@@ -589,8 +553,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseBackOut* clone() const override;
-    virtual ActionEase* reverse() const override;
+	virtual EaseBackOut* clone() const override;
+	virtual ActionEase* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseBackOut() {}
@@ -614,8 +578,8 @@ public:
 
     // Overrides
     virtual void update(float time) override;
-    virtual EaseBackInOut* clone() const override;
-    virtual EaseBackInOut* reverse() const override;
+	virtual EaseBackInOut* clone() const override;
+	virtual EaseBackInOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
     EaseBackInOut() {}
@@ -630,52 +594,52 @@ private:
 @brief Ease Bezier
 @ingroup Actions
 */
-class CC_DLL EaseBezierAction : public ActionEase
+class EaseBezierAction : public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseBezierAction* create(ActionInterval* action);
+	/** creates the action */
+	static EaseBezierAction* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseBezierAction* clone() const override;
-    virtual EaseBezierAction* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseBezierAction* clone() const override;
+	virtual EaseBezierAction* reverse() const override;
 
-    virtual void setBezierParamer( float p0, float p1, float p2, float p3);
+	virtual void setBezierParamer( float p0, float p1, float p2, float p3);
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseBezierAction() {}
-    virtual ~EaseBezierAction() {}
+	EaseBezierAction() {}
+	virtual ~EaseBezierAction() {}
 
 protected:
-    float _p0;
-    float _p1;
-    float _p2;
-    float _p3;
+	float _p0;
+	float _p1;
+	float _p2;
+	float _p3;
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseBezierAction);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseBezierAction);
 };
 
 /** 
 @brief Ease Quadratic In
 @ingroup Actions
 */
-class CC_DLL EaseQuadraticActionIn : public ActionEase
+class EaseQuadraticActionIn:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseQuadraticActionIn* create(ActionInterval* action);
+	/** creates the action */
+	static EaseQuadraticActionIn* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseQuadraticActionIn* clone() const override;
-    virtual EaseQuadraticActionIn* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseQuadraticActionIn* clone() const override;
+	virtual EaseQuadraticActionIn* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseQuadraticActionIn() {}
-    virtual ~EaseQuadraticActionIn() {}
+	EaseQuadraticActionIn() {}
+	virtual ~EaseQuadraticActionIn() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseQuadraticActionIn);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseQuadraticActionIn);
 
 };
 
@@ -683,22 +647,22 @@ private:
 @brief Ease Quadratic Out
 @ingroup Actions
 */
-class CC_DLL EaseQuadraticActionOut : public ActionEase
+class EaseQuadraticActionOut:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseQuadraticActionOut* create(ActionInterval* action);
+	/** creates the action */
+	static EaseQuadraticActionOut* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseQuadraticActionOut* clone() const override;
-    virtual EaseQuadraticActionOut* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseQuadraticActionOut* clone() const override;
+	virtual EaseQuadraticActionOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseQuadraticActionOut() {}
-    virtual ~EaseQuadraticActionOut() {}
+	EaseQuadraticActionOut() {}
+	virtual ~EaseQuadraticActionOut() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseQuadraticActionOut);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseQuadraticActionOut);
 
 };
 
@@ -706,88 +670,88 @@ private:
 @brief Ease Quadratic InOut
 @ingroup Actions
 */
-class CC_DLL EaseQuadraticActionInOut : public ActionEase
+class EaseQuadraticActionInOut:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseQuadraticActionInOut* create(ActionInterval* action);
+	/** creates the action */
+	static EaseQuadraticActionInOut* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseQuadraticActionInOut* clone() const override;
-    virtual EaseQuadraticActionInOut* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseQuadraticActionInOut* clone() const override;
+	virtual EaseQuadraticActionInOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseQuadraticActionInOut() {}
-    virtual ~EaseQuadraticActionInOut() {}
+	EaseQuadraticActionInOut() {}
+	virtual ~EaseQuadraticActionInOut() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseQuadraticActionInOut);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseQuadraticActionInOut);
 };
 
 /** 
 @brief Ease Quartic In
 @ingroup Actions
 */
-class CC_DLL EaseQuarticActionIn : public ActionEase
+class EaseQuarticActionIn:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseQuarticActionIn* create(ActionInterval* action);
+	/** creates the action */
+	static EaseQuarticActionIn* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseQuarticActionIn* clone() const override;
-    virtual EaseQuarticActionIn* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseQuarticActionIn* clone() const override;
+	virtual EaseQuarticActionIn* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseQuarticActionIn() {}
-    virtual ~EaseQuarticActionIn() {}
+	EaseQuarticActionIn() {}
+	virtual ~EaseQuarticActionIn() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseQuarticActionIn);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseQuarticActionIn);
 };
 
 /** 
 @brief Ease Quartic Out
 @ingroup Actions
 */
-class CC_DLL EaseQuarticActionOut : public ActionEase
+class EaseQuarticActionOut:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseQuarticActionOut* create(ActionInterval* action);
+	/** creates the action */
+	static EaseQuarticActionOut* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseQuarticActionOut* clone() const override;
-    virtual EaseQuarticActionOut* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseQuarticActionOut* clone() const override;
+	virtual EaseQuarticActionOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseQuarticActionOut() {}
-    virtual ~EaseQuarticActionOut() {}
+	EaseQuarticActionOut() {}
+	virtual ~EaseQuarticActionOut() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseQuarticActionOut);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseQuarticActionOut);
 };
 
 /** 
 @brief Ease Quartic InOut
 @ingroup Actions
 */
-class CC_DLL EaseQuarticActionInOut : public ActionEase
+class EaseQuarticActionInOut:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseQuarticActionInOut* create(ActionInterval* action);
+	/** creates the action */
+	static EaseQuarticActionInOut* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseQuarticActionInOut* clone() const override;
-    virtual EaseQuarticActionInOut* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseQuarticActionInOut* clone() const override;
+	virtual EaseQuarticActionInOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseQuarticActionInOut() {}
-    virtual ~EaseQuarticActionInOut() {}
+	EaseQuarticActionInOut() {}
+	virtual ~EaseQuarticActionInOut() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseQuarticActionInOut);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseQuarticActionInOut);
 };
 
 
@@ -795,198 +759,198 @@ private:
 @brief Ease Quintic In
 @ingroup Actions
 */
-class CC_DLL EaseQuinticActionIn : public ActionEase
+class EaseQuinticActionIn:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseQuinticActionIn* create(ActionInterval* action);
+	/** creates the action */
+	static EaseQuinticActionIn* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseQuinticActionIn* clone() const override;
-    virtual EaseQuinticActionIn* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseQuinticActionIn* clone() const override;
+	virtual EaseQuinticActionIn* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseQuinticActionIn() {}
-    virtual ~EaseQuinticActionIn() {}
+	EaseQuinticActionIn() {}
+	virtual ~EaseQuinticActionIn() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseQuinticActionIn);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseQuinticActionIn);
 };
 
 /** 
 @brief Ease Quintic Out
 @ingroup Actions
 */
-class CC_DLL EaseQuinticActionOut : public ActionEase
+class EaseQuinticActionOut:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseQuinticActionOut* create(ActionInterval* action);
+	/** creates the action */
+	static EaseQuinticActionOut* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseQuinticActionOut* clone() const override;
-    virtual EaseQuinticActionOut* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseQuinticActionOut* clone() const override;
+	virtual EaseQuinticActionOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseQuinticActionOut() {}
-    virtual ~EaseQuinticActionOut() {}
+	EaseQuinticActionOut() {}
+	virtual ~EaseQuinticActionOut() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseQuinticActionOut);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseQuinticActionOut);
 };
 
 /** 
 @brief Ease Quintic InOut
 @ingroup Actions
 */
-class CC_DLL EaseQuinticActionInOut : public ActionEase
+class EaseQuinticActionInOut:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseQuinticActionInOut* create(ActionInterval* action);
+	/** creates the action */
+	static EaseQuinticActionInOut* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseQuinticActionInOut* clone() const override;
-    virtual EaseQuinticActionInOut* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseQuinticActionInOut* clone() const override;
+	virtual EaseQuinticActionInOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseQuinticActionInOut() {}
-    virtual ~EaseQuinticActionInOut() {}
+	EaseQuinticActionInOut() {}
+	virtual ~EaseQuinticActionInOut() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseQuinticActionInOut);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseQuinticActionInOut);
 };
 
 /** 
 @brief Ease Circle In
 @ingroup Actions
 */
-class CC_DLL EaseCircleActionIn : public ActionEase
+class EaseCircleActionIn:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseCircleActionIn* create(ActionInterval* action);
+	/** creates the action */
+	static EaseCircleActionIn* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseCircleActionIn* clone() const override;
-    virtual EaseCircleActionIn* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseCircleActionIn* clone() const override;
+	virtual EaseCircleActionIn* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseCircleActionIn() {}
-    virtual ~EaseCircleActionIn() {}
+	EaseCircleActionIn() {}
+	virtual ~EaseCircleActionIn() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseCircleActionIn);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseCircleActionIn);
 };
 
 /** 
 @brief Ease Circle Out
 @ingroup Actions
 */
-class CC_DLL EaseCircleActionOut : public ActionEase
+class EaseCircleActionOut:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseCircleActionOut* create(ActionInterval* action);
+	/** creates the action */
+	static EaseCircleActionOut* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseCircleActionOut* clone() const override;
-    virtual EaseCircleActionOut* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseCircleActionOut* clone() const override;
+	virtual EaseCircleActionOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseCircleActionOut() {}
-    virtual ~EaseCircleActionOut() {}
+	EaseCircleActionOut() {}
+	virtual ~EaseCircleActionOut() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseCircleActionOut);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseCircleActionOut);
 };
 
 /** 
 @brief Ease Circle InOut
 @ingroup Actions
 */
-class CC_DLL EaseCircleActionInOut:public ActionEase
+class EaseCircleActionInOut:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseCircleActionInOut* create(ActionInterval* action);
+	/** creates the action */
+	static EaseCircleActionInOut* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseCircleActionInOut* clone() const override;
-    virtual EaseCircleActionInOut* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseCircleActionInOut* clone() const override;
+	virtual EaseCircleActionInOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseCircleActionInOut() {}
-    virtual ~EaseCircleActionInOut() {}
+	EaseCircleActionInOut() {}
+	virtual ~EaseCircleActionInOut() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseCircleActionInOut);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseCircleActionInOut);
 };
 
 /** 
 @brief Ease Cubic In
 @ingroup Actions
 */
-class CC_DLL EaseCubicActionIn:public ActionEase
+class EaseCubicActionIn:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseCubicActionIn* create(ActionInterval* action);
+	/** creates the action */
+	static EaseCubicActionIn* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseCubicActionIn* clone() const override;
-    virtual EaseCubicActionIn* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseCubicActionIn* clone() const override;
+	virtual EaseCubicActionIn* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseCubicActionIn() {}
-    virtual ~EaseCubicActionIn() {}
+	EaseCubicActionIn() {}
+	virtual ~EaseCubicActionIn() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseCubicActionIn);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseCubicActionIn);
 };
 
 /** 
 @brief Ease Cubic Out
 @ingroup Actions
 */
-class CC_DLL EaseCubicActionOut : public ActionEase
+class EaseCubicActionOut:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseCubicActionOut* create(ActionInterval* action);
+	/** creates the action */
+	static EaseCubicActionOut* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseCubicActionOut* clone() const override;
-    virtual EaseCubicActionOut* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseCubicActionOut* clone() const override;
+	virtual EaseCubicActionOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseCubicActionOut() {}
-    virtual ~EaseCubicActionOut() {}
+	EaseCubicActionOut() {}
+	virtual ~EaseCubicActionOut() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseCubicActionOut);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseCubicActionOut);
 };
 
 /** 
 @brief Ease Cubic InOut
 @ingroup Actions
 */
-class CC_DLL EaseCubicActionInOut : public ActionEase
+class EaseCubicActionInOut:public cocos2d::ActionEase
 {
 public:
-    /** creates the action */
-    static EaseCubicActionInOut* create(ActionInterval* action);
+	/** creates the action */
+	static EaseCubicActionInOut* create(cocos2d::ActionInterval* action);
 
-    virtual void update(float time) override;
-    virtual EaseCubicActionInOut* clone() const override;
-    virtual EaseCubicActionInOut* reverse() const override;
+	virtual void update(float time) override;
+	virtual EaseCubicActionInOut* clone() const override;
+	virtual EaseCubicActionInOut* reverse() const override;
 
 CC_CONSTRUCTOR_ACCESS:
-    EaseCubicActionInOut() {}
-    virtual ~EaseCubicActionInOut() {}
+	EaseCubicActionInOut() {}
+	virtual ~EaseCubicActionInOut() {}
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(EaseCubicActionInOut);
+	CC_DISALLOW_COPY_AND_ASSIGN(EaseCubicActionInOut);
 };
 
 // end of actions group

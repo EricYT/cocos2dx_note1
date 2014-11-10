@@ -26,28 +26,26 @@ THE SOFTWARE.
 #define __UISLIDER_H__
 
 #include "ui/UIWidget.h"
-#include "ui/GUIExport.h"
 
 NS_CC_BEGIN
 
 class Sprite;
 
 namespace ui {
-    class Scale9Sprite;
-    
-typedef enum
+
+CC_DEPRECATED_ATTRIBUTE typedef enum
 {
     SLIDER_PERCENTCHANGED
 }SliderEventType;
 
-typedef void (Ref::*SEL_SlidPercentChangedEvent)(Ref*,SliderEventType);
+CC_DEPRECATED_ATTRIBUTE typedef void (Ref::*SEL_SlidPercentChangedEvent)(Ref*,SliderEventType);
 #define sliderpercentchangedselector(_SELECTOR) (SEL_SlidPercentChangedEvent)(&_SELECTOR)
 
 /**
 *   @js NA
 *   @lua NA
 */
-class CC_GUI_DLL Slider : public Widget
+class Slider : public Widget
 {
     
     DECLARE_CLASS_GUI_INFO
@@ -78,7 +76,7 @@ public:
      *
      * @param fileName   file name of texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     void loadBarTexture(const std::string& fileName,TextureResType texType = TextureResType::LOCAL);
     
@@ -125,7 +123,7 @@ public:
      *
      * @param slider ball disabled    dark state texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     void loadSlidBallTextures(const std::string& normal,
                               const std::string& pressed,
@@ -137,7 +135,7 @@ public:
      *
      * @param normal    normal state texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     void loadSlidBallTextureNormal(const std::string& normal,TextureResType texType = TextureResType::LOCAL);
     
@@ -146,7 +144,7 @@ public:
      *
      * @param selected    selected state texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     void loadSlidBallTexturePressed(const std::string& pressed,TextureResType texType = TextureResType::LOCAL);
     
@@ -155,7 +153,7 @@ public:
      *
      * @param disabled    dark state texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     void loadSlidBallTextureDisabled(const std::string& disabled,TextureResType texType = TextureResType::LOCAL);
     
@@ -164,7 +162,7 @@ public:
      *
      * @param fileName    file path of texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     void loadProgressBarTexture(const std::string& fileName, TextureResType texType = TextureResType::LOCAL);
     
@@ -194,7 +192,7 @@ public:
     virtual void onTouchCancelled(Touch *touch, Event *unusedEvent) override;
     
     //override "getVirtualRendererSize" method of widget.
-    virtual Size getVirtualRendererSize() const override;
+    virtual const Size& getVirtualRendererSize() const override;
     
     //override "getVirtualRenderer" method of widget.
     virtual Node* getVirtualRenderer() override;
@@ -227,8 +225,8 @@ protected:
     virtual void copySpecialProperties(Widget* model) override;
     virtual void adaptRenderers() override;
 protected:
-    Scale9Sprite*  _barRenderer;
-    Scale9Sprite* _progressBarRenderer;
+    Node*  _barRenderer;
+    Node* _progressBarRenderer;
     Size _progressBarTextureSize;
     
     Sprite* _slidBallNormalRenderer;

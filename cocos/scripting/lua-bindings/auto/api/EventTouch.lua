@@ -5,19 +5,16 @@
 -- @parent_module cc
 
 --------------------------------
--- 
 -- @function [parent=#EventTouch] getEventCode 
 -- @param self
--- @return int#int ret (return value: int)
+-- @return EventTouch::EventCode#EventTouch::EventCode ret (return value: cc.EventTouch::EventCode)
         
 --------------------------------
--- 
 -- @function [parent=#EventTouch] setEventCode 
 -- @param self
--- @param #int eventCode
+-- @param #cc.EventTouch::EventCode eventcode
         
 --------------------------------
--- 
 -- @function [parent=#EventTouch] EventTouch 
 -- @param self
         

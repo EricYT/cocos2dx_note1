@@ -16,7 +16,7 @@ Layer* createZwoptexLayer(int nIndex)
     case 0: return new ZwoptexGenericTest();
     }
 
-    return nullptr;
+    return NULL;
 }
 
 Layer* nextZwoptexTest()

@@ -37,7 +37,6 @@
 #include "CCControlUtils.h"
 #include "CCControlHuePicker.h"
 #include "CCControlSaturationBrightnessPicker.h"
-#include "extensions/ExtensionExport.h"
 
 NS_CC_EXT_BEGIN
 
@@ -48,7 +47,7 @@ NS_CC_EXT_BEGIN
  * @{
  */
 
-class CC_EX_DLL ControlColourPicker: public Control
+class ControlColourPicker: public Control
 {
 public:
     static ControlColourPicker* create();

@@ -26,12 +26,11 @@ THE SOFTWARE.
 #define __CCTIMELINE_ACTION_H__
 
 #include "CCTimeLine.h"
-#include "cocostudio/CocosStudioExport.h"
-#include "2d/CCAction.h"
+#include "renderer/CCRenderer.h"
 
 NS_TIMELINE_BEGIN
 
-class CC_STUDIO_DLL ActionTimelineData : public cocos2d::Ref
+class  ActionTimelineData : public cocos2d::Ref
 {
 public:
     static ActionTimelineData* create(int actionTag);
@@ -46,7 +45,7 @@ protected:
 };
 
 
-class CC_STUDIO_DLL ActionTimeline : public cocos2d::Action
+class  ActionTimeline : public cocos2d::Action
 {
 public:
     friend class Frame;

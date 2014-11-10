@@ -27,7 +27,8 @@
 
 #include "cocos2d.h"
 #include "cocostudio/DictionaryHelper.h"
-#include "cocostudio/CocosStudioExport.h"
+
+
 
 namespace cocos2d
 {
@@ -42,7 +43,7 @@ namespace cocostudio
     class CocoLoader;
     struct stExpCocoNode;
     
-    class CC_STUDIO_DLL WidgetReaderProtocol
+    class WidgetReaderProtocol
     {
     public:
         virtual ~WidgetReaderProtocol() {};

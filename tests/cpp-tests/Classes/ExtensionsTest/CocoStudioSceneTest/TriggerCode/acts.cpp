@@ -71,7 +71,7 @@ void PlayMusic::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExp
 	int count = 0;
 	stExpCocoNode *pDataItemsArray = pCocoNode->GetChildArray(pCocoLoader);
 	std::string key;
-	const char *str = nullptr;
+	const char *str = NULL;
 	for (int i = 0; i < length; ++i)
 	{
 		count = pDataItemsArray[i].GetChildNum();
@@ -80,14 +80,14 @@ void PlayMusic::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExp
 		str = pDataItemArray[1].GetValue(pCocoLoader);
 		if (key == "Tag")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_tag = atoi(str);//DICTOOL->getIntValue_json(subDict, "value");
 			}
 		}
 		else if (key == "componentName")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_comName = str; //DICTOOL->getStringValue_json(subDict, "value");
 			}
@@ -95,7 +95,7 @@ void PlayMusic::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExp
 		}
 		else if (key == "type")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_type = atoi(str); //DICTOOL->getIntValue_json(subDict, "value");
 			}
@@ -171,7 +171,7 @@ void TMoveTo::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExpCo
 	int count = 0;
 	stExpCocoNode *pDataItemsArray = pCocoNode->GetChildArray(pCocoLoader);
 	std::string key;
-	const char *str = nullptr;
+	const char *str = NULL;
 	for (int i = 0; i < length; ++i)
 	{
 		count = pDataItemsArray[i].GetChildNum();
@@ -180,29 +180,29 @@ void TMoveTo::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExpCo
 		str = pDataItemArray[1].GetValue(pCocoLoader);
 		if (key == "Tag")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_tag = atoi(str);
 			}
 		}
 		else if (key == "Duration")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_duration = utils::atof(str);
+				_duration = atof(str); 
 			}
 
 		}
 		else if (key == "x")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_pos.x = utils::atof(str);
+				_pos.x = atof(str);
 			}
 		}
 		else if (key == "y")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_pos.y = atoi(str);
 			}
@@ -293,7 +293,7 @@ void TMoveBy::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExpCo
 	int count = 0;
 	stExpCocoNode *pDataItemsArray = pCocoNode->GetChildArray(pCocoLoader);
 	std::string key;
-	const char *str = nullptr;
+	const char *str = NULL;
 	for (int i = 0; i < length; ++i)
 	{
 		count = pDataItemsArray[i].GetChildNum();
@@ -302,36 +302,36 @@ void TMoveBy::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExpCo
 		str = pDataItemArray[1].GetValue(pCocoLoader);
 		if (key == "Tag")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_tag = atoi(str);
 			}
 		}
 		else if (key == "Duration")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_duration = utils::atof(str);
+				_duration = atof(str); 
 			}
 
 		}
 		else if (key == "x")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_pos.x = utils::atof(str);
+				_pos.x = atof(str);
 			}
 		}
 		else if (key == "y")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_pos.y = utils::atof(str);
+				_pos.y = atof(str);
 			}
 		}
 		else if (key == "IsReverse")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_reverse = atoi(str)!=0?true:false; //DICTOOL->getIntValue_json(subDict, "value") != 0? true: false;
 			}
@@ -406,7 +406,7 @@ void TRotateTo::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExp
 	int count = 0;
 	stExpCocoNode *pDataItemsArray = pCocoNode->GetChildArray(pCocoLoader);
 	std::string key;
-	const char *str = nullptr;
+	const char *str = NULL;
 	for (int i = 0; i < length; ++i)
 	{
 		count = pDataItemsArray[i].GetChildNum();
@@ -415,24 +415,24 @@ void TRotateTo::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExp
 		str = pDataItemArray[1].GetValue(pCocoLoader);
 		if (key == "Tag")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_tag = atoi(str);
 			}
 		}
 		else if (key == "Duration")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_duration = utils::atof(str);
+				_duration = atof(str); 
 			}
 
 		}
 		else if (key == "DeltaAngle")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_deltaAngle = utils::atof(str);
+				_deltaAngle = atof(str);
 			}
 		}
 	}
@@ -519,7 +519,7 @@ void TRotateBy::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExp
 	int count = 0;
 	stExpCocoNode *pDataItemsArray = pCocoNode->GetChildArray(pCocoLoader);
 	std::string key;
-	const char *str = nullptr;
+	const char *str = NULL;
 	for (int i = 0; i < length; ++i)
 	{
 		count = pDataItemsArray[i].GetChildNum();
@@ -528,29 +528,29 @@ void TRotateBy::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExp
 		str = pDataItemArray[1].GetValue(pCocoLoader);
 		if (key == "Tag")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_tag = atoi(str);
 			}
 		}
 		else if (key == "Duration")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_duration = utils::atof(str);
+				_duration = atof(str); 
 			}
 
 		}
 		else if (key == "DeltaAngle")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_deltaAngle = utils::atof(str);
+				_deltaAngle = atof(str);
 			}
 		}
 		else if (key == "IsReverse")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_reverse = atoi(str)!=0?true:false;
 			}
@@ -629,7 +629,7 @@ void TScaleTo::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExpC
 	int count = 0;
 	stExpCocoNode *pDataItemsArray = pCocoNode->GetChildArray(pCocoLoader);
 	std::string key;
-	const char *str = nullptr;
+	const char *str = NULL;
 	for (int i = 0; i < length; ++i)
 	{
 		count = pDataItemsArray[i].GetChildNum();
@@ -638,31 +638,31 @@ void TScaleTo::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExpC
 		str = pDataItemArray[1].GetValue(pCocoLoader);
 		if (key == "Tag")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_tag = atoi(str);
 			}
 		}
 		else if (key == "Duration")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_duration = utils::atof(str);
+				_duration = atof(str); 
 			}
 
 		}
 		else if (key == "ScaleX")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_scale.x = utils::atof(str);
+				_scale.x = atof(str);
 			}
 		}
 		else if (key == "ScaleY")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_scale.y = utils::atof(str);
+				_scale.y = atof(str);
 			}
 		}
 	}
@@ -753,7 +753,7 @@ void TScaleBy::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExpC
 	int count = 0;
 	stExpCocoNode *pDataItemsArray = pCocoNode->GetChildArray(pCocoLoader);
 	std::string key;
-	const char *str = nullptr;
+	const char *str = NULL;
 	for (int i = 0; i < length; ++i)
 	{
 		count = pDataItemsArray[i].GetChildNum();
@@ -762,36 +762,36 @@ void TScaleBy::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExpC
 		str = pDataItemArray[1].GetValue(pCocoLoader);
 		if (key == "Tag")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_tag = atoi(str);
 			}
 		}
 		else if (key == "Duration")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_duration = utils::atof(str);
+				_duration = atof(str); 
 			}
 
 		}
 		else if (key == "ScaleX")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_scale.x = utils::atof(str);
+				_scale.x = atof(str);
 			}
 		}
 		else if (key == "ScaleY")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_scale.y = utils::atof(str);
+				_scale.y = atof(str);
 			}
 		}
 		else if (key == "IsReverse")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_reverse = atoi(str)!=0?true:false; //DICTOOL->getIntValue_json(subDict, "value")!= 0? true:false;
 			}
@@ -871,7 +871,7 @@ void TSkewTo::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExpCo
 	int count = 0;
 	stExpCocoNode *pDataItemsArray = pCocoNode->GetChildArray(pCocoLoader);
 	std::string key;
-	const char *str = nullptr;
+	const char *str = NULL;
 	for (int i = 0; i < length; ++i)
 	{
 		count = pDataItemsArray[i].GetChildNum();
@@ -880,31 +880,31 @@ void TSkewTo::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExpCo
 		str = pDataItemArray[1].GetValue(pCocoLoader);
 		if (key == "Tag")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_tag = atoi(str);
 			}
 		}
 		else if (key == "Duration")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_duration = utils::atof(str);
+				_duration = atof(str); 
 			}
 
 		}
 		else if (key == "SkewX")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_skew.x = utils::atof(str);
+				_skew.x = atof(str);
 			}
 		}
 		else if (key == "SkewY")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_skew.y = utils::atof(str);
+				_skew.y = atof(str);
 			}
 		}
 	}
@@ -994,7 +994,7 @@ void TSkewBy::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExpCo
 	int count = 0;
 	stExpCocoNode *pDataItemsArray = pCocoNode->GetChildArray(pCocoLoader);
 	std::string key;
-	const char *str = nullptr;
+	const char *str = NULL;
 	for (int i = 0; i < length; ++i)
 	{
 		count = pDataItemsArray[i].GetChildNum();
@@ -1003,31 +1003,31 @@ void TSkewBy::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::stExpCo
 		str = pDataItemArray[1].GetValue(pCocoLoader);
 		if (key == "Tag")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_tag = atoi(str);
 			}
 		}
 		else if (key == "Duration")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_duration = utils::atof(str);
+				_duration = atof(str); 
 			}
 
 		}
 		else if (key == "SkewX")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_skew.x = utils::atof(str);
+				_skew.x = atof(str);
 			}
 		}
 		else if (key == "SkewY")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
-				_skew.y = utils::atof(str);
+				_skew.y = atof(str);
 			}
 		}
 		else if (key == "IsReverse")
@@ -1108,7 +1108,7 @@ void TriggerState::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::st
 	int count = 0;
 	stExpCocoNode *pDataItemsArray = pCocoNode->GetChildArray(pCocoLoader);
 	std::string key;
-	const char *str = nullptr;
+	const char *str = NULL;
 	for (int i = 0; i < length; ++i)
 	{
 		count = pDataItemsArray[i].GetChildNum();
@@ -1117,14 +1117,14 @@ void TriggerState::serialize(cocostudio::CocoLoader *pCocoLoader, cocostudio::st
 		str = pDataItemArray[1].GetValue(pCocoLoader);
 		if (key == "ID")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_id = atoi(str);
 			}
 		}
 		else if (key == "State")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_state = atoi(str); 
 			}
@@ -1197,7 +1197,7 @@ void ArmaturePlayAction::serialize(cocostudio::CocoLoader *pCocoLoader, cocostud
 	int count = 0;
 	stExpCocoNode *pDataItemsArray = pCocoNode->GetChildArray(pCocoLoader);
 	std::string key;
-	const char *str = nullptr;
+	const char *str = NULL;
 	for (int i = 0; i < length; ++i)
 	{
 		count = pDataItemsArray[i].GetChildNum();
@@ -1206,14 +1206,14 @@ void ArmaturePlayAction::serialize(cocostudio::CocoLoader *pCocoLoader, cocostud
 		str = pDataItemArray[1].GetValue(pCocoLoader);
 		if (key == "Tag")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_tag = atoi(str);//DICTOOL->getIntValue_json(subDict, "value");
 			}
 		}
 		else if (key == "componentName")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_comName = str; //DICTOOL->getStringValue_json(subDict, "value");
 			}
@@ -1221,7 +1221,7 @@ void ArmaturePlayAction::serialize(cocostudio::CocoLoader *pCocoLoader, cocostud
 		}
 		else if (key == "AnimationName")
 		{
-			if (str != nullptr)
+			if (str != NULL)
 			{
 				_aniname = str; //DICTOOL->getStringValue_json(subDict, "value");
 			}

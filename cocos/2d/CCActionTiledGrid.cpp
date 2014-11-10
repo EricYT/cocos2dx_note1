@@ -28,6 +28,7 @@ THE SOFTWARE.
 #include "2d/CCNodeGrid.h"
 #include "base/CCDirector.h"
 #include "base/ccMacros.h"
+#include <stdlib.h>
 
 NS_CC_BEGIN
 
@@ -42,7 +43,7 @@ struct Tile
 
 ShakyTiles3D* ShakyTiles3D::create(float duration, const Size& gridSize, int range, bool shakeZ)
 {
-    ShakyTiles3D *action = new (std::nothrow) ShakyTiles3D();
+    ShakyTiles3D *action = new ShakyTiles3D();
 
     if (action)
     {
@@ -75,7 +76,7 @@ bool ShakyTiles3D::initWithDuration(float duration, const Size& gridSize, int ra
 ShakyTiles3D* ShakyTiles3D::clone() const
 {
 	// no copy constructor	
-	auto a = new (std::nothrow) ShakyTiles3D();
+	auto a = new ShakyTiles3D();
     a->initWithDuration(_duration, _gridSize, _randrange, _shakeZ);
 	a->autorelease();
 	return a;
@@ -121,7 +122,7 @@ void ShakyTiles3D::update(float time)
 
 ShatteredTiles3D* ShatteredTiles3D::create(float duration, const Size& gridSize, int range, bool shatterZ)
 {
-    ShatteredTiles3D *action = new (std::nothrow) ShatteredTiles3D();
+    ShatteredTiles3D *action = new ShatteredTiles3D();
 
     if (action)
     {
@@ -155,7 +156,7 @@ bool ShatteredTiles3D::initWithDuration(float duration, const Size& gridSize, in
 ShatteredTiles3D* ShatteredTiles3D::clone() const
 {
 	// no copy constructor	
-	auto a = new (std::nothrow) ShatteredTiles3D();
+	auto a = new ShatteredTiles3D();
 	a->initWithDuration(_duration, _gridSize, _randrange, _shatterZ);
 	a->autorelease();
 	return a;
@@ -206,7 +207,7 @@ void ShatteredTiles3D::update(float time)
 
 ShuffleTiles* ShuffleTiles::create(float duration, const Size& gridSize, unsigned int seed)
 {
-    ShuffleTiles *action = new (std::nothrow) ShuffleTiles();
+    ShuffleTiles *action = new ShuffleTiles();
 
     if (action)
     {
@@ -240,7 +241,7 @@ bool ShuffleTiles::initWithDuration(float duration, const Size& gridSize, unsign
 ShuffleTiles* ShuffleTiles::clone() const
 {
 	// no copy constructor
-	auto a = new (std::nothrow) ShuffleTiles();
+	auto a = new ShuffleTiles();
 	a->initWithDuration(_duration, _gridSize, _seed);
 	a->autorelease();
 	return a;
@@ -352,7 +353,7 @@ void ShuffleTiles::update(float time)
 
 FadeOutTRTiles* FadeOutTRTiles::create(float duration, const Size& gridSize)
 {
-    FadeOutTRTiles *action = new (std::nothrow) FadeOutTRTiles();
+    FadeOutTRTiles *action = new FadeOutTRTiles();
 
     if (action)
     {
@@ -372,7 +373,7 @@ FadeOutTRTiles* FadeOutTRTiles::create(float duration, const Size& gridSize)
 FadeOutTRTiles* FadeOutTRTiles::clone() const
 {
 	// no copy constructor
-	auto a = new (std::nothrow) FadeOutTRTiles();
+	auto a = new FadeOutTRTiles();
 	a->initWithDuration(_duration, _gridSize);
 	a->autorelease();
 	return a;
@@ -448,7 +449,7 @@ void FadeOutTRTiles::update(float time)
 
 FadeOutBLTiles* FadeOutBLTiles::create(float duration, const Size& gridSize)
 {
-    FadeOutBLTiles *action = new (std::nothrow) FadeOutBLTiles();
+    FadeOutBLTiles *action = new FadeOutBLTiles();
 
     if (action)
     {
@@ -468,7 +469,7 @@ FadeOutBLTiles* FadeOutBLTiles::create(float duration, const Size& gridSize)
 FadeOutBLTiles* FadeOutBLTiles::clone() const
 {
 	// no copy constructor
-	auto a = new (std::nothrow) FadeOutBLTiles();
+	auto a = new FadeOutBLTiles();
 	a->initWithDuration(_duration, _gridSize);
 	a->autorelease();
 	return a;
@@ -489,7 +490,7 @@ float FadeOutBLTiles::testFunc(const Size& pos, float time)
 
 FadeOutUpTiles* FadeOutUpTiles::create(float duration, const Size& gridSize)
 {
-    FadeOutUpTiles *action = new (std::nothrow) FadeOutUpTiles();
+    FadeOutUpTiles *action = new FadeOutUpTiles();
 
     if (action)
     {
@@ -509,7 +510,7 @@ FadeOutUpTiles* FadeOutUpTiles::create(float duration, const Size& gridSize)
 FadeOutUpTiles* FadeOutUpTiles::clone() const
 {
 	// no copy constructor
-	auto a = new (std::nothrow) FadeOutUpTiles();
+	auto a = new FadeOutUpTiles();
 	a->initWithDuration(_duration, _gridSize);
 	a->autorelease();
 	return a;
@@ -543,7 +544,7 @@ void FadeOutUpTiles::transformTile(const Vec2& pos, float distance)
 
 FadeOutDownTiles* FadeOutDownTiles::create(float duration, const Size& gridSize)
 {
-    FadeOutDownTiles *action = new (std::nothrow) FadeOutDownTiles();
+    FadeOutDownTiles *action = new FadeOutDownTiles();
 
     if (action)
     {
@@ -563,7 +564,7 @@ FadeOutDownTiles* FadeOutDownTiles::create(float duration, const Size& gridSize)
 FadeOutDownTiles* FadeOutDownTiles::clone() const
 {
 	// no copy constructor
-	auto a = new (std::nothrow) FadeOutDownTiles();
+	auto a = new FadeOutDownTiles();
 	a->initWithDuration(_duration, _gridSize);
 	a->autorelease();
 	return a;
@@ -584,7 +585,7 @@ float FadeOutDownTiles::testFunc(const Size& pos, float time)
 
 TurnOffTiles* TurnOffTiles::create(float duration, const Size& gridSize)
 {
-    TurnOffTiles* pAction = new (std::nothrow) TurnOffTiles();
+    TurnOffTiles* pAction = new TurnOffTiles();
     if (pAction->initWithDuration(duration, gridSize, 0))
     {
         pAction->autorelease();
@@ -598,7 +599,7 @@ TurnOffTiles* TurnOffTiles::create(float duration, const Size& gridSize)
 
 TurnOffTiles* TurnOffTiles::create(float duration, const Size& gridSize, unsigned int seed)
 {
-    TurnOffTiles *action = new (std::nothrow) TurnOffTiles();
+    TurnOffTiles *action = new TurnOffTiles();
 
     if (action)
     {
@@ -631,7 +632,7 @@ bool TurnOffTiles::initWithDuration(float duration, const Size& gridSize, unsign
 TurnOffTiles* TurnOffTiles::clone() const
 {
 	// no copy constructor
-	auto a = new (std::nothrow) TurnOffTiles();
+	auto a = new TurnOffTiles();
     a->initWithDuration(_duration, _gridSize, _seed );
 	a->autorelease();
 	return a;
@@ -711,7 +712,7 @@ void TurnOffTiles::update(float time)
 
 WavesTiles3D* WavesTiles3D::create(float duration, const Size& gridSize, unsigned int waves, float amplitude)
 {
-    WavesTiles3D *action = new (std::nothrow) WavesTiles3D();
+    WavesTiles3D *action = new WavesTiles3D();
 
     if (action)
     {
@@ -745,7 +746,7 @@ bool WavesTiles3D::initWithDuration(float duration, const Size& gridSize, unsign
 WavesTiles3D* WavesTiles3D::clone() const
 {
 	// no copy constructor
-	auto a = new (std::nothrow) WavesTiles3D();
+	auto a = new WavesTiles3D();
     a->initWithDuration(_duration, _gridSize, _waves, _amplitude);
 	a->autorelease();
 	return a;
@@ -774,7 +775,7 @@ void WavesTiles3D::update(float time)
 
 JumpTiles3D* JumpTiles3D::create(float duration, const Size& gridSize, unsigned int numberOfJumps, float amplitude)
 {
-    JumpTiles3D *action = new (std::nothrow) JumpTiles3D();
+    JumpTiles3D *action = new JumpTiles3D();
 
     if (action)
     {
@@ -808,7 +809,7 @@ bool JumpTiles3D::initWithDuration(float duration, const Size& gridSize, unsigne
 JumpTiles3D* JumpTiles3D::clone() const
 {
 	// no copy constructor
-	auto a = new (std::nothrow) JumpTiles3D();
+	auto a = new JumpTiles3D();
     a->initWithDuration(_duration, _gridSize, _jumps, _amplitude);
 	a->autorelease();
 	return a;
@@ -849,7 +850,7 @@ void JumpTiles3D::update(float time)
 
 SplitRows* SplitRows::create(float duration, unsigned int nRows)
 {
-    SplitRows *action = new (std::nothrow) SplitRows();
+    SplitRows *action = new SplitRows();
 
     if (action)
     {
@@ -876,7 +877,7 @@ bool SplitRows::initWithDuration(float duration, unsigned int rows)
 SplitRows* SplitRows::clone() const
 {
 	// no copy constructor
-	auto a = new (std::nothrow) SplitRows();
+	auto a = new SplitRows();
     a->initWithDuration(_duration, _rows);
 	a->autorelease();
 	return a;
@@ -913,7 +914,7 @@ void SplitRows::update(float time)
 
 SplitCols* SplitCols::create(float duration, unsigned int cols)
 {
-    SplitCols *action = new (std::nothrow) SplitCols();
+    SplitCols *action = new SplitCols();
 
     if (action)
     {
@@ -939,7 +940,7 @@ bool SplitCols::initWithDuration(float duration, unsigned int cols)
 SplitCols* SplitCols::clone() const
 {
 	// no copy constructor	
-	auto a = new (std::nothrow) SplitCols();
+	auto a = new SplitCols();
     a->initWithDuration(_duration, _cols);
 	a->autorelease();
 	return a;

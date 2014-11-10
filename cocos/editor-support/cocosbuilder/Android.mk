@@ -33,12 +33,11 @@ $(LOCAL_PATH)/../../..
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../2d \
 $(LOCAL_PATH) \
-$(LOCAL_PATH)/../../.. \
-$(LOCAL_PATH)/../../ \
-$(LOCAL_PATH)/../../platform/android \
-$(LOCAL_PATH)/../../editor-support
+$(LOCAL_PATH)/../../.. 
 
-LOCAL_STATIC_LIBRARIES := cocos_extension_static
+
+LOCAL_WHOLE_STATIC_LIBRARIES := cocos_extension_static
 
 include $(BUILD_STATIC_LIBRARY)
 
+$(call import-module,extensions)

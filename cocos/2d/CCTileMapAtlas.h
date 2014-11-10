@@ -27,7 +27,7 @@ THE SOFTWARE.
 #ifndef __CCTILE_MAP_ATLAS__
 #define __CCTILE_MAP_ATLAS__
 
-#include "2d/CCAtlasNode.h"
+#include "CCAtlasNode.h"
 #include "base/CCValue.h"
 
 NS_CC_BEGIN

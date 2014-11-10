@@ -47,7 +47,7 @@ namespace cocostudio
     {
         if (!instanceButtonReader)
         {
-            instanceButtonReader = new (std::nothrow) ButtonReader();
+            instanceButtonReader = new ButtonReader();
         }
         return instanceButtonReader;
     }
@@ -152,7 +152,7 @@ namespace cocostudio
 
         if (button->isScale9Enabled()) {
             button->setCapInsets(Rect(capsx, capsy, capsWidth, capsHeight));
-            button->setContentSize(Size(scale9Width, scale9Height));
+            button->setSize(Size(scale9Width, scale9Height));
         }
         
         button->setTitleColor(Color3B(cri, cgi, cbi));
@@ -203,7 +203,7 @@ namespace cocostudio
             {
                 float swf = DICTOOL->getFloatValue_json(options, P_Scale9Width);
                 float shf = DICTOOL->getFloatValue_json(options, P_Scale9Height);
-                button->setContentSize(Size(swf, shf));
+                button->setSize(Size(swf, shf));
             }
         }
         bool tt = DICTOOL->checkObjectExist_json(options, P_Text);

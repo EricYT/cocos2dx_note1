@@ -25,6 +25,9 @@ THE SOFTWARE.
 ****************************************************************************/
 
 #include "base/CCConfiguration.h"
+#include <string.h>
+#include "base/ccMacros.h"
+#include "base/ccConfig.h"
 #include "platform/CCFileUtils.h"
 
 NS_CC_BEGIN
@@ -146,7 +149,7 @@ Configuration* Configuration::getInstance()
 {
     if (! s_sharedConfiguration)
     {
-        s_sharedConfiguration = new (std::nothrow) Configuration();
+        s_sharedConfiguration = new Configuration();
         s_sharedConfiguration->init();
     }
     
@@ -158,13 +161,13 @@ void Configuration::destroyInstance()
     CC_SAFE_RELEASE_NULL(s_sharedConfiguration);
 }
 
-// FIXME: deprecated
+// XXX: deprecated
 Configuration* Configuration::sharedConfiguration()
 {
     return Configuration::getInstance();
 }
 
-// FIXME: deprecated
+// XXX: deprecated
 void Configuration::purgeConfiguration()
 {
     Configuration::destroyInstance();

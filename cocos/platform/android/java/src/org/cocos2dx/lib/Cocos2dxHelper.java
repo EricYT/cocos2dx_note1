@@ -91,6 +91,7 @@ public class Cocos2dxHelper {
     		Cocos2dxHelper.nativeSetContext((Context)activity, Cocos2dxHelper.sAssetManager);
     
             Cocos2dxBitmap.setContext(activity);
+            Cocos2dxETCLoader.setContext(activity);
             sActivity = activity;
 
             sInited = true;
@@ -165,10 +166,6 @@ public class Cocos2dxHelper {
 	public static void disableAccelerometer() {
 		Cocos2dxHelper.sAccelerometerEnabled = false;
 		Cocos2dxHelper.sCocos2dxAccelerometer.disable();
-	}
-	
-	public static void setKeepScreenOn(boolean value) {
-		((Cocos2dxActivity)sActivity).setKeepScreenOn(value);
 	}
 
 	public static void preloadBackgroundMusic(final String pPath) {

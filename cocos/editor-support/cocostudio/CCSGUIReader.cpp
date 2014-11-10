@@ -40,6 +40,7 @@ THE SOFTWARE.
 #include "WidgetReader/ScrollViewReader/ScrollViewReader.h"
 #include "WidgetReader/ListViewReader/ListViewReader.h"
 #include "cocostudio/CocoLoader.h"
+#include "ui/CocosGUI.h"
 
 using namespace cocos2d;
 using namespace cocos2d::ui;
@@ -90,7 +91,7 @@ GUIReader* GUIReader::getInstance()
 {
     if (!sharedReader)
     {
-        sharedReader = new (std::nothrow) GUIReader();
+        sharedReader = new GUIReader();
     }
     return sharedReader;
 }
@@ -176,27 +177,6 @@ void GUIReader::registerTypeAndCallBack(const std::string& classType,
     }
 }
 
-void GUIReader::registerTypeAndCallBack(const std::string& classType,
-                                        ObjectFactory::InstanceFunc ins,
-                                        Ref *object,
-                                        SEL_ParseEvent callBack)
-{
-    ObjectFactory* factoryCreate = ObjectFactory::getInstance();
-
-    ObjectFactory::TInfo t(classType, ins);
-    factoryCreate->registerType(t);
-
-    if (object)
-    {
-        _mapObject.insert(ParseObjectMap::value_type(classType, object));
-    }
-
-    if (callBack)
-    {
-        _mapParseSelector.insert(ParseCallBackMap::value_type(classType, callBack));
-    }
-}
-
 
 Widget* GUIReader::widgetFromJsonFile(const char *fileName)
 {
@@ -220,18 +200,18 @@ Widget* GUIReader::widgetFromJsonFile(const char *fileName)
         int versionInteger = getVersionInteger(fileVersion);
         if (versionInteger < 250)
         {
-            pReader = new (std::nothrow) WidgetPropertiesReader0250();
+            pReader = new WidgetPropertiesReader0250();
             widget = pReader->createWidget(jsonDict, m_strFilePath.c_str(), fileName);
         }
         else
         {
-            pReader = new (std::nothrow) WidgetPropertiesReader0300();
+            pReader = new WidgetPropertiesReader0300();
             widget = pReader->createWidget(jsonDict, m_strFilePath.c_str(), fileName);
         }
     }
     else
     {
-        pReader = new (std::nothrow) WidgetPropertiesReader0250();
+        pReader = new WidgetPropertiesReader0250();
         widget = pReader->createWidget(jsonDict, m_strFilePath.c_str(), fileName);
     }
     
@@ -371,7 +351,7 @@ Widget* GUIReader::widgetFromBinaryFile(const char *fileName)
     const char* fileVersion = "";
     ui::Widget* widget = nullptr;
 
-    if (pBuffer != nullptr && nSize > 0)
+    if (pBuffer != NULL && nSize > 0)
     {
         CocoLoader	tCocoLoader;
         if(true == tCocoLoader.ReadCocoBinBuff((char*)pBuffer))
@@ -399,18 +379,18 @@ Widget* GUIReader::widgetFromBinaryFile(const char *fileName)
                     if (versionInteger < 250)
                     {
                         CCASSERT(0, "You current studio doesn't support binary format, please upgrade to the latest version!");
-                        pReader = new (std::nothrow) WidgetPropertiesReader0250();
+                        pReader = new WidgetPropertiesReader0250();
                         widget = pReader->createWidgetFromBinary(&tCocoLoader, tpRootCocoNode, fileName);
                     }
                     else
                     {
-                        pReader = new (std::nothrow) WidgetPropertiesReader0300();
+                        pReader = new WidgetPropertiesReader0300();
                         widget = pReader->createWidgetFromBinary(&tCocoLoader, tpRootCocoNode, fileName);
                     }
                 }
                 else
                 {
-                    pReader = new (std::nothrow) WidgetPropertiesReader0250();
+                    pReader = new WidgetPropertiesReader0250();
                     widget = pReader->createWidgetFromBinary(&tCocoLoader, tpRootCocoNode, fileName);
                 }
                 
@@ -514,7 +494,7 @@ Widget* WidgetPropertiesReader0250::createWidget(const rapidjson::Value& data, c
     if (widget->getContentSize().equals(Size::ZERO))
     {
         Layout* rootWidget = dynamic_cast<Layout*>(widget);
-        rootWidget->setContentSize(Size(fileDesignWidth, fileDesignHeight));
+        rootWidget->setSize(Size(fileDesignWidth, fileDesignHeight));
     }
     /* ********************** */
     
@@ -628,7 +608,7 @@ void WidgetPropertiesReader0250::setPropsForWidgetFromJsonDictionary(Widget*widg
     
     float w = DICTOOL->getFloatValue_json(options, "width");
     float h = DICTOOL->getFloatValue_json(options, "height");
-    widget->setContentSize(Size(w, h));
+    widget->setSize(Size(w, h));
     
     widget->setTag(DICTOOL->getIntValue_json(options, "tag"));
 	widget->setActionTag(DICTOOL->getIntValue_json(options, "actiontag"));
@@ -727,7 +707,7 @@ void WidgetPropertiesReader0250::setPropsForButtonFromJsonDictionary(Widget*widg
         {
             float swf = DICTOOL->getFloatValue_json(options, "scale9Width");
             float shf = DICTOOL->getFloatValue_json(options, "scale9Height");
-            button->setContentSize(Size(swf, shf));
+            button->setSize(Size(swf, shf));
         }
     }
     else
@@ -801,7 +781,7 @@ void WidgetPropertiesReader0250::setPropsForCheckBoxFromJsonDictionary(Widget*wi
     {
         checkBox->loadTextures(backGroundFileName_tp, backGroundSelectedFileName_tp, frontCrossFileName_tp,backGroundDisabledFileName_tp,frontCrossDisabledFileName_tp);
     }
-    checkBox->setSelected(DICTOOL->getBooleanValue_json(options, "selectedState"));
+    checkBox->setSelectedState(DICTOOL->getBooleanValue_json(options, "selectedState"));
     setColorPropsForWidgetFromJsonDictionary(widget,options);
 }
 
@@ -843,7 +823,7 @@ void WidgetPropertiesReader0250::setPropsForImageViewFromJsonDictionary(Widget*w
         {
             float swf = DICTOOL->getFloatValue_json(options, "scale9Width");
             float shf = DICTOOL->getFloatValue_json(options, "scale9Height");
-            imageView->setContentSize(Size(swf, shf));
+            imageView->setSize(Size(swf, shf));
         }
         
         float cx = DICTOOL->getFloatValue_json(options, "capInsetsX");
@@ -1036,7 +1016,7 @@ void WidgetPropertiesReader0250::setPropsForSliderFromJsonDictionary(Widget*widg
             {
                 slider->loadBarTexture(imageFileName_tp);
             }
-            slider->setContentSize(Size(barLength, slider->getContentSize().height));
+            slider->setSize(Size(barLength, slider->getContentSize().height));
         }
         else
         {
@@ -1097,7 +1077,7 @@ void WidgetPropertiesReader0250::setPropsForTextFieldFromJsonDictionary(Widget*w
     {
         textField->setPlaceHolder(DICTOOL->getStringValue_json(options, "placeHolder"));
     }
-    textField->setString(DICTOOL->getStringValue_json(options, "text"));
+    textField->setText(DICTOOL->getStringValue_json(options, "text"));
     bool fs = DICTOOL->checkObjectExist_json(options, "fontSize");
     if (fs)
     {
@@ -1224,7 +1204,7 @@ Widget* WidgetPropertiesReader0300::createWidget(const rapidjson::Value& data, c
     if (widget->getContentSize().equals(Size::ZERO))
     {
         Layout* rootWidget = dynamic_cast<Layout*>(widget);
-        rootWidget->setContentSize(Size(fileDesignWidth, fileDesignHeight));
+        rootWidget->setSize(Size(fileDesignWidth, fileDesignHeight));
     }
     /* ********************** */
     
@@ -1261,9 +1241,9 @@ Widget* WidgetPropertiesReader0300::createWidget(const rapidjson::Value& data, c
                 SpriteFrameCache::getInstance()->addSpriteFramesWithFile(file);
             }
         }else if (key == "designWidth"){
-            fileDesignWidth =  utils::atof(tpChildArray[i].GetValue(cocoLoader));
+            fileDesignWidth =  atof(tpChildArray[i].GetValue(cocoLoader));
         }else if (key == "designHeight"){
-            fileDesignHeight = utils::atof(tpChildArray[i].GetValue(cocoLoader));
+            fileDesignHeight = atof(tpChildArray[i].GetValue(cocoLoader));
         }else if (key == "widgetTree"){
             
             if (fileDesignWidth <= 0 || fileDesignHeight <= 0) {
@@ -1288,7 +1268,7 @@ Widget* WidgetPropertiesReader0300::createWidget(const rapidjson::Value& data, c
             if (widget->getContentSize().equals(Size::ZERO))
             {
                 Layout* rootWidget = dynamic_cast<Layout*>(widget);
-                rootWidget->setContentSize(Size(fileDesignWidth, fileDesignHeight));
+                rootWidget->setSize(Size(fileDesignWidth, fileDesignHeight));
             }
         }
     }
@@ -1360,7 +1340,7 @@ Widget* WidgetPropertiesReader0300::widgetFromBinary(CocoLoader* cocoLoader,  st
             setPropsForAllWidgetFromBinary(reader, widget, cocoLoader, optionsNode);
             // 2nd., custom widget parse with custom reader
             //2nd. parse custom property
-            const char* customProperty = nullptr;
+            const char* customProperty = NULL;
             stExpCocoNode *optionChildNode = optionsNode->GetChildArray(cocoLoader);
             for (int k = 0; k < optionsNode->GetChildNum(); ++k) {
                 std::string key = optionChildNode[k].GetName(cocoLoader);
@@ -1479,7 +1459,7 @@ Widget* WidgetPropertiesReader0300::widgetFromJsonDictionary(const rapidjson::Va
             }
             setPropsForAllCustomWidgetFromJsonDictionary(classname, widget, customJsonDict);
         }else{
-            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your json file.");
+            CCLOG("Widget or WidgetReader doesn't exists!!!  Please check your csb file.");
         }
        
     }
@@ -1532,11 +1512,11 @@ void WidgetPropertiesReader0300::setPropsForAllCustomWidgetFromJsonDictionary(co
 {
     GUIReader* guiReader = GUIReader::getInstance();
     
-    std::map<std::string, Ref*> *object_map = guiReader->getParseObjectMap();
-    Ref* object = (*object_map)[classType];
+    std::map<std::string, Ref*> object_map = GUIReader::getInstance()->getParseObjectMap();
+    Ref* object = object_map[classType];
     
-    std::map<std::string, SEL_ParseEvent> *selector_map = guiReader->getParseCallBackMap();
-    SEL_ParseEvent selector = (*selector_map)[classType];
+    std::map<std::string, SEL_ParseEvent> selector_map = guiReader->getParseCallBackMap();
+    SEL_ParseEvent selector = selector_map[classType];
     
     if (object && selector)
     {

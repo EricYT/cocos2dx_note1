@@ -20,16 +20,16 @@ Layer *CreateAnimationLayer(int index)
     switch(index)
     {
     case TEST_ANIMATIONELEMENT:
-        pLayer = new (std::nothrow) TestActionTimeline();
+        pLayer = new TestActionTimeline();
         break;
     case TEST_CHANGE_PLAY_SECTION:
-        pLayer = new (std::nothrow) TestChangePlaySection();
+        pLayer = new TestChangePlaySection();
         break;
     case TEST_TIMELINE_FRAME_EVENT:
-        pLayer = new (std::nothrow) TestTimelineFrameEvent();
+        pLayer = new TestTimelineFrameEvent();
         break;
     case TEST_TIMELINE_PERFORMACE:
-        pLayer = new (std::nothrow) TestTimelinePerformance();
+        pLayer = new TestTimelinePerformance();
         break;
     default:
         break;
@@ -123,7 +123,7 @@ void ActionTimelineTestLayer::onEnter()
         auto l = Label::createWithSystemFont(strSubtitle.c_str(), "Arial", 18);
         l->setColor(Color3B(0, 0, 0));
         addChild(l, 1, 10001);
-        l->setPosition(VisibleRect::center().x, VisibleRect::top().y - 60);
+        l->setPosition( Point(VisibleRect::center().x, VisibleRect::top().y - 60) );
     }
 
     // add menu
@@ -134,9 +134,9 @@ void ActionTimelineTestLayer::onEnter()
     Menu *menu = Menu::create(backItem, restartItem, nextItem, nullptr);
 
     menu->setPosition(Point::ZERO);
-    backItem->setPosition(VisibleRect::center().x - restartItem->getContentSize().width * 2, VisibleRect::bottom().y + restartItem->getContentSize().height / 2);
-    restartItem->setPosition(VisibleRect::center().x, VisibleRect::bottom().y + restartItem->getContentSize().height / 2);
-    nextItem->setPosition(VisibleRect::center().x + restartItem->getContentSize().width * 2, VisibleRect::bottom().y + restartItem->getContentSize().height / 2);
+    backItem->setPosition(Point(VisibleRect::center().x - restartItem->getContentSize().width * 2, VisibleRect::bottom().y + restartItem->getContentSize().height / 2));
+    restartItem->setPosition(Point(VisibleRect::center().x, VisibleRect::bottom().y + restartItem->getContentSize().height / 2));
+    nextItem->setPosition(Point(VisibleRect::center().x + restartItem->getContentSize().width * 2, VisibleRect::bottom().y + restartItem->getContentSize().height / 2));
 
     addChild(menu, 100);
 
@@ -166,7 +166,7 @@ std::string ActionTimelineTestLayer::subtitle() const
 
 void ActionTimelineTestLayer::restartCallback(Ref *pSender)
 {
-    Scene *s = new (std::nothrow) ActionTimelineTestScene();
+    Scene *s = new ActionTimelineTestScene();
     s->addChild( RestartAnimationTest() );
     Director::getInstance()->replaceScene(s);
     s->release();
@@ -174,14 +174,14 @@ void ActionTimelineTestLayer::restartCallback(Ref *pSender)
 
 void ActionTimelineTestLayer::nextCallback(Ref *pSender)
 {
-    Scene *s = new (std::nothrow) ActionTimelineTestScene();
+    Scene *s = new ActionTimelineTestScene();
     s->addChild( NextAnimationTest() );
     Director::getInstance()->replaceScene(s);
     s->release();
 }
 void ActionTimelineTestLayer::backCallback(Ref *pSender)
 {
-    Scene *s = new (std::nothrow) ActionTimelineTestScene();
+    Scene *s = new ActionTimelineTestScene();
     s->addChild( BackAnimationTest() );
     Director::getInstance()->replaceScene(s);
     s->release();

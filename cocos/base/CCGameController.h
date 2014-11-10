@@ -26,8 +26,8 @@
 #ifndef __cocos2d_libs__CCGameController__
 #define __cocos2d_libs__CCGameController__
 
-#include "base/CCController.h"
-#include "base/CCEventController.h"
-#include "base/CCEventListenerController.h"
+#include "CCController.h"
+#include "CCEventController.h"
+#include "CCEventListenerController.h"
 
 #endif /* defined(__cocos2d_libs__CCGameController__) */

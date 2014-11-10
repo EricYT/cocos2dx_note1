@@ -26,21 +26,20 @@ THE SOFTWARE.
 #define __UIPAGEVIEW_H__
 
 #include "ui/UILayout.h"
-#include "ui/GUIExport.h"
 
 NS_CC_BEGIN
 
 namespace ui {
 
-typedef enum
+CC_DEPRECATED_ATTRIBUTE typedef enum
 {
     PAGEVIEW_EVENT_TURNING,
 }PageViewEventType;
 
-typedef void (Ref::*SEL_PageViewEvent)(Ref*, PageViewEventType);
+CC_DEPRECATED_ATTRIBUTE typedef void (Ref::*SEL_PageViewEvent)(Ref*, PageViewEventType);
 #define pagevieweventselector(_SELECTOR)(SEL_PageViewEvent)(&_SELECTOR)
 
-class CC_GUI_DLL PageView : public Layout
+class PageView : public Layout
 {
     
     DECLARE_CLASS_GUI_INFO
@@ -128,7 +127,8 @@ public:
      */
     ssize_t getCurPageIndex() const;
     
-    
+    //TODO: add Vector<Layout*> member variables into UIPageView, but it only used for reference purpose,
+    //all the pages are added into proteced node, so does scrollview, listview
     Vector<Layout*>& getPages();
     
     Layout* getPage(ssize_t index);
@@ -168,23 +168,6 @@ public:
     virtual std::string getDescription() const override;
 
     virtual void onEnter() override;
-    /**
-     * @brief If you don't specify the value, the pageView will scroll when half pageview width reached
-     */
-    void setCustomScrollThreshold(float threshold);
-    /**
-     *@brief Return user defined scroll page threshold
-     */
-    float getCustomScrollThreshold()const;
-    /**
-     *@brief Set using user defined scroll page threshold or not
-     * If you set it to false, then the default scroll threshold is pageView.width / 2
-     */
-    void setUsingCustomScrollThreshold(bool flag);
-    /**
-     *@brief Query whether we are using user defined scroll page threshold or not
-     */
-    bool isUsingCustomScrollThreshold()const;
 
 CC_CONSTRUCTOR_ACCESS:
     virtual bool init() override;
@@ -203,6 +186,7 @@ protected:
     void updateAllPagesPosition();
     void autoScroll(float dt);
 
+    virtual void handlePressLogic(Touch *touch);
     virtual void handleMoveLogic(Touch *touch) ;
     virtual void handleReleaseLogic(Touch *touch) ;
     virtual void interceptTouchEvent(TouchEventType event, Widget* sender,Touch *touch) ;
@@ -236,9 +220,7 @@ protected:
     
     float _leftBoundary;
     float _rightBoundary;
-    float _customScrollThreshold;
-    bool _usingCustomScrollThreshold;
-
+   
     float _childFocusCancelOffset;
 
     Ref* _pageViewEventListener;

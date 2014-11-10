@@ -82,7 +82,7 @@ void UIScene::toCocosGUITestScene(Ref* sender, Widget::TouchEventType type)
     {
         UISceneManager::purgeUISceneManager();
         
-        CocosGUITestScene* pScene = new (std::nothrow) CocosGUITestScene();
+        CocosGUITestScene* pScene = new CocosGUITestScene();
         pScene->runThisTest();
         pScene->release();
     }

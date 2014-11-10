@@ -9,7 +9,7 @@ using namespace ui;
 
 namespace cocostudio
 {
-    static TextFieldReader* instanceTextFieldReader = nullptr;
+    static TextFieldReader* instanceTextFieldReader = NULL;
     
     static const char* P_PlaceHolder = "placeHolder";
     static const char* P_Text = "text";
@@ -38,7 +38,7 @@ namespace cocostudio
     {
         if (!instanceTextFieldReader)
         {
-            instanceTextFieldReader = new (std::nothrow) TextFieldReader();
+            instanceTextFieldReader = new TextFieldReader();
         }
         return instanceTextFieldReader;
     }
@@ -63,7 +63,7 @@ namespace cocostudio
             else if(key == P_PlaceHolder){
                 textField->setPlaceHolder(value);
             }else if(key == P_Text){
-                textField->setString(value);
+                textField->setText(value);
             }else if(key == P_FontSize){
                 textField->setFontSize(valueToInt(value));
             }else if(key == P_FontName){
@@ -96,7 +96,7 @@ namespace cocostudio
         {
             textField->setPlaceHolder(DICTOOL->getStringValue_json(options, P_PlaceHolder,"input words here"));
         }
-        textField->setString(DICTOOL->getStringValue_json(options, P_Text,"Text Tield"));
+        textField->setText(DICTOOL->getStringValue_json(options, P_Text,"Text Tield"));
        
         textField->setFontSize(DICTOOL->getIntValue_json(options, P_FontSize,20));
     

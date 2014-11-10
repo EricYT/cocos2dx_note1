@@ -49,7 +49,7 @@ void SceneController::update(float delta)
 
 SceneController* SceneController::create(void)
 {
-    SceneController * pRet = new (std::nothrow) SceneController();
+    SceneController * pRet = new SceneController();
     if (pRet && pRet->init())
     {
         pRet->autorelease();

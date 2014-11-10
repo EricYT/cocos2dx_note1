@@ -48,7 +48,7 @@ static const char* s_testArray[] =
     "UIScrollViewTest_Both_Editor",    
 };
 
-static UISceneManager_Editor* sharedInstance = nullptr;
+static UISceneManager_Editor* sharedInstance = NULL;
 
 UISceneManager_Editor::UISceneManager_Editor()
 {
@@ -62,9 +62,9 @@ UISceneManager_Editor::~UISceneManager_Editor()
 
 UISceneManager_Editor* UISceneManager_Editor::sharedUISceneManager_Editor()
 {
-    if (sharedInstance == nullptr)
+    if (sharedInstance == NULL)
     {
-        sharedInstance = new (std::nothrow) UISceneManager_Editor();
+        sharedInstance = new UISceneManager_Editor();
     }
     return sharedInstance;
 }
@@ -181,5 +181,5 @@ Scene* UISceneManager_Editor::currentUIScene()
             break;
     }
     
-    return nullptr;
+    return NULL;
 }

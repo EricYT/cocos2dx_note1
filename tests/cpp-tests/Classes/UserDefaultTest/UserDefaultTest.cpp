@@ -97,7 +97,7 @@ UserDefaultTest::~UserDefaultTest()
 
 void UserDefaultTestScene::runThisTest()
 {
-    auto layer = new (std::nothrow) UserDefaultTest();
+    auto layer = new UserDefaultTest();
     addChild(layer);
 
     Director::getInstance()->replaceScene(this);

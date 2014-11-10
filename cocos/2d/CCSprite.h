@@ -28,10 +28,15 @@ THE SOFTWARE.
 #ifndef __SPRITE_NODE_CCSPRITE_H__
 #define __SPRITE_NODE_CCSPRITE_H__
 
-#include <string>
 #include "2d/CCNode.h"
 #include "base/CCProtocols.h"
 #include "renderer/CCTextureAtlas.h"
+#include "base/ccTypes.h"
+#include <string>
+#ifdef EMSCRIPTEN
+#include "CCGLBufferedNode.h"
+#endif // EMSCRIPTEN
+#include "physics/CCPhysicsBody.h"
 #include "renderer/CCQuadCommand.h"
 #include "renderer/CCCustomCommand.h"
 
@@ -540,7 +545,8 @@ protected:
     Texture2D*       _texture;              /// Texture2D object that is used to render the sprite
     QuadCommand      _quadCommand;          /// quad command
 #if CC_SPRITE_DEBUG_DRAW
-    DrawNode *_debugDrawNode;
+    CustomCommand   _customDebugDrawCommand;
+    void drawDebugData();
 #endif //CC_SPRITE_DEBUG_DRAW
     //
     // Shared data

@@ -107,7 +107,7 @@ THE SOFTWARE.
 
 - (void) setAge: (NSNumber*) age
 {
-    int nAge = [age intValue];
+    int nAge = [age integerValue];
     OUTPUT_LOG(@"Flurry setAge invoked (%d)", nAge);
     [Flurry setAge:nAge];
 }

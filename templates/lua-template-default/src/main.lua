@@ -20,25 +20,8 @@ local function main()
     -- avoid memory leak
     collectgarbage("setpause", 100)
     collectgarbage("setstepmul", 5000)
-
-    -- initialize director
-    local director = cc.Director:getInstance()
-    local glview = director:getOpenGLView()
-    if nil == glview then
-        glview = cc.GLViewImpl:createWithRect("HelloLua", cc.rect(0,0,900,640))
-        director:setOpenGLView(glview)
-    end
-
-    glview:setDesignResolutionSize(480, 320, cc.ResolutionPolicy.NO_BORDER)
-
-    --turn on display FPS
-    director:setDisplayStats(true)
-
-    --set FPS. the default value is 1.0/60 if you don't call this
-    director:setAnimationInterval(1.0 / 60)
-
-	cc.FileUtils:getInstance():addSearchPath("src")
-	cc.FileUtils:getInstance():addSearchPath("res")
+	cc.FileUtils:getInstance():addSearchResolutionsOrder("src");
+	cc.FileUtils:getInstance():addSearchResolutionsOrder("res");
 	local schedulerID = 0
     --support debug
     local targetPlatform = cc.Application:getInstance():getTargetPlatform()
@@ -58,7 +41,7 @@ local function main()
     local origin = cc.Director:getInstance():getVisibleOrigin()
 
     -- add the moving dog
-    local function createDog()
+    local function creatDog()
         local frameWidth = 105
         local frameHeight = 95
 
@@ -130,7 +113,7 @@ local function main()
         end
 
         -- add moving dog
-        local spriteDog = createDog()
+        local spriteDog = creatDog()
         layerFarm:addChild(spriteDog)
 
         -- handing touch events

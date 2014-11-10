@@ -70,7 +70,6 @@ public:
     */
     static CCPrecompiledShaders* getInstance();
 
-    void addPrecompiledProgram(const char* key, const unsigned char* program, int programLength);
     std::string addShaders(const GLchar* vShaderByteArray, const GLchar* fShaderByteArray);
     bool addProgram(GLuint program, const std::string& id);
 

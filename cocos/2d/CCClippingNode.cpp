@@ -26,12 +26,14 @@
  */
 
 #include "2d/CCClippingNode.h"
-#include "2d/CCDrawingPrimitives.h"
+#include "renderer/CCGLProgram.h"
 #include "renderer/CCGLProgramCache.h"
-#include "renderer/ccGLStateCache.h"
-#include "renderer/CCRenderer.h"
+#include "2d/CCDrawingPrimitives.h"
 #include "base/CCDirector.h"
 
+#include "renderer/CCRenderer.h"
+#include "renderer/CCGroupCommand.h"
+#include "renderer/CCCustomCommand.h"
 
 NS_CC_BEGIN
 
@@ -82,7 +84,7 @@ ClippingNode::~ClippingNode()
 
 ClippingNode* ClippingNode::create()
 {
-    ClippingNode *ret = new (std::nothrow) ClippingNode();
+    ClippingNode *ret = new ClippingNode();
     if (ret && ret->init())
     {
         ret->autorelease();
@@ -97,7 +99,7 @@ ClippingNode* ClippingNode::create()
 
 ClippingNode* ClippingNode::create(Node *pStencil)
 {
-    ClippingNode *ret = new (std::nothrow) ClippingNode();
+    ClippingNode *ret = new ClippingNode();
     if (ret && ret->init(pStencil))
     {
         ret->autorelease();
@@ -201,32 +203,12 @@ void ClippingNode::drawFullScreenQuadClearStencil()
     director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
     director->loadIdentityMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
     
-    Vec2 vertices[] = {
-        Vec2(-1, -1),
-        Vec2(1, -1),
-        Vec2(1, 1),
-        Vec2(-1, 1)
-    };
     
-    auto glProgram = GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_U_COLOR);
-    
-    int colorLocation = glProgram->getUniformLocation("u_color");
-    CHECK_GL_ERROR_DEBUG();
-    
-    Color4F color(1, 1, 1, 1);
-    
-    glProgram->use();
-    glProgram->setUniformsForBuiltins();
-    glProgram->setUniformLocationWith4fv(colorLocation, (GLfloat*) &color.r, 1);
-    
-    GL::enableVertexAttribs( GL::VERTEX_ATTRIB_FLAG_POSITION );
-    glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0, vertices);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    
-    CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 4);
+    DrawPrimitives::drawSolidRect(Vec2(-1,-1), Vec2(1,1), Color4F(1, 1, 1, 1));
     
     director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
     director->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    
 }
 
 void ClippingNode::visit(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags)
@@ -266,7 +248,7 @@ void ClippingNode::visit(Renderer *renderer, const Mat4 &parentTransform, uint32
         program->use();
         program->setUniformLocationWith1f(alphaValueLocation, _alphaThreshold);
         // we need to recursively apply this shader to all the nodes in the stencil node
-        // FIXME: we should have a way to apply shader to all nodes without having to do this
+        // XXX: we should have a way to apply shader to all nodes without having to do this
         setProgram(_stencil, program);
         
 #endif
@@ -279,7 +261,6 @@ void ClippingNode::visit(Renderer *renderer, const Mat4 &parentTransform, uint32
     renderer->addCommand(&_afterDrawStencilCmd);
 
     int i = 0;
-    bool visibleByCamera = isVisitableByVisitingCamera();
     
     if(!_children.empty())
     {
@@ -295,13 +276,12 @@ void ClippingNode::visit(Renderer *renderer, const Mat4 &parentTransform, uint32
                 break;
         }
         // self draw
-        if (visibleByCamera)
-            this->draw(renderer, _modelViewTransform, flags);
+        this->draw(renderer, _modelViewTransform, flags);
         
         for(auto it=_children.cbegin()+i; it != _children.cend(); ++it)
             (*it)->visit(renderer, _modelViewTransform, flags);
     }
-    else if (visibleByCamera)
+    else
     {
         this->draw(renderer, _modelViewTransform, flags);
     }
@@ -456,7 +436,7 @@ void ClippingNode::onAfterDrawStencil()
             glDisable(GL_ALPHA_TEST);
         }
 #else
-// FIXME: we need to find a way to restore the shaders of the stencil node and its childs
+// XXX: we need to find a way to restore the shaders of the stencil node and its childs
 #endif
     }
 

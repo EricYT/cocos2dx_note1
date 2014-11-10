@@ -59,26 +59,18 @@ class CCPluginCompile(cocos.CCPlugin):
         from argparse import ArgumentParser
         parser.add_argument("-m", "--mode", dest="mode", default='debug',
                           help="Set the compile mode, should be debug|release, default is debug.")
-        parser.add_argument("-j", "--jobs", dest="jobs", type=int,
+        parser.add_argument("-j", "--jobs", dest="jobs", type=int, default=1,
                           help="Allow N jobs at once.")
-        parser.add_argument("-o", "--output-dir", dest="output_dir", help="Specify the output directory.")
 
         group = parser.add_argument_group("Android Options")
-        group.add_argument("--ap", dest="android_platform", help='Specify the android platform used for building android apk.')
+        group.add_argument("--ap", dest="android_platform", type=int, help='parameter for android-update.Without the parameter,the script just build dynamic library for project. Valid android-platform are:[10|11|12|13|14|15|16|17|18|19]')
         group.add_argument("--ndk-mode", dest="ndk_mode", help='Set the compile mode of ndk-build, should be debug|release|none, native code will not be compiled when the value is none. Default is same value with -m')
-        group.add_argument("--app-abi", dest="app_abi", help='Set the APP_ABI of ndk-build. Can be multi value separated with ":".Sample : --app-aib armeabi:x86:mips. Default value is "armeabi".')
-        group.add_argument("--ndk-toolchain", dest="toolchain", help='Specify the NDK_TOOLCHAIN of ndk-build.')
-        group.add_argument("--ndk-cppflags", dest="cppflags", help='Specify the APP_CPPFLAGS of ndk-build.')
 
         group = parser.add_argument_group("Web Options")
         group.add_argument("--source-map", dest="source_map", action="store_true", help='Enable source-map')
-        group.add_argument("--advanced", dest="advanced", action="store_true", help="Compile all source js files using Closure Compiler's advanced mode, bigger compression ratio bug more risk")
-
-        group = parser.add_argument_group("iOS/Mac Options")
-        group.add_argument("-t", "--target", dest="target_name", help="Specify the target name to compile.")
 
         group = parser.add_argument_group("iOS Options")
-        group.add_argument("--sign-identity", dest="sign_id", help="The code sign identity for iOS.")
+        group.add_argument("--sign-identity", dest="sign_id", help="The code sign identity for iOS. It's required when the value of \"-m, -mode\" is release.")
 
         group = parser.add_argument_group("lua/js project arguments")
         group.add_argument("--no-res", dest="no_res", action="store_true", help="Package without project resources.")
@@ -104,28 +96,10 @@ class CCPluginCompile(cocos.CCPlugin):
         if 'release' == args.mode:
             self._mode = args.mode
 
-        # android arguments
         if args.ndk_mode is not None:
             self._ndk_mode = args.ndk_mode
         else:
             self._ndk_mode = self._mode
-
-        self.app_abi = None
-        if args.app_abi:
-            self.app_abi = " ".join(args.app_abi.split(":"))
-
-        self.cppflags = None
-        if args.cppflags:
-            self.cppflags = args.cppflags
-
-        self.ndk_toolchain = None
-        if args.toolchain:
-            self.ndk_toolchain = args.toolchain
-
-        # iOS/Mac arguments
-        self.xcode_target_name = None
-        if args.target_name is not None:
-            self.xcode_target_name = args.target_name
 
         if args.compile_script is not None:
             self._compile_script = bool(args.compile_script)
@@ -133,24 +107,11 @@ class CCPluginCompile(cocos.CCPlugin):
             self._compile_script = (self._mode == "release")
 
         self._ap = args.android_platform
-
-        if args.jobs is not None:
-            self._jobs = args.jobs
-        else:
-            self._jobs = self.get_num_of_cpu()
+        self._jobs = args.jobs
 
         self._has_sourcemap = args.source_map
-        self._web_advanced = args.advanced
         self._no_res = args.no_res
-
-        if args.output_dir is None:
-            self._output_dir = self._get_output_dir()
-        else:
-            if os.path.isabs(args.output_dir):
-                self._output_dir = args.output_dir
-            else:
-                self._output_dir = os.path.abspath(args.output_dir)
-
+        self._output_dir = self._get_output_dir()
         self._sign_id = args.sign_id
 
         if self._project._is_lua_project():
@@ -159,21 +120,6 @@ class CCPluginCompile(cocos.CCPlugin):
             self._lua_encrypt_sign = args.lua_encrypt_sign
 
         self._gen_custom_step_args()
-
-    def get_num_of_cpu(self):
-        try:
-            platform = sys.platform
-            if platform == 'win32':
-                if 'NUMBER_OF_PROCESSORS' in os.environ:
-                    return int(os.environ['NUMBER_OF_PROCESSORS'])
-                else:
-                    return 1
-            else:
-                from numpy.distutils import cpuinfo
-                return cpuinfo.cpu._getNCPUs()
-        except Exception:
-            print "Can't know cpuinfo, use default 1 cpu"
-            return 1
 
     def _get_output_dir(self):
         project_dir = self._project.get_project_dir()
@@ -184,7 +130,7 @@ class CCPluginCompile(cocos.CCPlugin):
             else:
                 output_dir = os.path.join(project_dir, CCPluginCompile.OUTPUT_DIR_SCRIPT_RELEASE, cur_platform)
         else:
-            output_dir = os.path.join(project_dir, CCPluginCompile.OUTPUT_DIR_NATIVE, self._mode, cur_platform)
+            output_dir = os.path.join(project_dir, CCPluginCompile.OUTPUT_DIR_SCRIPT_RELEASE, cur_platform)
 
         return output_dir
 
@@ -372,58 +318,18 @@ class CCPluginCompile(cocos.CCPlugin):
         args_ndk_copy = self._custom_step_args.copy()
         target_platform = self._platforms.get_current_platform()
 
-        # update the project with the android platform
-        builder.update_project(sdk_root, self._ap)
-
         if not self._project._is_script_project() or self._project._is_native_support():
             if self._ndk_mode != "none":
                 # build native code
                 cocos.Logging.info("building native")
-                ndk_build_param = [
-                    "-j%s" % self._jobs
-                ]
-
-                if self.app_abi:
-                    abi_param = "APP_ABI=\"%s\"" % self.app_abi
-                    ndk_build_param.append(abi_param)
-
-                if self.ndk_toolchain:
-                    toolchain_param = "NDK_TOOLCHAIN=%s" % self.ndk_toolchain
-                    ndk_build_param.append(toolchain_param)
-
+                ndk_build_param = "-j%s" % self._jobs
                 self._project.invoke_custom_step_script(cocos_project.Project.CUSTOM_STEP_PRE_NDK_BUILD, target_platform, args_ndk_copy)
-
-                modify_mk = False
-                app_mk = os.path.join(project_android_dir, "jni/Application.mk")
-                mk_content = None
-                if self.cppflags and os.path.exists(app_mk):
-                    # record the content of Application.mk
-                    f = open(app_mk)
-                    mk_content = f.read()
-                    f.close()
-
-                    # Add cpp flags
-                    f = open(app_mk, "a")
-                    f.write("\nAPP_CPPFLAGS += %s" % self.cppflags)
-                    f.close()
-                    modify_mk = True
-
-                try:
-                    builder.do_ndk_build(ndk_build_param, self._ndk_mode)
-                except:
-                    raise cocos.CCPluginError("Ndk build failed!")
-                finally:
-                    # roll-back the Application.mk
-                    if modify_mk:
-                        f = open(app_mk, "w")
-                        f.write(mk_content)
-                        f.close()
-
+                builder.do_ndk_build(ndk_build_param, self._ndk_mode)
                 self._project.invoke_custom_step_script(cocos_project.Project.CUSTOM_STEP_POST_NDK_BUILD, target_platform, args_ndk_copy)
 
         # build apk
         cocos.Logging.info("building apk")
-        self.apk_path = builder.do_build_apk(sdk_root, ant_root, build_mode, output_dir, self._custom_step_args, self)
+        self.apk_path = builder.do_build_apk(sdk_root, ant_root, self._ap, build_mode, output_dir, self._custom_step_args, self)
 
         cocos.Logging.info("build succeeded.")
 
@@ -520,11 +426,17 @@ class CCPluginCompile(cocos.CCPlugin):
         if not cocos.os_is_mac():
             raise cocos.CCPluginError("Please build on MacOSX")
 
-        if self._sign_id is not None:
-            cocos.Logging.info("Code Sign Identity: %s" % self._sign_id)
-            self.use_sdk = 'iphoneos'
-        else:
-            self.use_sdk = 'iphonesimulator'
+        need_record_sign_id = False
+        if self._mode == "release":
+            if self._sign_id is None:
+                self._sign_id = self._project.get_proj_config(CCPluginCompile.PROJ_CFG_KEY_IOS_SIGN_ID)
+            else:
+                need_record_sign_id = True
+
+            if self._sign_id is None:
+                raise cocos.CCPluginError("Please specify the code sign identity by \"--sign-identity\" if you want to compile with release mode.")
+            else:
+                cocos.Logging.info("Code Sign Identity: %s" % self._sign_id)
 
         self.check_ios_mac_build_depends()
 
@@ -549,25 +461,21 @@ class CCPluginCompile(cocos.CCPlugin):
             raise cocos.CCPluginError(message)
 
         targetName = None
-        if self.xcode_target_name is not None:
-            targetName = self.xcode_target_name
+        cfg_obj = self._platforms.get_current_config()
+        if cfg_obj.target_name is not None:
+            targetName = cfg_obj.target_name
         else:
-            cfg_obj = self._platforms.get_current_config()
-            if cfg_obj.target_name is not None:
-                targetName = cfg_obj.target_name
-            else:
-                names = re.split("\*", targets.group())
-                for name in names:
-                    if "iOS" in name:
-                        targetName = str.strip(name)
-                        break
+            names = re.split("\*", targets.group())
+            for name in names:
+                if "iOS" in name:
+                    targetName = str.strip(name)
 
         if targetName is None:
             message = "Can't find iOS target"
             raise cocos.CCPluginError(message)
 
         if os.path.isdir(output_dir):
-            target_app_dir = os.path.join(output_dir, "%s.app" % targetName)
+            target_app_dir = os.path.join(output_dir, "%s.app" % targetName[:targetName.find(' ')])
             if os.path.isdir(target_app_dir):
                 shutil.rmtree(target_app_dir)
 
@@ -597,35 +505,45 @@ class CCPluginCompile(cocos.CCPlugin):
                 "%s" % 'Debug' if self._mode == 'debug' else 'Release',
                 "-target",
                 "\"%s\"" % targetName,
-                "%s" % "-arch i386" if self.use_sdk == 'iphonesimulator' else '',
+                "%s" % "-arch i386" if self._mode == 'debug' else '',
                 "-sdk",
-                "%s" % self.use_sdk,
+                "%s" % 'iphonesimulator' if self._mode == 'debug' else 'iphoneos',
                 "CONFIGURATION_BUILD_DIR=%s" % (output_dir)
                 ])
 
-            if self._sign_id is not None:
+            if self._mode == 'release':
                 command = "%s CODE_SIGN_IDENTITY=\"%s\"" % (command, self._sign_id)
 
             self._run_cmd(command)
 
             filelist = os.listdir(output_dir)
 
+            app_name = targetName
             for filename in filelist:
                 name, extention = os.path.splitext(filename)
                 if extention == '.a':
                     filename = os.path.join(output_dir, filename)
                     os.remove(filename)
+                if extention == '.app' and name == targetName:
+                    filename = os.path.join(output_dir, filename)
+                    app_name = name[:name.find(' ')]
+                    newname = os.path.join(output_dir, app_name + extention)
+                    os.rename(filename, newname)
+                    self._iosapp_path = newname
 
-            self._iosapp_path = os.path.join(output_dir, "%s.app" % targetName)
             if self._no_res:
                 self._remove_res(self._iosapp_path)
 
-            if self._sign_id is not None:
+            if self._mode == 'release':
                 # generate the ipa
-                app_path = os.path.join(output_dir, "%s.app" % targetName)
-                ipa_path = os.path.join(output_dir, "%s.ipa" % targetName)
-                ipa_cmd = "xcrun -sdk %s PackageApplication -v \"%s\" -o \"%s\"" % (self.use_sdk, app_path, ipa_path)
+                app_path = os.path.join(output_dir, "%s.app" % app_name)
+                ipa_path = os.path.join(output_dir, "%s.ipa" % app_name)
+                ipa_cmd = "xcrun -sdk iphoneos PackageApplication -v \"%s\" -o \"%s\"" % (app_path, ipa_path)
                 self._run_cmd(ipa_cmd)
+
+                # record the sign id if necessary
+                if need_record_sign_id:
+                    self._project.write_proj_config(CCPluginCompile.PROJ_CFG_KEY_IOS_SIGN_ID, self._sign_id)
 
             cocos.Logging.info("build succeeded.")
         except:
@@ -674,24 +592,21 @@ class CCPluginCompile(cocos.CCPlugin):
             raise cocos.CCPluginError(message)
 
         targetName = None
-        if self.xcode_target_name is not None:
-            targetName = self.xcode_target_name
+        cfg_obj = self._platforms.get_current_config()
+        if cfg_obj.target_name is not None:
+            targetName = cfg_obj.target_name
         else:
-            cfg_obj = self._platforms.get_current_config()
-            if cfg_obj.target_name is not None:
-                targetName = cfg_obj.target_name
-            else:
-                names = re.split("\*", targets.group())
-                for name in names:
-                    if "Mac" in name:
-                        targetName = str.strip(name)
+            names = re.split("\*", targets.group())
+            for name in names:
+                if "Mac" in name:
+                    targetName = str.strip(name)
 
         if targetName is None:
             message = "Can't find Mac target"
             raise cocos.CCPluginError(message)
 
         if os.path.isdir(output_dir):
-            target_app_dir = os.path.join(output_dir, "%s.app" % targetName)
+            target_app_dir = os.path.join(output_dir, "%s.app" % targetName[:targetName.find(' ')])
             if os.path.isdir(target_app_dir):
                 shutil.rmtree(target_app_dir)
 
@@ -733,8 +648,14 @@ class CCPluginCompile(cocos.CCPlugin):
                 if extention == '.a':
                     filename = os.path.join(output_dir, filename)
                     os.remove(filename)
+                if extention == '.app' and name == targetName:
+                    filename = os.path.join(output_dir, filename)
+                    if ' ' in name:
+                        filename = os.path.join(output_dir, filename)
+                        newname = os.path.join(output_dir, name[:name.find(' ')]+extention)
+                        os.rename(filename, newname)
+                        self._macapp_path = newname
 
-            self._macapp_path = os.path.join(output_dir, "%s.app" % targetName)
             if self._no_res:
                 resource_path = os.path.join(self._macapp_path, "Contents", "Resources")
                 self._remove_res(resource_path)
@@ -792,7 +713,7 @@ class CCPluginCompile(cocos.CCPlugin):
 
         try:
             for reg_flag in reg_flag_list:
-                cocos.Logging.info("find vs in reg : %s" % ("32bit" if reg_flag == _winreg.KEY_WOW64_32KEY else "64bit"))
+                cocos.Logging.info("find vs in reg : %s" % "32bit" if reg_flag == _winreg.KEY_WOW64_32KEY else "64bit" )
                 vs = _winreg.OpenKey(
                     _winreg.HKEY_LOCAL_MACHINE,
                     r"SOFTWARE\Microsoft\VisualStudio",
@@ -803,29 +724,25 @@ class CCPluginCompile(cocos.CCPlugin):
                 try:
                     i = 0
                     while True:
+                        # enum the keys in vs reg
+                        version = _winreg.EnumKey(vs, i)
                         try:
-                            # enum the keys in vs reg
-                            try:
-                                version = _winreg.EnumKey(vs, i)
-                            except WindowsError:
-                                break
                             find_ver = float(version)
-
-                            # find the vs which version >= required version
-                            if find_ver >= float(require_version):
-                                key = _winreg.OpenKey(vs, r"SxS\VS7")
-                                vsPath, type = _winreg.QueryValueEx(key, version)
-
-                                if os.path.exists(vsPath):
-                                    if float(version) > float(require_version):
-                                        needUpgrade = True
-                                    break
-                                else:
-                                    vsPath = None
                         except:
                             continue
-                        finally:
-                            i += 1
+
+                        # find the vs which version >= required version
+                        if find_ver >= float(require_version):
+                            key = _winreg.OpenKey(vs, r"SxS\VS7")
+                            vsPath, type = _winreg.QueryValueEx(key, version)
+
+                            if os.path.exists(vsPath):
+                                if float(version) > float(require_version):
+                                    needUpgrade = True
+                                break
+                            else:
+                                vsPath = None
+                        i += 1
                 except:
                     pass
 
@@ -985,26 +902,23 @@ class CCPluginCompile(cocos.CCPlugin):
         else:
             self.sub_url = '/'
 
-        output_dir = "publish"
         if self._is_debug_mode():
-            output_dir = "runtime"
-            if not self._web_advanced:
-                return
-
-        self.sub_url = '%s%s/html5/' % (self.sub_url, output_dir)
+            return
+        else:
+            self.sub_url = '%spublish/html5/' % self.sub_url
 
         f = open(os.path.join(project_dir, "project.json"))
         project_json = json.load(f)
         f.close()
         engine_dir = os.path.join(project_json["engineDir"])
         realEngineDir = os.path.normpath(os.path.join(project_dir, engine_dir))
-        publish_dir = os.path.normpath(os.path.join(project_dir, output_dir, "html5"))
+        publish_dir = os.path.normpath(os.path.join(project_dir, "publish", "html5"))
 
         # need to config in options of command
         buildOpt = {
                 "outputFileName" : "game.min.js",
-                "debug": "true" if self._is_debug_mode() else "false",
-                "compilationLevel" : "advanced" if self._web_advanced else "simple",
+                #"compilationLevel" : "simple",
+                "compilationLevel" : "advanced",
                 "sourceMapOpened" : True if self._has_sourcemap else False
                 }
 

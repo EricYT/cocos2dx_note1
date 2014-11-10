@@ -35,7 +35,7 @@ THE SOFTWARE.
 NS_CC_BEGIN
 
 template<class T>
-class Vector
+class CC_DLL Vector
 {
 public:
     // ------------------------------------------

@@ -37,7 +37,6 @@ THE SOFTWARE.
 #include "base/CCEventListenerCustom.h"
 #include "base/CCEventType.h"
 #include "base/CCDirector.h"
-#include "base/CCEventDispatcher.h"
 
 NS_CC_BEGIN
 
@@ -114,7 +113,7 @@ void UniformValue::apply()
 void UniformValue::setCallback(const std::function<void(GLProgram*, Uniform*)> &callback)
 {
 	// delete previously set callback
-	// TODO: memory will leak if the user does:
+	// XXX TODO: memory will leak if the user does:
 	//    value->setCallback();
 	//    value->setFloat();
 	if (_useCallback)
@@ -280,9 +279,9 @@ GLProgramState::GLProgramState()
 , _uniformAttributeValueDirty(true)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    /** listen the event that renderer was recreated on Android/WP8 */
-    CCLOG("create rendererRecreatedListener for GLProgramState");
-    _backToForegroundlistener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [this](EventCustom*) { _uniformAttributeValueDirty = true; });
+    // listen the event when app go to foreground
+    CCLOG("create _backToForegroundlistener for GLProgramState");
+    _backToForegroundlistener = EventListenerCustom::create(EVENT_COME_TO_FOREGROUND, [this](EventCustom*) { _uniformAttributeValueDirty = true; });
     Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(_backToForegroundlistener, -1);
 #endif
 }

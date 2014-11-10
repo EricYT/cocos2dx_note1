@@ -146,7 +146,7 @@ Sprite* SubTest::createSpriteWithTag(int tag)
 {
     TextureCache *cache = Director::getInstance()->getTextureCache();
 
-    Sprite* sprite = nullptr;
+    Sprite* sprite = NULL;
     switch (subtestNumber)
     {
         ///
@@ -319,7 +319,7 @@ void SpriteMenuLayer::backCallback(Ref* sender)
 
 void SpriteMenuLayer::showCurrentTest()
 {
-    SpriteMainScene* scene = nullptr;
+    SpriteMainScene* scene = NULL;
     auto pPreScene = (SpriteMainScene*) getParent();
     int nSubTest = pPreScene->getSubTestNum();
     int nNodes   = pPreScene->getNodesNum();
@@ -327,25 +327,25 @@ void SpriteMenuLayer::showCurrentTest()
     switch (_curCase)
     {
     case 0:
-        scene = new (std::nothrow) SpritePerformTest1;
+        scene = new SpritePerformTest1;
         break;
     case 1:
-        scene = new (std::nothrow) SpritePerformTest2;
+        scene = new SpritePerformTest2;
         break;
     case 2:
-        scene = new (std::nothrow) SpritePerformTest3;
+        scene = new SpritePerformTest3;
         break;
     case 3:
-        scene = new (std::nothrow) SpritePerformTest4;
+        scene = new SpritePerformTest4;
         break;
     case 4:
-        scene = new (std::nothrow) SpritePerformTest5;
+        scene = new SpritePerformTest5;
         break;
     case 5:
-        scene = new (std::nothrow) SpritePerformTest6;
+        scene = new SpritePerformTest6;
         break;
     case 6:
-        scene = new (std::nothrow) SpritePerformTest7;
+        scene = new SpritePerformTest7;
         break;
     }
     
@@ -372,7 +372,7 @@ void SpriteMainScene::initWithSubTest(int asubtest, int nNodes)
     //srandom(0);
 
     subtestNumber = asubtest;
-    _subTest = new (std::nothrow) SubTest;
+    _subTest = new SubTest;
     _subTest->initWithSubTest(asubtest, this);
 
     auto s = Director::getInstance()->getWinSize();
@@ -386,7 +386,7 @@ void SpriteMainScene::initWithSubTest(int asubtest, int nNodes)
     auto increase = MenuItemFont::create(" + ", CC_CALLBACK_1(SpriteMainScene::onIncrease, this));
     increase->setColor(Color3B(0,200,20));
 
-    auto menu = Menu::create(decrease, increase, nullptr);
+    auto menu = Menu::create(decrease, increase, NULL);
     menu->alignItemsHorizontally();
     menu->setPosition(Vec2(s.width/2, s.height-65));
     addChild(menu, 1);
@@ -397,7 +397,7 @@ void SpriteMainScene::initWithSubTest(int asubtest, int nNodes)
     addChild(infoLabel, 1, kTagInfoLayer);
 
     // add menu
-    auto menuLayer = new (std::nothrow) SpriteMenuLayer(true, TEST_COUNT, SpriteMainScene::_s_nSpriteCurCase);
+    auto menuLayer = new SpriteMenuLayer(true, TEST_COUNT, SpriteMainScene::_s_nSpriteCurCase);
     addChild(menuLayer, 1, kTagMenuLayer);
     menuLayer->release();
     
@@ -410,7 +410,7 @@ void SpriteMainScene::initWithSubTest(int asubtest, int nNodes)
     MenuItemFont::setFontName("fonts/arial.ttf");
     MenuItemFont::setFontSize(24);
     
-    MenuItemFont* autoTestItem = nullptr;
+    MenuItemFont* autoTestItem = NULL;
     if (SpriteMainScene::_s_autoTest)
     {
         autoTestItem = MenuItemFont::create("Auto Test On",CC_CALLBACK_1(SpriteMainScene::onAutoTest, this));
@@ -484,7 +484,7 @@ SpriteMainScene::~SpriteMainScene()
     if (_subTest)
     {
         delete _subTest;
-        _subTest = nullptr;
+        _subTest = NULL;
     }
 }
 
@@ -617,30 +617,30 @@ void SpriteMainScene::onExit()
 void  SpriteMainScene::autoShowSpriteTests(int curCase, int subTest,int nodes)
 {
     
-    SpriteMainScene* scene = nullptr;
+    SpriteMainScene* scene = NULL;
     
     switch (curCase)
     {
         case 0:
-            scene = new (std::nothrow) SpritePerformTest1;
+            scene = new SpritePerformTest1;
             break;
         case 1:
-            scene = new (std::nothrow) SpritePerformTest2;
+            scene = new SpritePerformTest2;
             break;
         case 2:
-            scene = new (std::nothrow) SpritePerformTest3;
+            scene = new SpritePerformTest3;
             break;
         case 3:
-            scene = new (std::nothrow) SpritePerformTest4;
+            scene = new SpritePerformTest4;
             break;
         case 4:
-            scene = new (std::nothrow) SpritePerformTest5;
+            scene = new SpritePerformTest5;
             break;
         case 5:
-            scene = new (std::nothrow) SpritePerformTest6;
+            scene = new SpritePerformTest6;
             break;
         case 6:
-            scene = new (std::nothrow) SpritePerformTest7;
+            scene = new SpritePerformTest7;
             break;
     }
     
@@ -661,7 +661,7 @@ void SpriteMainScene::beginAutoTest()
         SpriteMainScene::_s_nSpriteCurCase = 0;
     }
     
-    auto scene = new (std::nothrow) SpritePerformTest1;
+    auto scene = new SpritePerformTest1;
     scene->initWithSubTest(1, 500);
     Director::getInstance()->replaceScene(scene);
     scene->release();
@@ -760,12 +760,12 @@ void performanceActions(Sprite* sprite)
     float period = 0.5f + (rand() % 1000) / 500.0f;
     auto rot = RotateBy::create(period, 360.0f * CCRANDOM_0_1());
     auto rot_back = rot->reverse();
-    auto permanentRotation = RepeatForever::create(Sequence::create(rot, rot_back, nullptr));
+    auto permanentRotation = RepeatForever::create(Sequence::create(rot, rot_back, NULL));
     sprite->runAction(permanentRotation);
 
     float growDuration = 0.5f + (rand() % 1000) / 500.0f;
     auto grow = ScaleBy::create(growDuration, 0.5f, 0.5f);
-    auto permanentScaleLoop = RepeatForever::create(Sequence::create(grow, grow->reverse(), nullptr));
+    auto permanentScaleLoop = RepeatForever::create(Sequence::create(grow, grow->reverse(), NULL));
     sprite->runAction(permanentScaleLoop);
 }
 
@@ -780,7 +780,7 @@ void performanceActions20(Sprite* sprite)
     float period = 0.5f + (rand() % 1000) / 500.0f;
     auto rot = RotateBy::create(period, 360.0f * CCRANDOM_0_1());
     auto rot_back = rot->reverse();
-    auto permanentRotation = RepeatForever::create(Sequence::create(rot, rot_back, nullptr));
+    auto permanentRotation = RepeatForever::create(Sequence::create(rot, rot_back, NULL));
     sprite->runAction(permanentRotation);
 
     float growDuration = 0.5f + (rand() % 1000) / 500.0f;
@@ -989,7 +989,7 @@ void SpritePerformTest7::doTest(Sprite* sprite)
 void runSpriteTest()
 {
     SpriteMainScene::_s_autoTest = false;
-    auto scene = new (std::nothrow) SpritePerformTest1;
+    auto scene = new SpritePerformTest1;
     scene->initWithSubTest(1, 50);
     Director::getInstance()->replaceScene(scene);
     scene->release();

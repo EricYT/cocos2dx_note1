@@ -25,8 +25,13 @@ THE SOFTWARE.
 #ifndef  _RUNTIME__H_
 #define  _RUNTIME__H_
 
+#include <string>
+using namespace std;
+
 bool initRuntime();
 bool startRuntime();
+
+bool reloadScript(const string& modulefile);
 
 #endif // _RUNTIME__H_
 

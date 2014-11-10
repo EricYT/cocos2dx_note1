@@ -23,7 +23,7 @@ void testScene_callback(Ref *sender )
 {
     auto scene = Scene::create();
 
-    auto layer = new (std::nothrow) TestController();
+    auto layer = new TestController();
     scene->addChild(layer);
     layer->release();
 
@@ -41,7 +41,7 @@ void TestScene::onEnter()
     auto label = Label::createWithTTF(ttfConfig,"MainMenu");
 
     auto menuItem = MenuItemLabel::create(label, testScene_callback );
-    auto menu = Menu::create(menuItem, nullptr);
+    auto menu = Menu::create(menuItem, NULL);
 
     menu->setPosition( Vec2::ZERO );
     menuItem->setPosition( Vec2( VisibleRect::right().x - 50, VisibleRect::bottom().y + 25) );

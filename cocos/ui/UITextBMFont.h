@@ -26,7 +26,6 @@ THE SOFTWARE.
 #define __UILABELBMFONT_H__
 
 #include "ui/UIWidget.h"
-#include "ui/GUIExport.h"
 
 NS_CC_BEGIN
 
@@ -38,7 +37,7 @@ namespace ui {
 *   @js NA
 *   @lua NA
 */    
-class CC_GUI_DLL TextBMFont : public Widget
+class TextBMFont : public Widget
 {
     
     DECLARE_CLASS_GUI_INFO
@@ -81,7 +80,7 @@ public:
      */
     ssize_t getStringLength()const;
 
-    virtual Size getVirtualRendererSize() const override;
+    virtual const Size& getVirtualRendererSize() const override;
     virtual Node* getVirtualRenderer() override;
     /**
      * Returns the "class name" of widget.

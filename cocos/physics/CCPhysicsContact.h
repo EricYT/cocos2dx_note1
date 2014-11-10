@@ -44,7 +44,7 @@ class PhysicsContactInfo;
 
 typedef Vec2 Vect;
 
-typedef struct CC_DLL PhysicsContactData
+typedef struct PhysicsContactData
 {
     static const int POINT_MAX = 4;
     Vec2 points[POINT_MAX];
@@ -59,7 +59,7 @@ typedef struct CC_DLL PhysicsContactData
 /**
  * @brief Contact infomation. it will created automatically when two shape contact with each other. and it will destoried automatically when two shape separated.
  */
-class CC_DLL PhysicsContact : public EventCustom
+class PhysicsContact : public EventCustom
 {
 public:
     
@@ -129,7 +129,7 @@ private:
 /*
  * @brief presolve value generated when onContactPreSolve called.
  */
-class CC_DLL PhysicsContactPreSolve
+class PhysicsContactPreSolve
 {
 public:
     /** get restitution between two bodies*/
@@ -160,7 +160,7 @@ private:
 /*
  * @brief postsolve value generated when onContactPostSolve called.
  */
-class CC_DLL PhysicsContactPostSolve
+class PhysicsContactPostSolve
 {
 public:
     /** get restitution between two bodies*/
@@ -181,7 +181,7 @@ private:
 };
 
 /* contact listener. it will recive all the contact callbacks. */
-class CC_DLL EventListenerPhysicsContact : public EventListenerCustom
+class EventListenerPhysicsContact : public EventListenerCustom
 {
 public:
     /** create the listener */
@@ -227,7 +227,7 @@ protected:
 };
 
 /** this event listener only be called when bodyA and bodyB have contacts */
-class CC_DLL EventListenerPhysicsContactWithBodies : public EventListenerPhysicsContact
+class EventListenerPhysicsContactWithBodies : public EventListenerPhysicsContact
 {
 public:
     static EventListenerPhysicsContactWithBodies* create(PhysicsBody* bodyA, PhysicsBody* bodyB);
@@ -245,7 +245,7 @@ protected:
 };
 
 /** this event listener only be called when shapeA and shapeB have contacts */
-class CC_DLL EventListenerPhysicsContactWithShapes : public EventListenerPhysicsContact
+class EventListenerPhysicsContactWithShapes : public EventListenerPhysicsContact
 {
 public:
     static EventListenerPhysicsContactWithShapes* create(PhysicsShape* shapeA, PhysicsShape* shapeB);
@@ -263,7 +263,7 @@ protected:
 };
 
 /** this event listener only be called when shapeA or shapeB is in the group your specified */
-class CC_DLL EventListenerPhysicsContactWithGroup : public EventListenerPhysicsContact
+class EventListenerPhysicsContactWithGroup : public EventListenerPhysicsContact
 {
 public:
     static EventListenerPhysicsContactWithGroup* create(int group);

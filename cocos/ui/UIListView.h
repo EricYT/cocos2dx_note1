@@ -27,22 +27,21 @@ THE SOFTWARE.
 #define __UILISTVIEW_H__
 
 #include "ui/UIScrollView.h"
-#include "ui/GUIExport.h"
 
 NS_CC_BEGIN
 
 namespace ui{
     
-typedef enum
+CC_DEPRECATED_ATTRIBUTE typedef enum
 {
     LISTVIEW_ONSELECTEDITEM_START,
     LISTVIEW_ONSELECTEDITEM_END
 }ListViewEventType;
 
-typedef void (Ref::*SEL_ListViewEvent)(Ref*,ListViewEventType);
+CC_DEPRECATED_ATTRIBUTE typedef void (Ref::*SEL_ListViewEvent)(Ref*,ListViewEventType);
 #define listvieweventselector(_SELECTOR) (SEL_ListViewEvent)(&_SELECTOR)
 
-class CC_GUI_DLL ListView : public ScrollView
+class ListView : public ScrollView
 {
  
     DECLARE_CLASS_GUI_INFO
@@ -181,9 +180,9 @@ public:
     /**
      * Changes scroll direction of scrollview.
      *
-     * @see Direction Direction::VERTICAL means vertical scroll, Direction::HORIZONTAL means horizontal scroll
+     * @see SCROLLVIEW_DIR      SCROLLVIEW_DIR_VERTICAL means vertical scroll, SCROLLVIEW_DIR_HORIZONTAL means horizontal scroll
      *
-     * @param dir, set the list view's scroll direction
+     * @param SCROLLVIEW_DIR
      */
     virtual void setDirection(Direction dir) override;
     

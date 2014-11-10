@@ -26,22 +26,22 @@
 #define __CCANIMATE3D_H__
 
 #include <map>
-#include <unordered_map>
 
 #include "3d/CCAnimation3D.h"
-#include "3d/3dExport.h"
+
 #include "base/ccMacros.h"
 #include "base/CCRef.h"
+#include "base/ccTypes.h"
 #include "2d/CCActionInterval.h"
 
 NS_CC_BEGIN
 
-class Bone3D;
-class Sprite3D;
+class Animation3D;
+class Bone;
 /**
  * Animate3D, Animates a Sprite3D given with an Animation3D
  */
-class CC_3D_DLL Animate3D: public ActionInterval
+class Animate3D: public ActionInterval
 {
 public:
     
@@ -59,7 +59,6 @@ public:
     //
     // Overrides
     //
-    virtual void stop() override;
     virtual void step(float dt) override;
     virtual void startWithTarget(Node *target) override;
     virtual Animate3D* reverse() const override;
@@ -67,52 +66,32 @@ public:
     
     virtual void update(float t) override;
     
-    /**get & set speed, negative speed means playing reverse */
-    float getSpeed() const;
-    void setSpeed(float speed);
+    /**get & set speed */
+    float getSpeed() const { return _speed; }
+    void setSpeed(float speed) { _speed = speed; }
     
-    /**get & set blend weight, weight must positive*/
+    /**get & set blend weight*/
     float getWeight() const { return _weight; }
-    void setWeight(float weight);
+    void setWeight(float weight) { _weight = weight; }
     
-    /** animate transistion time */
-    static float getTransitionTime() { return _transTime; }
-    
-    /**get & set play reverse, these are deprecated, use set negative speed instead*/
-    CC_DEPRECATED_ATTRIBUTE bool getPlayBack() const { return _playReverse; }
-    CC_DEPRECATED_ATTRIBUTE void setPlayBack(bool reverse) { _playReverse = reverse; }
+    /**get & set play back*/
+    bool getPlayBack() const { return _playBack; }
+    void setPlayBack(bool playBack) { _playBack = playBack; }
     
 CC_CONSTRUCTOR_ACCESS:
     
     Animate3D();
     virtual ~Animate3D();
     
-    void removeFromMap();
-    
 protected:
-    enum class Animate3DState
-    {
-        FadeIn,
-        FadeOut,
-        Running,
-    };
-    Animate3DState _state; //animation state
     Animation3D* _animation; //animation data
 
-    float      _absSpeed; //playing speed
+    float      _speed; //playing speed
     float      _weight; //blend weight
     float      _start; //start time 0 - 1, used to generate sub Animate3D
     float      _last; //last time 0 - 1, used to generate sub Animate3D
-    bool       _playReverse; // is playing reverse
-    static float      _transTime; //transition time from one animate3d to another
-    float      _accTransTime; // acculate transition time
-    float      _lastTime;     // last t (0 - 1)
-    std::unordered_map<Bone3D*, Animation3D::Curve*> _boneCurves; //weak ref
-
-    //sprite animates
-    static std::unordered_map<Sprite3D*, Animate3D*> s_fadeInAnimates;
-    static std::unordered_map<Sprite3D*, Animate3D*> s_fadeOutAnimates;
-    static std::unordered_map<Sprite3D*, Animate3D*> s_runningAnimates;
+    bool       _playBack; // is playing back
+    std::map<Bone*, Animation3D::Curve*> _boneCurves; //weak ref
 };
 
 NS_CC_END

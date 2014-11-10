@@ -27,7 +27,6 @@
 
 #include "base/CCRef.h"
 #include "base/CCVector.h"
-#include "ui/GUIExport.h"
 
 NS_CC_BEGIN
 
@@ -37,7 +36,7 @@ class LayoutProtocol;
 class Widget;
 class RelativeLayoutParameter;
 
-class CC_GUI_DLL LayoutManager : public Ref
+class LayoutManager : public Ref
 {
 public:
     virtual ~LayoutManager(){};
@@ -48,7 +47,7 @@ public:
     friend class Layout;
 };
 
-class CC_GUI_DLL LinearVerticalLayoutManager : public LayoutManager
+class LinearVerticalLayoutManager : public LayoutManager
 {
 private:
     LinearVerticalLayoutManager(){};
@@ -59,7 +58,7 @@ private:
     friend class Layout;
 };
 
-class CC_GUI_DLL LinearHorizontalLayoutManager : public LayoutManager
+class LinearHorizontalLayoutManager : public LayoutManager
 {
 private:
     LinearHorizontalLayoutManager(){};
@@ -70,7 +69,7 @@ private:
     friend class Layout;
 };
 
-class CC_GUI_DLL RelativeLayoutManager : public LayoutManager
+class RelativeLayoutManager : public LayoutManager
 {
 private:
     RelativeLayoutManager()

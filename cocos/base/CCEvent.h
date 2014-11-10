@@ -26,8 +26,11 @@
 #ifndef __CCEVENT_H__
 #define __CCEVENT_H__
 
+#include <string>
+#include <stdint.h>
+
 #include "base/CCRef.h"
-#include "platform/CCPlatformMacros.h"
+#include "base/CCPlatformMacros.h"
 
 NS_CC_BEGIN
 
@@ -36,7 +39,7 @@ class Node;
 /**
  *   Base class of all kinds of events.
  */
-class CC_DLL Event : public Ref
+class Event : public Ref
 {
 public:
     enum class Type
@@ -46,11 +49,13 @@ public:
         ACCELERATION,
         MOUSE,
         FOCUS,
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
         GAME_CONTROLLER,
+#endif
         CUSTOM
     };
     
-CC_CONSTRUCTOR_ACCESS:
+protected:
     /** Constructor */
     Event(Type type);
 public:

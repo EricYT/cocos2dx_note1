@@ -47,7 +47,7 @@ class EventCustom;
 // UniformValue
 //
 //
-class CC_DLL UniformValue
+class UniformValue
 {
     friend class GLProgram;
     friend class GLProgramState;
@@ -99,7 +99,7 @@ protected:
 // VertexAttribValue
 //
 //
-class CC_DLL VertexAttribValue
+class VertexAttribValue
 {
     friend class GLProgram;
     friend class GLProgramState;
@@ -143,7 +143,7 @@ protected:
  A GLProgram can be used by thousands of Nodes, but if different uniform values 
  are going to be used, then each node will need its own GLProgramState
  */
-class CC_DLL GLProgramState : public Ref
+class GLProgramState : public Ref
 {
     friend class GLProgramStateCache;
 public:

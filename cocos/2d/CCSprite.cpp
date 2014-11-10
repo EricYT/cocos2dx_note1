@@ -27,14 +27,28 @@ THE SOFTWARE.
 
 #include "2d/CCSprite.h"
 
+#include <string.h>
+#include <algorithm>
+
 #include "2d/CCSpriteBatchNode.h"
+#include "2d/CCAnimation.h"
 #include "2d/CCAnimationCache.h"
 #include "2d/CCSpriteFrame.h"
 #include "2d/CCSpriteFrameCache.h"
+#include "2d/CCDrawingPrimitives.h"
 #include "renderer/CCTextureCache.h"
 #include "renderer/CCTexture2D.h"
+#include "renderer/CCGLProgramState.h"
+#include "renderer/ccGLStateCache.h"
+#include "renderer/CCGLProgram.h"
 #include "renderer/CCRenderer.h"
+#include "base/CCProfiling.h"
 #include "base/CCDirector.h"
+#include "base/CCDirector.h"
+#include "base/ccConfig.h"
+#include "math/CCGeometry.h"
+#include "math/CCAffineTransform.h"
+#include "math/TransformUtils.h"
 
 #include "deprecated/CCString.h"
 
@@ -47,7 +61,6 @@ NS_CC_BEGIN
 #define RENDER_IN_SUBPIXEL(__ARGS__) (ceil(__ARGS__))
 #endif
 
-// MARK: create, init, dealloc
 Sprite* Sprite::createWithTexture(Texture2D *texture)
 {
     Sprite *sprite = new (std::nothrow) Sprite();
@@ -263,10 +276,6 @@ Sprite::Sprite(void)
 , _texture(nullptr)
 , _insideBounds(true)
 {
-#if CC_SPRITE_DEBUG_DRAW
-    _debugDrawNode = DrawNode::create();
-    addChild(_debugDrawNode);
-#endif //CC_SPRITE_DEBUG_DRAW
 }
 
 Sprite::~Sprite(void)
@@ -283,7 +292,7 @@ Sprite::~Sprite(void)
  * It's used for creating a default texture when sprite's texture is set to nullptr.
  * Supposing codes as follows:
  *
- *   auto sp = new (std::nothrow) Sprite();
+ *   auto sp = new Sprite();
  *   sp->init();  // Texture was set to nullptr, in order to make opacity and color to work correctly, we need to create a 2x2 white texture.
  *
  * The test is in "TestCpp/SpriteTest/Sprite without texture".
@@ -298,7 +307,6 @@ static unsigned char cc_2x2_white_image[] = {
 
 #define CC_2x2_WHITE_IMAGE_KEY  "/cc_2x2_white_image"
 
-// MARK: texture
 void Sprite::setTexture(const std::string &filename)
 {
     Texture2D *texture = Director::getInstance()->getTextureCache()->addImage(filename);
@@ -324,7 +332,7 @@ void Sprite::setTexture(Texture2D *texture)
         // If texture wasn't in cache, create it from RAW data.
         if (texture == nullptr)
         {
-            Image* image = new (std::nothrow) Image();
+            Image* image = new Image();
             bool isOK = image->initWithRawData(cc_2x2_white_image, sizeof(cc_2x2_white_image), 2, 2, 8);
             CC_UNUSED_PARAM(isOK);
             CCASSERT(isOK, "The 2x2 empty texture was created unsuccessfully.");
@@ -489,8 +497,6 @@ void Sprite::setTextureCoords(Rect rect)
     }
 }
 
-// MARK: visit, draw, transform
-
 void Sprite::updateTransform(void)
 {
     CCASSERT(_batchNode, "updateTransform is only valid when Sprite is being rendered using an SpriteBatchNode");
@@ -589,20 +595,34 @@ void Sprite::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
         _quadCommand.init(_globalZOrder, _texture->getName(), getGLProgramState(), _blendFunc, &_quad, 1, transform);
         renderer->addCommand(&_quadCommand);
 #if CC_SPRITE_DEBUG_DRAW
-        _debugDrawNode->clear();
-        Vec2 vertices[4] = {
-            Vec2( _quad.bl.vertices.x, _quad.bl.vertices.y ),
-            Vec2( _quad.br.vertices.x, _quad.br.vertices.y ),
-            Vec2( _quad.tr.vertices.x, _quad.tr.vertices.y ),
-            Vec2( _quad.tl.vertices.x, _quad.tl.vertices.y ),
-        };
-        _debugDrawNode->drawPoly(vertices, 4, true, Color4F(1.0, 1.0, 1.0, 1.0));
+        _customDebugDrawCommand.init(_globalZOrder);
+        _customDebugDrawCommand.func = CC_CALLBACK_0(Sprite::drawDebugData, this);
+        renderer->addCommand(&_customDebugDrawCommand);
 #endif //CC_SPRITE_DEBUG_DRAW
     }
 }
+#if CC_SPRITE_DEBUG_DRAW
+void Sprite::drawDebugData()
+{
+    Director* director = Director::getInstance();
+    CCASSERT(nullptr != director, "Director is null when seting matrix stack");
+    Mat4 oldModelView;
+    oldModelView = director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
+    // draw bounding box
+    Vec2 vertices[4] = {
+        Vec2( _quad.bl.vertices.x, _quad.bl.vertices.y ),
+        Vec2( _quad.br.vertices.x, _quad.br.vertices.y ),
+        Vec2( _quad.tr.vertices.x, _quad.tr.vertices.y ),
+        Vec2( _quad.tl.vertices.x, _quad.tl.vertices.y ),
+    };
+    DrawPrimitives::drawPoly(vertices, 4, true);
+    
+    director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, oldModelView);
+}
+#endif //CC_SPRITE_DEBUG_DRAW
 
-// MARK: visit, draw, transform
-
+// Node overrides
 void Sprite::addChild(Node *child, int zOrder, int tag)
 {
     CCASSERT(child != nullptr, "Argument must be non-nullptr");
@@ -735,7 +755,7 @@ void Sprite::setDirtyRecursively(bool bValue)
     }
 }
 
-// FIXME: HACK: optimization
+// XXX HACK: optimization
 #define SET_DIRTY_RECURSIVELY() {                       \
                     if (! _recursiveDirty) {            \
                         _recursiveDirty = true;         \
@@ -865,7 +885,7 @@ bool Sprite::isFlippedY(void) const
 }
 
 //
-// MARK: RGBA protocol
+// RGBA protocol
 //
 
 void Sprite::updateColor(void)
@@ -918,7 +938,7 @@ bool Sprite::isOpacityModifyRGB(void) const
     return _opacityModifyRGB;
 }
 
-// MARK: Frames
+// Frames
 
 void Sprite::setSpriteFrame(const std::string &spriteFrameName)
 {
@@ -1012,7 +1032,7 @@ void Sprite::setBatchNode(SpriteBatchNode *spriteBatchNode)
     }
 }
 
-// MARK: Texture protocol
+// Texture protocol
 
 void Sprite::updateBlendFunc(void)
 {

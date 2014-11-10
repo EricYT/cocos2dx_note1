@@ -22,7 +22,7 @@ static Layer* createShaderLayer(int nIndex)
         case 9: return new ShaderGlow();
         case 10: return new ShaderMultiTexture();
     }
-    return nullptr;
+    return NULL;
 }
 
 static Layer* nextAction(void)
@@ -65,7 +65,7 @@ ShaderTestDemo::ShaderTestDemo()
 
 void ShaderTestDemo::backCallback(Ref* sender)
 {
-    auto s = new (std::nothrow) ShaderTestScene();
+    auto s = new ShaderTestScene();
     s->addChild( backAction() );
     Director::getInstance()->replaceScene(s);
     s->release();
@@ -73,7 +73,7 @@ void ShaderTestDemo::backCallback(Ref* sender)
 
 void ShaderTestDemo::nextCallback(Ref* sender)
 {
-    auto s = new (std::nothrow) ShaderTestScene();//CCScene::create();
+    auto s = new ShaderTestScene();//CCScene::create();
     s->addChild( nextAction() );
     Director::getInstance()->replaceScene(s);
     s->release();
@@ -91,7 +91,7 @@ std::string ShaderTestDemo::subtitle() const
 
 void ShaderTestDemo::restartCallback(Ref* sender)
 {
-    auto s = new (std::nothrow) ShaderTestScene();
+    auto s = new ShaderTestScene();
     s->addChild(restartAction()); 
 
     Director::getInstance()->replaceScene(s);
@@ -122,7 +122,7 @@ ShaderNode::~ShaderNode()
 
 ShaderNode* ShaderNode::shaderNodeWithVertex(const std::string &vert, const std::string& frag)
 {
-    auto node = new (std::nothrow) ShaderNode();
+    auto node = new ShaderNode();
     node->initWithVertex(vert, frag);
     node->autorelease();
 
@@ -132,7 +132,7 @@ ShaderNode* ShaderNode::shaderNodeWithVertex(const std::string &vert, const std:
 bool ShaderNode::initWithVertex(const std::string &vert, const std::string &frag)
 {
 #if CC_ENABLE_CACHE_TEXTURE_DATA
-    auto listener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [this](EventCustom* event){
+    auto listener = EventListenerCustom::create(EVENT_COME_TO_FOREGROUND, [this](EventCustom* event){
             this->setGLProgramState(nullptr);
             loadShaderVertex(_vertFileName, _fragFileName);
         });
@@ -439,7 +439,7 @@ SpriteBlur::~SpriteBlur()
 
 SpriteBlur* SpriteBlur::create(const char *pszFileName)
 {
-    SpriteBlur* pRet = new (std::nothrow) SpriteBlur();
+    SpriteBlur* pRet = new SpriteBlur();
     if (pRet && pRet->initWithFile(pszFileName))
     {
         pRet->autorelease();
@@ -458,7 +458,7 @@ bool SpriteBlur::initWithTexture(Texture2D* texture, const Rect& rect)
     if( Sprite::initWithTexture(texture, rect) ) 
     {
 #if CC_ENABLE_CACHE_TEXTURE_DATA
-        auto listener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [this](EventCustom* event){
+        auto listener = EventListenerCustom::create(EVENT_COME_TO_FOREGROUND, [this](EventCustom* event){
                 setGLProgram(nullptr);
                 initGLProgram();
             });

@@ -103,7 +103,7 @@ cocos2d::Node* SceneReader::createNodeWithSceneFile(const std::string &fileName,
 						nCount = tpChildArray[15].GetChildNum();
 					}
 					stExpCocoNode *pComponents = tpChildArray[15].GetChildArray(&tCocoLoader);
-					SerData *data = new (std::nothrow) SerData();
+					SerData *data = new SerData();
 					for (int i = 0; i < nCount; i++)
 					{
 						stExpCocoNode *subDict = pComponents[i].GetChildArray(&tCocoLoader);
@@ -279,7 +279,7 @@ Node* SceneReader::createObject(const rapidjson::Value &dict, cocos2d::Node* par
             const char *comName = DICTOOL->getStringValue_json(subDict, "classname");
             Component *com = this->createComponent(comName);
             CCLOG("classname = %s", comName);
-            SerData *data = new (std::nothrow) SerData();
+            SerData *data = new SerData();
             if (com != nullptr)
             {
                 data->_rData = &subDict;
@@ -369,7 +369,7 @@ cocos2d::Node* SceneReader::createObject(CocoLoader *cocoLoader, stExpCocoNode *
             count = pNodeArray[13].GetChildNum();
         }
         stExpCocoNode *pComponents = pNodeArray[13].GetChildArray(cocoLoader);
-        SerData *data = new (std::nothrow) SerData();
+        SerData *data = new SerData();
         for (int i = 0; i < count; ++i)
         {
             stExpCocoNode *subDict = pComponents[i].GetChildArray(cocoLoader);
@@ -475,7 +475,7 @@ void SceneReader::setPropertyFromJsonDict(const rapidjson::Value &root, cocos2d:
 {
     float x = DICTOOL->getFloatValue_json(root, "x");
     float y = DICTOOL->getFloatValue_json(root, "y");
-    node->setPosition(x, y);
+    node->setPosition(Vec2(x, y));
     
     const bool bVisible = (DICTOOL->getIntValue_json(root, "visible", 1) != 0);
     node->setVisible(bVisible);
@@ -493,9 +493,6 @@ void SceneReader::setPropertyFromJsonDict(const rapidjson::Value &root, cocos2d:
     
     float fRotationZ = DICTOOL->getFloatValue_json(root, "rotation"); 
     node->setRotation(fRotationZ);
-    
-    const char *sName = DICTOOL->getStringValue_json(root, "name", "");
-    node->setName(sName);
 }
     
     
@@ -504,7 +501,6 @@ void SceneReader::setPropertyFromJsonDict(CocoLoader *cocoLoader, stExpCocoNode 
     stExpCocoNode *stChildArray = cocoNode->GetChildArray(cocoLoader);
     float x = 0.0f, y = 0.0f, fScaleX = 1.0f, fScaleY = 1.0f, fRotationZ = 1.0f;
     bool bVisible = false;
-    const char *sName = "";
     int nTag = 0, nZorder = -1;
     
     for (int i = 0; i < cocoNode->GetChildNum(); ++i)
@@ -514,12 +510,12 @@ void SceneReader::setPropertyFromJsonDict(CocoLoader *cocoLoader, stExpCocoNode 
         
         if (key == "x")
         {
-            x = utils::atof(value.c_str());
+            x = atof(value.c_str());
             node->setPositionX(x);
         }
         else if (key == "y")
         {
-            y = utils::atof(value.c_str());
+            y = atof(value.c_str());
             node->setPositionY(y);
         }
         else if (key == "visible")
@@ -535,11 +531,11 @@ void SceneReader::setPropertyFromJsonDict(CocoLoader *cocoLoader, stExpCocoNode 
         else if (key == "zorder")
         {
             nZorder = atoi(value.c_str());
-            node->setLocalZOrder(nZorder);
+            node->setZOrder(nZorder);
         }
         else if(key == "scalex")
         {
-            fScaleX = utils::atof(value.c_str());
+            fScaleX = atof(value.c_str());
             node->setScaleX(fScaleX);
         }
         else if(key == "scaley")
@@ -549,13 +545,8 @@ void SceneReader::setPropertyFromJsonDict(CocoLoader *cocoLoader, stExpCocoNode 
         }
         else if(key == "rotation")
         {
-            fRotationZ = utils::atof(value.c_str());
+            fRotationZ = atof(value.c_str());
             node->setRotation(fRotationZ);
-        }
-        else if(key == "name")
-        {
-            sName = value.c_str();
-            node->setName(sName);
         }
     }
 }
@@ -564,7 +555,7 @@ SceneReader* SceneReader::getInstance()
 {
     if (s_sharedReader == nullptr)
     {
-        s_sharedReader = new (std::nothrow) SceneReader();
+        s_sharedReader = new SceneReader();
     }
     return s_sharedReader;
 }

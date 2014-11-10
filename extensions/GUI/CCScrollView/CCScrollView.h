@@ -30,7 +30,6 @@
 #include "base/CCEventListenerTouch.h"
 #include "2d/CCActionTween.h"
 #include "extensions/ExtensionMacros.h"
-#include "extensions/ExtensionExport.h"
 
 NS_CC_EXT_BEGIN
 
@@ -41,7 +40,7 @@ NS_CC_EXT_BEGIN
 
 class ScrollView;
 
-class CC_EX_DLL ScrollViewDelegate
+class ScrollViewDelegate
 {
 public:
     /**
@@ -53,12 +52,12 @@ public:
      * @js NA
      * @lua NA
      */
-    virtual void scrollViewDidScroll(ScrollView* view) {};
+    virtual void scrollViewDidScroll(ScrollView* view) = 0;
     /**
      * @js NA
      * @lua NA
      */
-    virtual void scrollViewDidZoom(ScrollView* view) {};
+    virtual void scrollViewDidZoom(ScrollView* view) = 0;
 };
 
 
@@ -66,7 +65,7 @@ public:
  * ScrollView support for cocos2d-x.
  * It provides scroll view functionalities to cocos2d projects natively.
  */
-class CC_EX_DLL  ScrollView : public Layer, public ActionTweenDelegate
+class ScrollView : public Layer, public ActionTweenDelegate
 {
 public:
     enum class Direction
@@ -146,24 +145,6 @@ public:
      * @param dt    The animation duration
      */
     void setZoomScaleInDuration(float s, float dt);
-
-    /**
-     * Set min scale
-     *
-     * @param minScale min scale
-     */
-    void setMinScale(float minScale) {
-        _minScale = minScale;
-    }
-    /**
-     * Set max scale
-     *
-     * @param maxScale max scale
-     */
-    void setMaxScale(float maxScale) {
-        _maxScale = maxScale;
-    }
-
     /**
      * Returns the current container's minimum offset. You may want this while you animate scrolling by yourself
      */
@@ -181,12 +162,10 @@ public:
     /**
      * Provided to make scroll view compatible with SWLayer's pause method
      */
-    using Layer::pause;  // fix warning
     void pause(Ref* sender);
     /**
      * Provided to make scroll view compatible with SWLayer's resume method
      */
-    using Layer::resume; // fix warning
     void resume(Ref* sender);
 
     void setTouchEnabled(bool enabled);
@@ -256,8 +235,6 @@ public:
      * CCActionTweenDelegate
      */
     void updateTweenAction(float value, const std::string& key);
-
-    bool hasVisibleParents() const;
 protected:
     /**
      * Relocates the container at the proper offset, in bounds of max/min offsets.
@@ -297,7 +274,19 @@ protected:
     void handleZoom();
 
     Rect getViewRect();
-
+    
+    /**
+     * current zoom scale
+     */
+    float _zoomScale;
+    /**
+     * min zoom scale
+     */
+    float _minZoomScale;
+    /**
+     * max zoom scale
+     */
+    float _maxZoomScale;
     /**
      * scroll view delegate
      */

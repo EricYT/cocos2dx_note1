@@ -33,7 +33,7 @@ NS_CC_BEGIN
 
 class GridBase;
 
-class CC_DLL NodeGrid : public Node
+class NodeGrid : public Node
 {
 public:
     static NodeGrid* create();
@@ -56,11 +56,10 @@ public:
     // overrides
     virtual void visit(Renderer *renderer, const Mat4 &parentTransform, uint32_t parentFlags) override;
 
-CC_CONSTRUCTOR_ACCESS:
+protected:
     NodeGrid();
     virtual ~NodeGrid();
 
-protected:
     void onGridBeginDraw();
     void onGridEndDraw();
 

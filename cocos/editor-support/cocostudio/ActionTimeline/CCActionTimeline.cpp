@@ -31,7 +31,7 @@ NS_TIMELINE_BEGIN
 // ActionTimelineData
 ActionTimelineData* ActionTimelineData::create(int actionTag)
 {
-    ActionTimelineData * ret = new (std::nothrow) ActionTimelineData();
+    ActionTimelineData * ret = new ActionTimelineData();
     if (ret && ret->init(actionTag))
     {
         ret->autorelease();
@@ -58,7 +58,7 @@ bool ActionTimelineData::init(int actionTag)
 // ActionTimeline
 ActionTimeline* ActionTimeline::create()
 {
-    ActionTimeline* object = new (std::nothrow) ActionTimeline();
+    ActionTimeline* object = new ActionTimeline();
     if (object && object->init())
     {
         object->autorelease();
@@ -215,17 +215,13 @@ void ActionTimeline::startWithTarget(Node *target)
         [this, target](Node* child)
     {
         ActionTimelineData* data = dynamic_cast<ActionTimelineData*>(child->getUserObject());
-
-        if(data)
+        int actionTag = data->getActionTag();
+        if(_timelineMap.find(actionTag) != _timelineMap.end())
         {
-            int actionTag = data->getActionTag();
-            if(_timelineMap.find(actionTag) != _timelineMap.end())
+            auto timelines = this->_timelineMap[actionTag];
+            for (auto timeline : timelines)
             {
-                auto timelines = this->_timelineMap[actionTag];
-                for (auto timeline : timelines)
-                {
-                    timeline->setNode(child);
-                }
+                timeline->setNode(child);
             }
         }
     });
@@ -282,8 +278,8 @@ void ActionTimeline::emitFrameEvent(Frame* frame)
 
 void ActionTimeline::gotoFrame(int frameIndex)
 {
-    ssize_t size = _timelineList.size();
-    for(ssize_t i = 0; i < size; i++)
+    int size = _timelineList.size();
+    for(int i = 0; i<size; i++)
     {      
         _timelineList.at(i)->gotoFrame(frameIndex);
     }
@@ -291,8 +287,8 @@ void ActionTimeline::gotoFrame(int frameIndex)
 
 void ActionTimeline::stepToFrame(int frameIndex)
 {
-    ssize_t size = _timelineList.size();
-    for(ssize_t i = 0; i < size; i++)
+    int size = _timelineList.size();
+    for(int i = 0; i<size; i++)
     {      
         _timelineList.at(i)->stepToFrame(frameIndex);
     }

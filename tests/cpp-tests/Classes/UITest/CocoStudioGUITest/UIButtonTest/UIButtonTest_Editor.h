@@ -35,9 +35,7 @@ public:
     
     bool init();
     void touchEvent(Ref* pSender, Widget::TouchEventType type);
-    virtual void switchLoadMethod(Ref* pSender);
-    void configureGUIScene();
-
+    
 protected:
     UI_SCENE_EDITOR_CREATE_FUNC(UIButtonTest_Editor);
     Text* _displayValueLabel;

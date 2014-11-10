@@ -25,10 +25,16 @@
 #ifndef __CCBUNDLE3D_H__
 #define __CCBUNDLE3D_H__
 
+#include <map>
+
 #include "3d/CCBundle3DData.h"
-#include "3d/3dExport.h"
-#include "3d/CCBundleReader.h"
+
+#include "base/ccMacros.h"
+#include "base/CCRef.h"
+#include "base/ccTypes.h"
+
 #include "json/document.h"
+#include "CCBundleReader.h"
 
 NS_CC_BEGIN
 class Animation3D;
@@ -40,82 +46,59 @@ class Data;
  * c3t text file
  * c3b binary file
  */
-class CC_3D_DLL Bundle3D
+class Bundle3D
 {
 public:
-    /**you can define yourself bundle and set it, use default bundle otherwise*/
-    static void setBundleInstance(Bundle3D* bundleInstance);
     
     static Bundle3D* getInstance();
     
     static void destroyInstance();
     
-	virtual void clear();
+	void clear();
 
     /**
      * load a file. You must load a file first, then call loadMeshData, loadSkinData, and so on
      * @param path File to be loaded
      * @return result of load
      */
-    virtual bool load(const std::string& path);
+    bool load(const std::string& path);
     
     /**
      * load mesh data from bundle
      * @param id The ID of the mesh, load the first Mesh in the bundle if it is empty
      */
-    virtual bool loadMeshData(const std::string& id, MeshData* meshdata);
+    bool loadMeshData(const std::string& id, MeshData* meshdata);
     
     /**
      * load skin data from bundle
      * @param id The ID of the skin, load the first Skin in the bundle if it is empty
      */
-    virtual bool loadSkinData(const std::string& id, SkinData* skindata);
+    bool loadSkinData(const std::string& id, SkinData* skindata);
     
     /**
      * load material data from bundle
      * @param id The ID of the material, load the first Material in the bundle if it is empty
      */
-    virtual bool loadMaterialData(const std::string& id, MaterialData* materialdata);
+    bool loadMaterialData(const std::string& id, MaterialData* materialdata);
     
     /**
      * load material data from bundle
      * @param id The ID of the animation, load the first animation in the bundle if it is empty
      */
-    virtual bool loadAnimationData(const std::string& id, Animation3DData* animationdata);
-    
-    //since 3.3, to support reskin
-    virtual bool loadMeshDatas(MeshDatas& meshdatas);
-    //since 3.3, to support reskin
-    virtual bool loadNodes(NodeDatas& nodedatas);
-    //since 3.3, to support reskin
-    virtual bool loadMaterials(MaterialDatas& materialdatas);
-    
-    //load .obj file
-    static bool loadObj(MeshDatas& meshdatas, MaterialDatas& materialdatas, NodeDatas& nodedatas, const std::string& fullPath, const char* mtl_basepath = nullptr);
-  
+    bool loadAnimationData(const std::string& id, Animation3DData* animationdata);
+
 protected:
 
     bool loadJson(const std::string& path);
-    bool loadMeshDatasJson(MeshDatas& meshdatas);
-    bool loadMeshDataJson_0_1(MeshDatas& meshdatas);
-    bool loadMeshDataJson_0_2(MeshDatas& meshdatas);
-    bool loadMeshDatasBinary(MeshDatas& meshdatas);
-    bool loadMeshDatasBinary_0_1(MeshDatas& meshdatas);
-    bool loadMeshDatasBinary_0_2(MeshDatas& meshdatas);
-    bool loadMaterialsJson(MaterialDatas& materialdatas);
-    bool loadMaterialDataJson_0_1(MaterialDatas& materialdatas);
-    bool loadMaterialDataJson_0_2(MaterialDatas& materialdatas);
-    bool loadMaterialsBinary(MaterialDatas& materialdatas);
-    bool loadMaterialsBinary_0_1(MaterialDatas& materialdatas);
-    bool loadMaterialsBinary_0_2(MaterialDatas& materialdatas);
-    bool loadMeshDataJson(MeshData* meshdata){return true;}
-    bool loadMeshDataJson_0_1(MeshData* meshdata){return true;}
-    bool loadMeshDataJson_0_2(MeshData* meshdata){return true;}
+    
+    bool loadMeshDataJson(MeshData* meshdata);
+    
     bool loadSkinDataJson(SkinData* skindata);
-    bool loadMaterialDataJson(MaterialData* materialdata){return true;}
-    bool loadMaterialDataJson_0_1(MaterialData* materialdata){return true;}
-    bool loadMaterialDataJson_0_2(MaterialData* materialdata){return true;}
+    
+    bool loadMaterialDataJson(MaterialData* materialdata);
+    
     bool loadAnimationDataJson(Animation3DData* animationdata);
+
     /**
      * load data in binary
      * @param path The c3b file path
@@ -127,8 +110,6 @@ protected:
      * @param meshdata The mesh data pointer
      */
     bool loadMeshDataBinary(MeshData* meshdata);
-    bool loadMeshDataBinary_0_1(MeshData* meshdata);
-    bool loadMeshDataBinary_0_2(MeshData* meshdata);
 
     /**
      * load skin data in binary
@@ -148,31 +129,12 @@ protected:
      */
     bool loadAnimationDataBinary(Animation3DData* animationdata);
 
-    bool checkIsBone(const std::string& name);
-
-    /**
-     * load nodes of json
-     */
-    bool loadNodesJson(NodeDatas& nodedatas);
-    NodeData* parseNodesRecursivelyJson(const rapidjson::Value& jvalue);
-
-    /**
-     * load nodes of binary
-     */
-    bool loadNodesBinary(NodeDatas& nodedatas);
-    NodeData* parseNodesRecursivelyBinary(bool& skeleton);
-
+protected:
     /**
      * get define data type
      * @param str The type in string
      */
     GLenum parseGLType(const std::string& str);
-
-     /**
-     * get define data type
-     * @param str The type in string
-     */
-    NTextureData::Usage parseGLTextureType(const std::string& str);
 
     /**
      * get vertex attribute type
@@ -192,18 +154,17 @@ protected:
     */
     Reference* seekToFirstType(unsigned int type);
 
+protected:
 CC_CONSTRUCTOR_ACCESS:
     Bundle3D();
-    virtual ~Bundle3D();
+    ~Bundle3D();
     
 protected:
     
     static Bundle3D* _instance;
     
-    std::string _modelPath;
+    std::string _modelRelativePath;
     std::string         _path;
-    
-    std::string _version;// the c3b or c3t version
     
     // for json reading
     char* _jsonBuffer;
@@ -214,9 +175,10 @@ protected:
     BundleReader _binaryReader;
     unsigned int _referenceCount;
     Reference* _references;
+
     bool  _isBinary;
 };
 
 NS_CC_END
 
-#endif // __CCBUNDLE3D_H__
+#endif // __CCANIMATE3D_H__

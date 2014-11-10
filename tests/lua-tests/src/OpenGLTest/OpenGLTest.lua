@@ -20,8 +20,6 @@ local vertDefaultSource = "\n".."\n" ..
                   "   v_texCoord = a_texCoord;\n" ..
                   "} \n"
 
-local scaleFactor = cc.Director:getInstance():getContentScaleFactor()
-
 local function OpenGLTestMainLayer()
     local kItemTagBasic = 1000
     local testCount = 16
@@ -233,8 +231,6 @@ local function OpenGLTestMainLayer()
         time = 0
         majorLayer:addChild(glNode,-10)
         glNode:setPosition( size.width/2, size.height/2)
-        local center = cc.p( size.width / 2 * scaleFactor, size.height / 2 * scaleFactor)
-        glNode:getGLProgramState():setUniformVec2("center", center)
         return majorLayer
     end
 
@@ -276,8 +272,6 @@ local function OpenGLTestMainLayer()
         time = 0
         mandelbrotLayer:addChild(glNode,-10)
         glNode:setPosition( size.width/2, size.height/2)
-        local center = cc.p( size.width / 2 * scaleFactor, size.height / 2 * scaleFactor)
-        glNode:getGLProgramState():setUniformVec2("center", center)
         return mandelbrotLayer
     end
 
@@ -320,8 +314,6 @@ local function OpenGLTestMainLayer()
         time = 0
         heartLayer:addChild(glNode,-10)
         glNode:setPosition( size.width/2, size.height/2)
-        local center = cc.p( size.width / 2 * scaleFactor, size.height / 2 * scaleFactor)
-        glNode:getGLProgramState():setUniformVec2("center", center)
         return heartLayer
     end
 
@@ -365,8 +357,6 @@ local function OpenGLTestMainLayer()
         time = 0
         plasmaLayer:addChild(glNode,-10)
         glNode:setPosition( size.width/2, size.height/2)
-        local center = cc.p( size.width / 2 * scaleFactor, size.height / 2 * scaleFactor)
-        glNode:getGLProgramState():setUniformVec2("center", center)
         return plasmaLayer
     end
 
@@ -409,8 +399,6 @@ local function OpenGLTestMainLayer()
         time = 0
         flowerLayer:addChild(glNode,-10)
         glNode:setPosition( size.width/2, size.height/2)
-        local center = cc.p( size.width / 2 * scaleFactor, size.height / 2 * scaleFactor)
-        glNode:getGLProgramState():setUniformVec2("center", center)
         return flowerLayer
     end
 
@@ -453,8 +441,6 @@ local function OpenGLTestMainLayer()
         time = 0
         juliaLayer:addChild(glNode,-10)
         glNode:setPosition( size.width/2, size.height/2)
-        local center = cc.p( size.width / 2 * scaleFactor, size.height / 2 * scaleFactor)
-        glNode:getGLProgramState():setUniformVec2("center", center)
         return juliaLayer
     end
 
@@ -559,7 +545,7 @@ local function OpenGLTestMainLayer()
                 shader:setUniformsForBuiltins(transform)
 
                 gl.bindTexture(gl.TEXTURE_2D, texture.texture_id)
-                gl.glEnableVertexAttribs(bit._or(cc.VERTEX_ATTRIB_FLAG_TEX_COORDS, cc.VERTEX_ATTRIB_FLAG_POSITION))
+                gl.glEnableVertexAttribs(cc.VERTEX_ATTRIB_FLAG_TEX_COORDS or cc.VERTEX_ATTRIB_FLAG_POSITION)
 
                 gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer.buffer_id)
                 gl.vertexAttribPointer(cc.VERTEX_ATTRIB_POSITION,2,gl.FLOAT,false,0,0)

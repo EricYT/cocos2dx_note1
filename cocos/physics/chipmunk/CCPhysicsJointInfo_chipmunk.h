@@ -28,11 +28,10 @@
 #include "base/ccConfig.h"
 #if CC_USE_PHYSICS
 
-#include "platform/CCPlatformMacros.h"
+#include "chipmunk.h"
+#include "base/CCPlatformMacros.h"
 #include <vector>
 #include <unordered_map>
-
-struct cpConstraint;
 NS_CC_BEGIN
 
 class PhysicsJoint;

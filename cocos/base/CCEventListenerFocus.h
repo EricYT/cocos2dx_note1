@@ -26,7 +26,7 @@
 #ifndef __cocos2d_libs__CCEventListenerFocus__
 #define __cocos2d_libs__CCEventListenerFocus__
 
-#include "base/CCEventListener.h"
+#include "CCEventListener.h"
 
 
 NS_CC_BEGIN
@@ -35,7 +35,7 @@ namespace ui {
     class Widget;
 }
 
-class CC_DLL EventListenerFocus : public EventListener
+class EventListenerFocus : public EventListener
 {
 public:
     static const std::string LISTENER_ID;
@@ -51,7 +51,7 @@ public:
 public:
     std::function<void(ui::Widget*, ui::Widget*)> onFocusChanged;
     
-CC_CONSTRUCTOR_ACCESS:
+private:
     EventListenerFocus();
     bool init();
     

@@ -272,6 +272,7 @@ public:
     virtual std::string title() const override;
     virtual void update(float delta);
     virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
+    void onDraw(const Mat4 &transform, uint32_t flags);
     
     void onFrameEvent(cocostudio::Bone *bone, const std::string& evt, int originFrameIndex, int currentFrameIndex);
     
@@ -279,7 +280,7 @@ public:
     cocostudio::Armature *armature;
     cocostudio::Armature *armature2;
     
-    DrawNode *drawNode;
+    CustomCommand _customCommand; //new render needed this for drawing primitives
     cocos2d::Sprite *bullet;
 };
 #endif
@@ -297,9 +298,11 @@ public:
 
 	cocostudio::Armature *armature;
 	Rect rect;
-    
+
 protected:
-    DrawNode* _drawNode;
+    void onDraw(const Mat4 &transform, uint32_t flags);
+
+    CustomCommand _customCommand;
 };
 
 class TestAnchorPoint : public ArmatureTestLayer

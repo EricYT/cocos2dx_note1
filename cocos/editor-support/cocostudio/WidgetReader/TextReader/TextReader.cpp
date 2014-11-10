@@ -18,7 +18,7 @@ namespace cocostudio
     static const char* P_HAlignment = "hAlignment";
     static const char* P_VAlignment = "vAlignment";
     
-    static TextReader* instanceTextReader = nullptr;
+    static TextReader* instanceTextReader = NULL;
     
     IMPLEMENT_CLASS_WIDGET_READER_INFO(TextReader)
     
@@ -36,7 +36,7 @@ namespace cocostudio
     {
         if (!instanceTextReader)
         {
-            instanceTextReader = new (std::nothrow) TextReader();
+            instanceTextReader = new TextReader();
         }
         return instanceTextReader;
     }
@@ -71,11 +71,7 @@ namespace cocostudio
             }else if(key == P_FontName){
                 std::string fontFilePath;
                 fontFilePath = binaryFilePath.append(value);
-                if (FileUtils::getInstance()->isFileExist(fontFilePath)) {
-                    label->setFontName(fontFilePath);
-                }else{
-                    label->setFontName(value);
-                }
+                label->setFontName(fontFilePath);
             }else if(key == P_AreaWidth){
                 label->setTextAreaSize(Size(valueToFloat(value), label->getTextAreaSize().height));
             }else if(key == P_AreaHeight){
@@ -106,15 +102,8 @@ namespace cocostudio
         label->setFontSize(DICTOOL->getIntValue_json(options, P_FontSize,20));
        
         std::string fontName = DICTOOL->getStringValue_json(options, P_FontName, "微软雅黑");
-        
         std::string fontFilePath = jsonPath.append(fontName);
-		if (FileUtils::getInstance()->isFileExist(fontFilePath))
-		{
-			label->setFontName(fontFilePath);
-		}
-		else{
-			label->setFontName(fontName);
-		}
+        label->setFontName(fontFilePath);
         
         bool aw = DICTOOL->checkObjectExist_json(options, P_AreaWidth);
         bool ah = DICTOOL->checkObjectExist_json(options, P_AreaHeight);

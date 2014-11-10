@@ -26,11 +26,10 @@
 #define __TestCpp__CheckBoxReader__
 
 #include "../WidgetReader.h"
-#include "cocostudio/CocosStudioExport.h"
 
 namespace cocostudio
 {
-    class CC_STUDIO_DLL CheckBoxReader : public WidgetReader
+    class CheckBoxReader : public WidgetReader
     {
     public:
         DECLARE_CLASS_WIDGET_READER_INFO

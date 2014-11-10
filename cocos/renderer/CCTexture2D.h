@@ -29,6 +29,7 @@ THE SOFTWARE.
 
 #include <string>
 #include <map>
+#include <map>
 
 #include "base/CCRef.h"
 #include "math/CCGeometry.h"
@@ -181,12 +182,10 @@ public:
      possible load them as if they have (or not) the alpha channel premultiplied.
 
      By default it is disabled.
-     
-     deprecated, please use Image::setPVRImagesHavePremultipliedAlpha() instead.
 
      @since v0.99.5
      */
-    CC_DEPRECATED_ATTRIBUTE static void PVRImagesHavePremultipliedAlpha(bool haveAlphaPremultiplied);
+    static void PVRImagesHavePremultipliedAlpha(bool haveAlphaPremultiplied);
     
 public:
     /**

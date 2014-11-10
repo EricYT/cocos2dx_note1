@@ -27,14 +27,11 @@ THE SOFTWARE.
 
 #include "2d/CCScene.h"
 #include "base/CCDirector.h"
-#include "base/CCCamera.h"
-#include "base/CCEventDispatcher.h"
-#include "base/CCEventListenerCustom.h"
-#include "deprecated/CCString.h"
-
-#if CC_USE_PHYSICS
+#include "2d/CCLayer.h"
+#include "2d/CCSprite.h"
+#include "2d/CCSpriteBatchNode.h"
 #include "physics/CCPhysicsWorld.h"
-#endif
+#include "deprecated/CCString.h"
 
 NS_CC_BEGIN
 
@@ -45,13 +42,6 @@ Scene::Scene()
 {
     _ignoreAnchorPointForPosition = true;
     setAnchorPoint(Vec2(0.5f, 0.5f));
-    
-    //create default camera
-    _defaultCamera = Camera::create();
-    addChild(_defaultCamera);
-    
-    _event = Director::getInstance()->getEventDispatcher()->addCustomEventListener(Director::EVENT_PROJECTION_CHANGED, std::bind(&Scene::onProjectionChanged, this, std::placeholders::_1));
-    _event->retain();
 }
 
 Scene::~Scene()
@@ -59,8 +49,6 @@ Scene::~Scene()
 #if CC_USE_PHYSICS
     CC_SAFE_DELETE(_physicsWorld);
 #endif
-    Director::getInstance()->getEventDispatcher()->removeEventListener(_event);
-    CC_SAFE_RELEASE(_event);
 }
 
 bool Scene::init()
@@ -77,7 +65,7 @@ bool Scene::initWithSize(const Size& size)
 
 Scene* Scene::create()
 {
-    Scene *ret = new (std::nothrow) Scene();
+    Scene *ret = new Scene();
     if (ret && ret->init())
     {
         ret->autorelease();
@@ -92,7 +80,7 @@ Scene* Scene::create()
 
 Scene* Scene::createWithSize(const Size& size)
 {
-    Scene *ret = new (std::nothrow) Scene();
+    Scene *ret = new Scene();
     if (ret && ret->initWithSize(size))
     {
         ret->autorelease();
@@ -116,14 +104,6 @@ Scene* Scene::getScene() const
     return const_cast<Scene*>(this);
 }
 
-void Scene::onProjectionChanged(EventCustom* event)
-{
-    if (_defaultCamera)
-    {
-        _defaultCamera->initDefault();
-    }
-}
-
 #if CC_USE_PHYSICS
 void Scene::addChild(Node* child, int zOrder, int tag)
 {
@@ -140,7 +120,7 @@ void Scene::addChild(Node* child, int zOrder, const std::string &name)
 void Scene::update(float delta)
 {
     Node::update(delta);
-    if (nullptr != _physicsWorld && _physicsWorld->isAutoStep())
+    if (nullptr != _physicsWorld)
     {
         _physicsWorld->update(delta);
     }
@@ -148,7 +128,7 @@ void Scene::update(float delta)
 
 Scene* Scene::createWithPhysics()
 {
-    Scene *ret = new (std::nothrow) Scene();
+    Scene *ret = new Scene();
     if (ret && ret->initWithPhysics())
     {
         ret->autorelease();
@@ -168,7 +148,6 @@ bool Scene::initWithPhysics()
     {
         Director * director;
         CC_BREAK_IF( ! (director = Director::getInstance()) );
-        
         this->setContentSize(director->getWinSize());
         CC_BREAK_IF(! (_physicsWorld = PhysicsWorld::construct(*this)));
         
@@ -200,7 +179,6 @@ void Scene::addChildToPhysicsWorld(Node* child)
         addToPhysicsWorldFunc(child);
     }
 }
-
 #endif
 
 NS_CC_END

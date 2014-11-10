@@ -27,7 +27,6 @@ THE SOFTWARE.
 #include "platform/CCFileUtils.h"
 #include "tinyxml2.h"
 #include "base/base64.h"
-#include "base/ccUtils.h"
 
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_IOS && CC_TARGET_PLATFORM != CC_PLATFORM_MAC && CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID)
 
@@ -251,7 +250,7 @@ double UserDefault::getDoubleForKey(const char* pKey, double defaultValue)
 
 	if (value)
 	{
-		ret = utils::atof(value);
+		ret = atof(value);
 	}
 
     if (doc) delete doc;
@@ -417,7 +416,7 @@ UserDefault* UserDefault::getInstance()
 
     if (! _userDefault)
     {
-        _userDefault = new (std::nothrow) UserDefault();
+        _userDefault = new UserDefault();
     }
 
     return _userDefault;
@@ -428,13 +427,13 @@ void UserDefault::destroyInstance()
     CC_SAFE_DELETE(_userDefault);
 }
 
-// FIXME:: deprecated
+// XXX: deprecated
 UserDefault* UserDefault::sharedUserDefault()
 {
     return UserDefault::getInstance();
 }
 
-// FIXME:: deprecated
+// XXX: deprecated
 void UserDefault::purgeSharedUserDefault()
 {
     return UserDefault::destroyInstance();

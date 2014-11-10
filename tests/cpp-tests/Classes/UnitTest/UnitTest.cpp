@@ -69,7 +69,7 @@ std::string UnitTestDemo::subtitle() const
 
 void UnitTestDemo::restartCallback(Ref* sender)
 {
-    auto s = new (std::nothrow) UnitTestScene();
+    auto s = new UnitTestScene();
     s->addChild( restartAction() );
     Director::getInstance()->replaceScene(s);
     s->release();
@@ -77,7 +77,7 @@ void UnitTestDemo::restartCallback(Ref* sender)
 
 void UnitTestDemo::nextCallback(Ref* sender)
 {
-    auto s = new (std::nothrow) UnitTestScene();
+    auto s = new UnitTestScene();
     s->addChild( nextAction() );
     Director::getInstance()->replaceScene(s);
     s->release();
@@ -85,7 +85,7 @@ void UnitTestDemo::nextCallback(Ref* sender)
 
 void UnitTestDemo::backCallback(Ref* sender)
 {
-    auto s = new (std::nothrow) UnitTestScene();
+    auto s = new UnitTestScene();
     s->addChild( backAction() );
     Director::getInstance()->replaceScene(s);
     s->release();

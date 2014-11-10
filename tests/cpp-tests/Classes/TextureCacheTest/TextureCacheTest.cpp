@@ -130,7 +130,7 @@ void TextureCacheTest::addSprite()
 
 void TextureCacheTestScene::runThisTest()
 {
-    auto layer = new (std::nothrow) TextureCacheTest();
+    auto layer = new TextureCacheTest();
     addChild(layer);
 
     Director::getInstance()->replaceScene(this);

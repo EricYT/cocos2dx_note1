@@ -19,7 +19,7 @@ namespace cocostudio
     static const char* P_Scale9Height = "scale9Height";
 
     
-    static ImageViewReader* instanceImageViewReader = nullptr;
+    static ImageViewReader* instanceImageViewReader = NULL;
     
     IMPLEMENT_CLASS_WIDGET_READER_INFO(ImageViewReader)
     
@@ -37,7 +37,7 @@ namespace cocostudio
     {
         if (!instanceImageViewReader)
         {
-            instanceImageViewReader = new (std::nothrow) ImageViewReader();
+            instanceImageViewReader = new ImageViewReader();
         }
         return instanceImageViewReader;
     }
@@ -128,7 +128,7 @@ namespace cocostudio
           
             float swf = DICTOOL->getFloatValue_json(options, P_Scale9Width,80.0f);
             float shf = DICTOOL->getFloatValue_json(options, P_Scale9Height,80.0f);
-            imageView->setContentSize(Size(swf, shf));
+            imageView->setSize(Size(swf, shf));
             
             
             float cx = DICTOOL->getFloatValue_json(options, P_CapInsetsX);

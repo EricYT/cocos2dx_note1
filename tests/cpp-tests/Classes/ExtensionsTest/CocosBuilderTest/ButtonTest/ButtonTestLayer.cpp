@@ -14,13 +14,13 @@ ButtonTestLayer::~ButtonTestLayer()
 }
 
 SEL_MenuHandler ButtonTestLayer::onResolveCCBCCMenuItemSelector(Ref * pTarget, const char * pSelectorName) {
-    return nullptr;    
+    return NULL;    
 }
 
 Control::Handler ButtonTestLayer::onResolveCCBCCControlSelector(Ref * pTarget, const char * pSelectorName) {
     CCB_SELECTORRESOLVER_CCCONTROL_GLUE(this, "onCCControlButtonClicked", ButtonTestLayer::onControlButtonClicked);
 
-    return nullptr;
+    return NULL;
 }
 
 bool ButtonTestLayer::onAssignCCBMemberVariable(Ref * pTarget, const char * pMemberVariableName, Node * pNode) {

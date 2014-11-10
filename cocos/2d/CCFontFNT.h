@@ -32,7 +32,7 @@ NS_CC_BEGIN
 
 class BMFontConfiguration;
 
-class CC_DLL FontFNT : public Font
+class FontFNT : public Font
 {
     
 public:

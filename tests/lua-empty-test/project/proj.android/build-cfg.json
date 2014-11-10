@@ -14,15 +14,7 @@
             "to": "res"
         },
         {
-            "from": "../../../../cocos/scripting/lua-bindings/script/cocos2d",
-            "to": ""
-        },
-        {
-            "from": "../../../../cocos/scripting/lua-bindings/script/network",
-            "to": ""
-        },
-                {
-            "from": "../../../../cocos/scripting/lua-bindings/script/cocosdenshion",
+            "from": "../../../../cocos/scripting/lua-bindings/script",
             "to": ""
         },
         {

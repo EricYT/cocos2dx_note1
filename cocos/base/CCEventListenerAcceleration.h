@@ -30,7 +30,7 @@
 
 NS_CC_BEGIN
 
-class CC_DLL EventListenerAcceleration : public EventListener
+class EventListenerAcceleration : public EventListener
 {
 public:
     static const std::string LISTENER_ID;
@@ -41,13 +41,10 @@ public:
     /// Overrides
     virtual EventListenerAcceleration* clone() override;
     virtual bool checkAvailable() override;
-    
-CC_CONSTRUCTOR_ACCESS:
+private:
     EventListenerAcceleration();
     
     bool init(const std::function<void(Acceleration*, Event* event)>& callback);
-    
-private:
     std::function<void(Acceleration*, Event*)> onAccelerationEvent;
     
     friend class LuaEventListenerAcceleration;

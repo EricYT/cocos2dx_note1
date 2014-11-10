@@ -25,7 +25,6 @@
 
 #include "2d/CCSprite.h"
 #include "extensions/ExtensionMacros.h"
-#include "extensions/ExtensionExport.h"
 
 struct cpBody;
 class b2Body;
@@ -44,7 +43,7 @@ NS_CC_EXT_BEGIN
  - If you update the rotation or position manually, the physics body will be updated
  - You can't enble both Chipmunk support and Box2d support at the same time. Only one can be enabled at compile time
  */
-class CC_EX_DLL PhysicsSprite : public Sprite
+class PhysicsSprite : public Sprite
 {
 public:
 

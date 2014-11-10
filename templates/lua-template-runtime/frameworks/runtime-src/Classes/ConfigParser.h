@@ -36,10 +36,8 @@ public:
     string getEntryFile();
     rapidjson::Document& getConfigJsonRoot();
     const SimulatorScreenSize getScreenSize(int index);
-    int getConsolePort();
-    int getUploadPort();
     bool isLanscape();
-    bool isWindowTop();
+    bool isInit();
     
 private:
     ConfigParser(void);
@@ -49,9 +47,7 @@ private:
     string _viewName;
     string _entryfile;
     bool _isLandscape;
-    bool _isWindowTop;
-    int _consolePort;
-    int _uploadPort;
+    bool _isInit;
     
     rapidjson::Document _docRootjson;
 };

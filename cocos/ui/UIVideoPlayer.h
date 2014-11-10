@@ -73,7 +73,7 @@ namespace experimental{
 
             virtual void addEventListener(const VideoPlayer::ccVideoPlayerCallback& callback);
 
-            virtual void onPlayEvent(int event);
+            virtual void onPlayEvent(VideoPlayer::EventType event);
             virtual void draw(Renderer *renderer, const Mat4& transform, uint32_t flags) override;
 
         protected:
@@ -84,7 +84,8 @@ namespace experimental{
             virtual ~VideoPlayer();
 
 #if CC_VIDEOPLAYER_DEBUG_DRAW
-            DrawNode *_debugDrawNode;
+            CustomCommand _customDebugDrawCommand;
+            void VideoPlayer::drawDebugData();
 #endif
 
             enum class Source

@@ -27,8 +27,9 @@ THE SOFTWARE.
 #define __MATH_CCGEOMETRY_H__
 
 #include <math.h>
+#include <functional>
 
-#include "platform/CCPlatformMacros.h"
+#include "base/CCPlatformMacros.h"
 #include "base/ccMacros.h"
 #include "math/CCMath.h"
 

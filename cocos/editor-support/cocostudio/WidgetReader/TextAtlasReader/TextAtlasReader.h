@@ -26,11 +26,10 @@
 #define __TestCpp__TextAtlasReader__
 
 #include "../WidgetReader.h"
-#include "cocostudio/CocosStudioExport.h"
 
 namespace cocostudio
 {
-    class CC_STUDIO_DLL TextAtlasReader : public WidgetReader
+    class TextAtlasReader : public WidgetReader
     {
     public:
         DECLARE_CLASS_WIDGET_READER_INFO

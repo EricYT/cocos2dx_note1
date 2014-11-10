@@ -27,14 +27,13 @@ THE SOFTWARE.
 
 #include "cocostudio/CCActionObject.h"
 #include "cocostudio/DictionaryHelper.h"
-#include "cocostudio/CocosStudioExport.h"
 
 namespace cocostudio {
     
 class CocoLoader;
 struct stExpCocoNode;
 
-class CC_STUDIO_DLL ActionManagerEx:public cocos2d::Ref
+class ActionManagerEx:public cocos2d::Ref
 {
 public:
 

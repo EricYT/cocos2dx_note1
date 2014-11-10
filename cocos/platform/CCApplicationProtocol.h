@@ -26,9 +26,7 @@ THE SOFTWARE.
 #ifndef __CC_APPLICATION_PROTOCOL_H__
 #define __CC_APPLICATION_PROTOCOL_H__
 
-#include "platform/CCPlatformMacros.h"
-#include "base/CCScriptSupport.h"
-#include "base/CCAutoreleasePool.h"
+#include "base/CCPlatformMacros.h"
 
 NS_CC_BEGIN
 
@@ -63,13 +61,7 @@ public:
      * @js NA
      * @lua NA
      */
-    virtual ~ApplicationProtocol(){
-#if CC_ENABLE_SCRIPT_BINDING
-        ScriptEngineManager::destroyInstance();
-#endif
-        // clean auto release pool
-        PoolManager::destroyInstance();
-    }
+    virtual ~ApplicationProtocol() {}
 
     /**
     @brief    Implement Director and Scene init code here.
@@ -101,15 +93,6 @@ public:
     * @lua NA
     */
     virtual void setAnimationInterval(double interval) = 0;
-
-    //subclass override the function to set OpenGL context attribution instead of use default value
-    //and now can only set six attributions:redBits,greenBits,blueBits,alphaBits,depthBits,stencilBits
-    //default value are(5,6,5,0,16,0), usually use as follows:
-    /*void AppDelegate::initGLContextAttrs(){
-        GLContextAttrs glContextAttrs = {8, 8, 8, 8, 24, 8};
-        GLView::setGLContextAttrs(glContextAttrs);
-    }*/
-    virtual void initGLContextAttrs() {}
 
     /**
     @brief Get current language config

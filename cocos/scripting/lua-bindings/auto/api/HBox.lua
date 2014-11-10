@@ -5,15 +5,16 @@
 -- @parent_module ccui
 
 --------------------------------
--- @overload self, size_table         
--- @overload self         
+-- overload function: create(size_table)
+--          
+-- overload function: create()
+--          
 -- @function [parent=#HBox] create
 -- @param self
 -- @param #size_table size
 -- @return HBox#HBox ret (retunr value: ccui.HBox)
 
 --------------------------------
--- Default constructor
 -- @function [parent=#HBox] HBox 
 -- @param self
         

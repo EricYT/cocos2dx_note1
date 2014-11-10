@@ -22,7 +22,7 @@ RenderTestLayer::~RenderTestLayer()
 Scene* RenderTestLayer::scene()
 {
     auto scene = Scene::create();
-    RenderTestLayer *layer = new (std::nothrow) RenderTestLayer();
+    RenderTestLayer *layer = new RenderTestLayer();
     scene->addChild(layer);
     layer->release();
     

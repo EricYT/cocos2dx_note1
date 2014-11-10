@@ -22,7 +22,6 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "renderer/CCMeshCommand.h"
 #include "base/ccMacros.h"
 #include "base/CCConfiguration.h"
 #include "base/CCDirector.h"
@@ -30,7 +29,9 @@
 #include "base/CCEventListenerCustom.h"
 #include "base/CCEventDispatcher.h"
 #include "base/CCEventType.h"
+#include "renderer/CCMeshCommand.h"
 #include "renderer/ccGLStateCache.h"
+#include "renderer/CCGLProgram.h"
 #include "renderer/CCGLProgramState.h"
 #include "renderer/CCRenderer.h"
 #include "renderer/CCTextureAtlas.h"
@@ -39,12 +40,6 @@
 #include "xxhash.h"
 
 NS_CC_BEGIN
-
-//render state
-static bool   s_cullFaceEnabled = false;
-static GLenum s_cullFace = 0;
-static bool   s_depthTestEnabled = false;
-static bool   s_depthWriteEnabled = false;
 
 MeshCommand::MeshCommand()
 : _textureID(0)
@@ -61,10 +56,10 @@ MeshCommand::MeshCommand()
 , _vao(0)
 {
     _type = RenderCommand::Type::MESH_COMMAND;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
-    // listen the event that renderer was recreated on Android/WP8
-    _rendererRecreatedListener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, CC_CALLBACK_1(MeshCommand::listenRendererRecreated, this));
-    Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(_rendererRecreatedListener, -1);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    // listen the event when app go to foreground
+    _backToForegroundlistener = EventListenerCustom::create(EVENT_COME_TO_FOREGROUND, CC_CALLBACK_1(MeshCommand::listenBackToForeground, this));
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(_backToForegroundlistener, -1);
 #endif
 }
 
@@ -91,7 +86,7 @@ void MeshCommand::init(float globalOrder,
     _primitive = primitive;
     _indexFormat = indexFormat;
     _indexCount = indexCount;
-    _mv.set(mv);
+    _mv = mv;
 }
 
 void MeshCommand::setCullFaceEnabled(bool enable)
@@ -122,83 +117,78 @@ void MeshCommand::setDisplayColor(const Vec4& color)
 MeshCommand::~MeshCommand()
 {
     releaseVAO();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
-    Director::getInstance()->getEventDispatcher()->removeEventListener(_rendererRecreatedListener);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    Director::getInstance()->getEventDispatcher()->removeEventListener(_backToForegroundlistener);
 #endif
 }
 
 void MeshCommand::applyRenderState()
 {
-    if (_cullFaceEnabled && !s_cullFaceEnabled)
+    if (_cullFaceEnabled)
     {
         glEnable(GL_CULL_FACE);
-        if (s_cullFace != _cullFace)
-        {
-            glCullFace(_cullFace);
-            s_cullFace = _cullFace;
-        }
-        s_cullFaceEnabled = true;
+        glCullFace(_cullFace);
     }
-    if (_depthTestEnabled && !s_depthTestEnabled)
+    if (_depthTestEnabled)
     {
         glEnable(GL_DEPTH_TEST);
-        s_depthTestEnabled = true;
     }
-    if (_depthWriteEnabled && !s_depthWriteEnabled)
+    if (_depthWriteEnabled)
     {
         glDepthMask(GL_TRUE);
-        s_depthWriteEnabled = true;
     }
 }
 
 void MeshCommand::restoreRenderState()
 {
-    if (s_cullFaceEnabled)
+    if (_cullFaceEnabled)
     {
         glDisable(GL_CULL_FACE);
-        s_cullFaceEnabled = false;
     }
-    if (s_depthTestEnabled)
+    if (_depthTestEnabled)
     {
         glDisable(GL_DEPTH_TEST);
-        s_depthTestEnabled = false;
     }
-    if (s_depthWriteEnabled)
+    if (_depthWriteEnabled)
     {
         glDepthMask(GL_FALSE);
-        s_depthWriteEnabled = false;
     }
-    s_cullFace = 0;
 }
 
-void MeshCommand::genMaterialID(GLuint texID, void* glProgramState, GLuint vertexBuffer, GLuint indexBuffer, const BlendFunc& blend)
+void MeshCommand::genMaterialID(GLuint texID, void* glProgramState, void* mesh, const BlendFunc& blend)
 {
-    int intArray[7] = {0};
-    intArray[0] = (int)texID;
-    *(int**)&intArray[1] = (int*) glProgramState;
-    intArray[3] = (int) vertexBuffer;
-    intArray[4] = (int) indexBuffer;
-    intArray[5] = (int) blend.src;
-    intArray[6] = (int) blend.dst;
+    int* intstate = static_cast<int*>(glProgramState);
+    int* intmesh = static_cast<int*>(mesh);
+    
+    int statekey[] = {intstate[0], 0}, meshkey[] = {intmesh[0], 0};
+    if (sizeof(void*) > sizeof(int))
+    {
+        statekey[1] = intstate[1];
+        meshkey[1] = intmesh[1];
+    }
+    int intArray[] = {(int)texID, statekey[0], statekey[1], meshkey[0], meshkey[1], (int)blend.src, (int)blend.dst};
     _materialID = XXH32((const void*)intArray, sizeof(intArray), 0);
 }
 
 void MeshCommand::MatrixPalleteCallBack( GLProgram* glProgram, Uniform* uniform)
 {
-    glUniform4fv( uniform->location, (GLsizei)_matrixPaletteSize, (const float*)_matrixPalette );
+    glProgram->setUniformLocationWith4fv(uniform->location, (const float*)_matrixPalette, _matrixPaletteSize);
 }
 
 void MeshCommand::preBatchDraw()
 {
+    // set render state
+    applyRenderState();
     // Set material
     GL::bindTexture2D(_textureID);
     GL::blendFunc(_blendType.src, _blendType.dst);
 
-    if (Configuration::getInstance()->supportsShareableVAO() && _vao == 0)
+    if (_vao == 0)
         buildVAO();
     if (_vao)
     {
         GL::bindVAO(_vao);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer);
     }
     else
     {
@@ -209,9 +199,6 @@ void MeshCommand::preBatchDraw()
 }
 void MeshCommand::batchDraw()
 {
-    // set render state
-    applyRenderState();
-    
     _glProgramState->setUniformVec4("u_color", _displayColor);
     
     if (_matrixPaletteSize && _matrixPalette)
@@ -278,27 +265,30 @@ void MeshCommand::execute()
 void MeshCommand::buildVAO()
 {
     releaseVAO();
-    glGenVertexArrays(1, &_vao);
-    GL::bindVAO(_vao);
-    glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
-    auto flags = _glProgramState->getVertexAttribsFlags();
-    for (int i = 0; flags > 0; i++) {
-        int flag = 1 << i;
-        if (flag & flags)
-            glEnableVertexAttribArray(i);
-        flags &= ~flag;
+    if (Configuration::getInstance()->supportsShareableVAO())
+    {
+        glGenVertexArrays(1, &_vao);
+        GL::bindVAO(_vao);
+        glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
+        auto flags = _glProgramState->getVertexAttribsFlags();
+        for (int i = 0; flags > 0; i++) {
+            int flag = 1 << i;
+            if (flag & flags)
+                glEnableVertexAttribArray(i);
+            flags &= ~flag;
+        }
+        _glProgramState->applyAttributes(false);
+        
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer);
+        
+        GL::bindVAO(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
-    _glProgramState->applyAttributes(false);
-    
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _indexBuffer);
-    
-    GL::bindVAO(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 void MeshCommand::releaseVAO()
 {
-    if (_vao)
+    if (Configuration::getInstance()->supportsShareableVAO() && _vao)
     {
         glDeleteVertexArrays(1, &_vao);
         _vao = 0;
@@ -306,10 +296,10 @@ void MeshCommand::releaseVAO()
     }
 }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
-void MeshCommand::listenRendererRecreated(EventCustom* event)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+void MeshCommand::listenBackToForeground(EventCustom* event)
 {
-    _vao = 0;
+    releaseVAO();
 }
 #endif
 

@@ -26,7 +26,6 @@ THE SOFTWARE.
 #define __UICHECKBOX_H__
 
 #include "ui/UIWidget.h"
-#include "ui/GUIExport.h"
 
 NS_CC_BEGIN
 
@@ -34,20 +33,20 @@ class Sprite;
 
 namespace ui {
 
-typedef enum
+CC_DEPRECATED_ATTRIBUTE typedef enum
 {
     CHECKBOX_STATE_EVENT_SELECTED,
     CHECKBOX_STATE_EVENT_UNSELECTED
 }CheckBoxEventType;
 
-typedef void (Ref::*SEL_SelectedStateEvent)(Ref*,CheckBoxEventType);
+CC_DEPRECATED_ATTRIBUTE typedef void (Ref::*SEL_SelectedStateEvent)(Ref*,CheckBoxEventType);
 #define checkboxselectedeventselector(_SELECTOR) (SEL_SelectedStateEvent)(&_SELECTOR)
 
 /**
 *   @js NA
 *   @lua NA
 */
-class CC_GUI_DLL CheckBox : public Widget
+class CheckBox : public Widget
 {
     
     DECLARE_CLASS_GUI_INFO
@@ -87,7 +86,7 @@ public:
      *
      * @param frontCrossDisabled    cross dark state texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     static CheckBox* create(const std::string& backGround,
                             const std::string& backGroundSeleted,
@@ -107,7 +106,7 @@ public:
      *
      * @param frontCrossDisabled    cross dark state texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     void loadTextures(const std::string& backGround,
                       const std::string& backGroundSelected,
@@ -121,7 +120,7 @@ public:
      *
      * @param backGround    backGround texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     void loadTextureBackGround(const std::string& backGround,TextureResType type = TextureResType::LOCAL);
 
@@ -130,7 +129,7 @@ public:
      *
      * @param backGroundSelected     backGround selected state texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     void loadTextureBackGroundSelected(const std::string& backGroundSelected,TextureResType texType = TextureResType::LOCAL);
 
@@ -139,7 +138,7 @@ public:
      *
      * @param cross    cross texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     void loadTextureFrontCross(const std::string&,TextureResType texType = TextureResType::LOCAL);
 
@@ -148,7 +147,7 @@ public:
      *
      * @param backGroundDisabled    backGroundDisabled texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     void loadTextureBackGroundDisabled(const std::string& backGroundDisabled,TextureResType texType = TextureResType::LOCAL);
 
@@ -157,7 +156,7 @@ public:
      *
      * @param frontCrossDisabled    frontCrossDisabled texture.
      *
-     * @param texType    @see TextureResType
+     * @param texType    @see UI_TEX_TYPE_LOCAL
      */
     void loadTextureFrontCrossDisabled(const std::string& frontCrossDisabled,TextureResType texType = TextureResType::LOCAL);
 
@@ -166,17 +165,14 @@ public:
      *
      * @param selected    true that checkbox is selected, false otherwise.
      */
-    CC_DEPRECATED_ATTRIBUTE void setSelectedState(bool selected){this->setSelected(selected);}
+    void setSelectedState(bool selected);
 
     /**
      * Gets selcted state of checkbox.
      *
      * @return selected    true that checkbox is selected, false otherwise.
      */
-    CC_DEPRECATED_ATTRIBUTE bool getSelectedState()const{return this->isSelected();}
-    
-    bool isSelected()const;
-    void setSelected(bool selected);
+    bool getSelectedState()const;
 
     //add a call back function would called when checkbox is selected or unselected.
     CC_DEPRECATED_ATTRIBUTE void addEventListenerCheckBox(Ref* target,SEL_SelectedStateEvent selector);
@@ -184,7 +180,7 @@ public:
 
 
     //override "getVirtualRendererSize" method of widget.
-    virtual Size getVirtualRendererSize() const override;
+    virtual const Size& getVirtualRendererSize() const override;
 
     //override "getVirtualRenderer" method of widget.
     virtual Node* getVirtualRenderer() override;

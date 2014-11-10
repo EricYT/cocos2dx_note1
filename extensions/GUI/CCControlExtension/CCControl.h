@@ -32,7 +32,6 @@
 
 #include "CCControlUtils.h"
 #include "2d/CCLayer.h"
-#include "extensions/ExtensionExport.h"
 
 NS_CC_EXT_BEGIN
 
@@ -62,11 +61,11 @@ class Invocation;
  *
  * To use the Control you have to subclass it.
  */
-class CC_EX_DLL Control : public Layer
+class Control : public Layer
 {
 public:
     /** Kinds of possible events for the control objects. */
-    enum class CC_EX_DLL EventType
+    enum class EventType
     {
         TOUCH_DOWN           = 1 << 0,    // A touch-down event in the control.
         DRAG_INSIDE          = 1 << 1,    // An event where a finger is dragged inside the bounds of the control.
@@ -267,7 +266,7 @@ private:
     CC_DISALLOW_COPY_AND_ASSIGN(Control);
 };
 
-CC_EX_DLL Control::EventType operator|(Control::EventType a, Control::EventType b);
+Control::EventType operator|(Control::EventType a, Control::EventType b);
 
 // end of GUI group
 /// @}

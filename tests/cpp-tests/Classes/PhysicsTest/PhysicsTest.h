@@ -255,18 +255,6 @@ private:
     bool _bodyInA;
 };
 
-class PhysicsFixedUpdate : public PhysicsDemo
-{
-public:
-    CREATE_FUNC(PhysicsFixedUpdate);
-    void onEnter() override;
-    void updateStart(float delta);
-    void addBall();
-    virtual void update(float delta) override;
-    virtual std::string title() const override;
-    virtual std::string subtitle() const override;
-};
-
 class PhysicsTransformTest : public PhysicsDemo
 {
 public:
@@ -278,5 +266,7 @@ public:
     bool onTouchBegan(Touch* touch, Event* event);
     
 };
+
+
 #endif
 #endif

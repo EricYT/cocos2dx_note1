@@ -45,7 +45,7 @@ NS_CC_BEGIN
  */
 
 template <class K, class V>
-class Map
+class CC_DLL Map
 {
 public:
     // ------------------------------------------

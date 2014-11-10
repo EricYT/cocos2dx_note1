@@ -49,7 +49,7 @@ class EventCustom;
  *
  *        dispatcher->removeEventListener(listener);
  */
-class CC_DLL EventListenerCustom : public EventListener
+class EventListenerCustom : public EventListener
 {
 public:
     /** Creates an event listener with type and callback.

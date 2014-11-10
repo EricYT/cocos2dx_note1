@@ -28,7 +28,6 @@ THE SOFTWARE.
 
 #include "cocostudio/CCProcessBase.h"
 #include "cocostudio/CCTween.h"
-#include "cocostudio/CocosStudioExport.h"
 #include <queue>
 
 namespace cocostudio {
@@ -66,7 +65,7 @@ struct MovementEvent
     std::string movementID;
 };
 
-class  CC_STUDIO_DLL ArmatureAnimation : public ProcessBase
+class  ArmatureAnimation : public ProcessBase
 {
 public:
     /**
