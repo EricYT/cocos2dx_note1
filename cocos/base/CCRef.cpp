@@ -50,6 +50,7 @@ Ref::Ref()
 #endif
     
 #if CC_USE_MEM_LEAK_DETECTION
+    // push this object into a list
     trackRef(this);
 #endif
 }
