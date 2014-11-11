@@ -33,6 +33,7 @@ AutoreleasePool::AutoreleasePool()
 , _isClearing(false)
 #endif
 {
+    // Increase capacity of the vector
     _managedObjectArray.reserve(150);
     PoolManager::getInstance()->push(this);
 }

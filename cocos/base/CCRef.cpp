@@ -76,6 +76,7 @@ Ref::~Ref()
 
 #if CC_USE_MEM_LEAK_DETECTION
     if (_referenceCount != 0)
+        // delete this object from list
         untrackRef(this);
 #endif
 }
@@ -137,6 +138,7 @@ void Ref::release()
 
 Ref* Ref::autorelease()
 {
+    // Add this object into auto release pool
     PoolManager::getInstance()->getCurrentPool()->addObject(this);
     return this;
 }
@@ -148,6 +150,7 @@ unsigned int Ref::getReferenceCount() const
 
 #if CC_USE_MEM_LEAK_DETECTION
 
+// A static list for all objects in the memory
 static std::list<Ref*> __refAllocationList;
 
 void Ref::printLeaks()
