@@ -79,16 +79,20 @@ int Application::run()
     // Retain glview to avoid glview being released in the while loop
     glview->retain();
     
+    
+    // The real loop for this framework
     while (!glview->windowShouldClose())
     {
         lastTime = getCurrentMillSecond();
         
+        // Do display draw and release the cache pool ( auto gc in Ref::autorelease )
         director->mainLoop();
         glview->pollEvents();
 
         curTime = getCurrentMillSecond();
         if (curTime - lastTime < _animationInterval)
         {
+            // When the time is not enough to do next loop, let is sleep a while
             usleep(static_cast<useconds_t>((_animationInterval - curTime + lastTime)*1000));
         }
     }
