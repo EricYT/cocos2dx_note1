@@ -113,7 +113,9 @@ bool AppDelegate::applicationDidFinishLaunching()
     glview->setDesignResolutionSize(designSize.width, designSize.height, ResolutionPolicy::NO_BORDER);
 #endif
 
+    // Create a new scene to enter
     auto scene = Scene::create();
+    // Main menu
     auto layer = new TestController();
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WP8) && (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
     layer->addConsoleAutoTest();

@@ -28,6 +28,7 @@ USING_NS_CC;
 
 int main(int argc, char *argv[])
 {
+    // The cocos2dx test example door
     AppDelegate app;
     return Application::getInstance()->run();
 }
