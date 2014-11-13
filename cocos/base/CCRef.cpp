@@ -139,6 +139,7 @@ void Ref::release()
 Ref* Ref::autorelease()
 {
     // Add this object into auto release pool
+    // If its reference not be added,it will be release next frame
     PoolManager::getInstance()->getCurrentPool()->addObject(this);
     return this;
 }
