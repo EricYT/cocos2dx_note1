@@ -93,6 +93,7 @@ int Application::run()
         if (curTime - lastTime < _animationInterval)
         {
             // When the time is not enough to do next loop, let is sleep a while
+            // This will let the machine give out the cpu 
             usleep(static_cast<useconds_t>((_animationInterval - curTime + lastTime)*1000));
         }
     }
