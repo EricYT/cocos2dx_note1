@@ -13,6 +13,9 @@ public:
 
     void menuCallback(Ref * sender);
     void closeCallback(Ref * sender);
+    
+    // test
+    void testMenuCallback(Ref * sender);
 
     bool onTouchBegan(Touch* touches, Event  *event);
     void onTouchMoved(Touch* touches, Event  *event);

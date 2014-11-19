@@ -11,6 +11,7 @@
 #include "controller.h"
 #include "testResource.h"
 #include "tests.h"
+//#include "2d/CCSprite.h"
 
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32) && (CC_TARGET_PLATFORM != CC_PLATFORM_WP8) && (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT)
 #include <unistd.h>
@@ -126,7 +127,10 @@ TestController::TestController()
 {
     // add close menu
     auto closeItem = MenuItemImage::create(s_pathClose, s_pathClose, CC_CALLBACK_1(TestController::closeCallback, this) );
-    auto menu =Menu::create(closeItem, NULL);
+    // add test menu
+    auto testMenu = MenuItemImage::create(s_fire, s_fire, CC_CALLBACK_1(TestController::testMenuCallback, this) );
+    testMenu->setPosition(Vec2(100, 200));
+    auto menu =Menu::create(closeItem, testMenu, NULL);
 
     menu->setPosition( Vec2::ZERO );
     closeItem->setPosition(Vec2( VisibleRect::right().x - 30, VisibleRect::top().y - 30));
@@ -196,6 +200,15 @@ void TestController::closeCallback(Ref * sender)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
     exit(0);
 #endif
+}
+
+void TestController::testMenuCallback(Ref * sender){
+    static int testSpriteCount = 0;
+    Sprite *sprite = Sprite::create(s_pathGrossini);
+    sprite->setPosition(Vec2(200+testSpriteCount*20, 200));
+    const Vec2 &sprite_pos = sprite->getPosition();
+    this->addChild(sprite);
+    ++testSpriteCount;
 }
 
 bool TestController::onTouchBegan(Touch* touch, Event  *event)
