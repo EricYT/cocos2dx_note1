@@ -140,6 +140,7 @@ TestController::TestController()
     _itemMenu = Menu::create();
     for (int i = 0; i < g_testCount; ++i)
     {
+        // Every new test example is a scence,but is not be used in a real project
         auto label = Label::createWithTTF(ttfConfig, g_aTestNames[i].test_name);       
         auto menuItem = MenuItemLabel::create(label, CC_CALLBACK_1(TestController::menuCallback, this));
 
