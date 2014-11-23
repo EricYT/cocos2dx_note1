@@ -239,7 +239,7 @@ void TestController::onTouchMoved(Touch* touch, Event  *event)
     }
 
     if (nextPos.y > ((g_testCount + 1)* LINE_SPACE - VisibleRect::getVisibleRect().size.height))
-    {s
+    {
         _itemMenu->setPosition(Vec2(0, ((g_testCount + 1)* LINE_SPACE - VisibleRect::getVisibleRect().size.height)));
         return;
     }
