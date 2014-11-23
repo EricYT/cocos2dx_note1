@@ -158,6 +158,8 @@ TestController::TestController()
     auto listener = EventListenerTouchOneByOne::create();
     listener->setSwallowTouches(true);
     
+    CCLOG(">>>>> onTouchBegan\n");
+    
     listener->onTouchBegan = CC_CALLBACK_2(TestController::onTouchBegan, this);
     listener->onTouchMoved = CC_CALLBACK_2(TestController::onTouchMoved, this);
     
@@ -174,6 +176,7 @@ TestController::~TestController()
 
 void TestController::menuCallback(Ref * sender)
 {
+    // Clear the cache in replace a new scence
 	Director::getInstance()->purgeCachedData();
 
     // get the userdata, it's the index of the menu item clicked
@@ -215,6 +218,7 @@ void TestController::testMenuCallback(Ref * sender){
 bool TestController::onTouchBegan(Touch* touch, Event  *event)
 {
     _beginPos = touch->getLocation();
+    
     return true;
 }
 
@@ -222,6 +226,8 @@ void TestController::onTouchMoved(Touch* touch, Event  *event)
 {
     auto touchLocation = touch->getLocation();    
     float nMoveY = touchLocation.y - _beginPos.y;
+    
+    CCLOG("%f \n", touchLocation.y);
 
     auto curPos  = _itemMenu->getPosition();
     auto nextPos = Vec2(curPos.x, curPos.y + nMoveY);
@@ -233,7 +239,7 @@ void TestController::onTouchMoved(Touch* touch, Event  *event)
     }
 
     if (nextPos.y > ((g_testCount + 1)* LINE_SPACE - VisibleRect::getVisibleRect().size.height))
-    {
+    {s
         _itemMenu->setPosition(Vec2(0, ((g_testCount + 1)* LINE_SPACE - VisibleRect::getVisibleRect().size.height)));
         return;
     }

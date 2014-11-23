@@ -329,6 +329,7 @@ bool Layer::onTouchBegan(Touch *touch, Event *event)
         return executeScriptTouchHandler(EventTouch::EventCode::BEGAN, touch, event) == 0 ? false : true;
     }
 #endif
+    CCLOG(">>>>> onTouchBegan\n");
     CC_UNUSED_PARAM(event);
     CCASSERT(false, "Layer#ccTouchBegan override me");
     return true;
